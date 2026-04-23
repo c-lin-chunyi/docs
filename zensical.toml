@@ -40,16 +40,12 @@ media = "(prefers-color-scheme: light)"
 scheme = "radix-light"
 primary = "custom"
 accent = "custom"
-toggle.icon = "lucide/moon"
-toggle.name = "Switch to dark mode"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: dark)"
 scheme = "radix-dark"
 primary = "custom"
 accent = "custom"
-toggle.icon = "lucide/sun"
-toggle.name = "Switch to light mode"
 
 [project.markdown_extensions.admonition]
 
