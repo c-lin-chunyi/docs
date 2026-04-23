@@ -39,7 +39,7 @@ export const schemeSettings = {
       ["--theme-search-result-bg", "var(--rx-gray-2)"],
       ["--theme-selection-color", "rgba(0, 144, 255, 0.18)"],
     ],
-    materialVars: [
+    zensicalVars: [
       ["--md-default-fg-color", "var(--theme-body-color)"],
       ["--md-default-fg-color--light", "rgba(32, 32, 32, 0.72)"],
       ["--md-default-fg-color--lighter", "rgba(32, 32, 32, 0.32)"],
@@ -114,7 +114,7 @@ export const schemeSettings = {
       ["--theme-search-result-bg", "var(--rx-gray-2)"],
       ["--theme-selection-color", "rgba(0, 144, 255, 0.24)"],
     ],
-    materialVars: [
+    zensicalVars: [
       ["--md-default-fg-color", "var(--theme-body-color)"],
       ["--md-default-fg-color--light", "rgba(238, 238, 238, 0.72)"],
       ["--md-default-fg-color--lighter", "rgba(238, 238, 238, 0.32)"],
