@@ -50,48 +50,11 @@
 
   <div class="nav-footer" role="contentinfo">
       <div class="nav-footer-left" aria-label="Copyright and license">
-        <span class="faux-block">
-          <span class="site-footer__inline-icon" aria-hidden="true">
-            {% include ".icons/fontawesome/brands/creative-commons.svg" %}
-          </span>
-          {{ footer.years }} {{ footer.author_name }}
-        </span>
-        <span class="faux-block">
-          All content licensed under<br>
-          <a href="{{ footer.license_url }}" target="_blank" rel="noopener">
-            <span class="site-footer__inline-icon" aria-hidden="true">
-              {% include ".icons/fontawesome/brands/creative-commons.svg" %}
-            </span>
-            <span class="site-footer__inline-icon" aria-hidden="true">
-              {% include ".icons/fontawesome/brands/creative-commons-by.svg" %}
-            </span>
-            Creative Commons {{ footer.license_name }}
-          </a>
-        </span>
+        <p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> {{ footer.years }} {{ footer.author_name }}</span> <span class="faux-block">All content licensed under<br><a href="{{ footer.license_url }}" target="_blank" rel="noopener"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> Creative Commons {{ footer.license_name }}</a></span></p>
       </div>
 
       <div class="nav-footer-center" aria-label="Identifiers">
-        <span class="faux-block">
-          <span class="site-footer__inline-icon" aria-hidden="true">
-            {% include ".icons/fontawesome/brands/orcid.svg" %}
-          </span>
-          <strong>ORCID</strong>
-          <a href="https://orcid.org/{{ footer.orcid }}" target="_blank" rel="noopener">{{ footer.orcid }}</a>
-        </span>
-        <span class="faux-block">
-          <a href="{{ footer.pgp_key | url }}">
-            <span class="site-footer__inline-icon" aria-hidden="true">
-              {% include ".icons/material/key-variant.svg" %}
-            </span>
-            PGP public key
-          </a>
-          <span class="site-footer__spacer" aria-hidden="true"></span>
-          <span class="site-footer__inline-icon" aria-hidden="true">
-            {% include ".icons/material/fingerprint.svg" %}
-          </span>
-          <strong>Fingerprint:</strong><br>
-          <span class="site-footer__fingerprint">{{ footer.pgp_fingerprint | safe }}</span>
-        </span>
+        <p><span class="faux-block"><i class="fa-brands fa-orcid" aria-label="orcid"></i> <strong>ORCID</strong> <a href="https://orcid.org/{{ footer.orcid }}" target="_blank" rel="noopener">{{ footer.orcid }}</a></span> <span class="faux-block"><i class="fa-solid fa-key" aria-label="key"></i> <a href="{{ footer.pgp_key | url }}">PGP public key</a> &#8195; <i class="fa-solid fa-fingerprint" aria-label="fingerprint"></i> <strong>Fingerprint:</strong><br><span class="site-footer__fingerprint fingerprint">{{ footer.pgp_fingerprint | safe }}</span></span></p>
       </div>
 
       <div class="nav-footer-right" aria-label="Source and theme">
@@ -100,50 +63,31 @@
         </div>
         <div class="faux-block">
           <a href="{{ footer.repo_url }}" target="_blank" rel="noopener">
-            View the source at
-            <span class="site-footer__inline-icon" aria-hidden="true">
-              {% include ".icons/fontawesome/brands/github.svg" %}
-            </span>
-            GitHub
+            View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub
           </a>
         </div>
         <div class="faux-block">
-          <div class="site-theme-switcher" data-footer-theme-switcher>
-            <button class="site-theme-switcher__trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Color theme" data-footer-theme-trigger>
-              <span class="site-footer__inline-icon" aria-hidden="true">
-                {% include ".icons/fontawesome/solid/desktop.svg" %}
-              </span>
-              <span data-footer-theme-label>System</span>
+          <div class="site-theme-switcher theme-switcher" data-footer-theme-switcher>
+            <button class="site-theme-switcher__trigger theme-switcher-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Color theme" data-footer-theme-trigger>
+              <i class="fa-solid fa-desktop theme-switcher-icon" data-footer-theme-icon aria-hidden="true"></i><span class="theme-switcher-label" data-footer-theme-label>System</span>
             </button>
-            <div class="site-theme-switcher__menu" hidden data-footer-theme-menu>
-              <button class="site-theme-switcher__option" type="button" data-footer-theme-value="light">
-                <span class="site-theme-switcher__option-icon" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/sun.svg" %}
-                </span>
-                <span class="site-theme-switcher__option-label">Light</span>
-                <span class="site-theme-switcher__check" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/check.svg" %}
-                </span>
-              </button>
-              <button class="site-theme-switcher__option" type="button" data-footer-theme-value="dark">
-                <span class="site-theme-switcher__option-icon" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/moon.svg" %}
-                </span>
-                <span class="site-theme-switcher__option-label">Dark</span>
-                <span class="site-theme-switcher__check" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/check.svg" %}
-                </span>
-              </button>
-              <button class="site-theme-switcher__option" type="button" data-footer-theme-value="system">
-                <span class="site-theme-switcher__option-icon" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/desktop.svg" %}
-                </span>
-                <span class="site-theme-switcher__option-label">System</span>
-                <span class="site-theme-switcher__check" aria-hidden="true">
-                  {% include ".icons/fontawesome/solid/check.svg" %}
-                </span>
-              </button>
-            </div>
+            <ul class="site-theme-switcher__menu theme-switcher-menu" hidden data-footer-theme-menu>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="light">
+                  <i class="fa-solid fa-sun" aria-hidden="true"></i><span>Light</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="dark">
+                  <i class="fa-solid fa-moon" aria-hidden="true"></i><span>Dark</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="system">
+                  <i class="fa-solid fa-desktop" aria-hidden="true"></i><span>System</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

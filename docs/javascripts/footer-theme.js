@@ -6,6 +6,7 @@
 
   const trigger = root.querySelector("[data-footer-theme-trigger]");
   const menu = root.querySelector("[data-footer-theme-menu]");
+  const icon = root.querySelector("[data-footer-theme-icon]");
   const label = root.querySelector("[data-footer-theme-label]");
   const options = Array.from(root.querySelectorAll("[data-footer-theme-value]"));
   const paletteInputs = Array.from(
@@ -16,6 +17,11 @@
     light: "Light",
     dark: "Dark",
     system: "System",
+  };
+  const modeIcons = {
+    light: "fa-sun",
+    dark: "fa-moon",
+    system: "fa-desktop",
   };
   const NO_SCROLL_RESTORE_KEY = "footer-theme-no-scroll-restore";
 
@@ -87,8 +93,16 @@
 
   function updateUi(mode) {
     label.textContent = modeLabels[mode];
+
+    if (icon) {
+      icon.classList.remove("fa-sun", "fa-moon", "fa-desktop");
+      icon.classList.add(modeIcons[mode]);
+    }
+
     options.forEach((option) => {
-      option.classList.toggle("is-active", option.dataset.footerThemeValue === mode);
+      const isActive = option.dataset.footerThemeValue === mode;
+      option.classList.toggle("is-active", isActive);
+      option.classList.toggle("active", isActive);
     });
   }
 
