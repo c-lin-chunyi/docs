@@ -1,6 +1,5 @@
 site_name: My Docs
 site_url: https://www.chunyi-lin.com
-repo_url: https://github.com/c-lin-chunyi/blog
 
 theme:
   font: false
@@ -25,6 +24,7 @@ theme:
 extra_css:
   - stylesheets/fonts.css
   - stylesheets/radix.css
+  - stylesheets/header.css
   - stylesheets/footer.css
 
 extra_javascript:
@@ -36,6 +36,7 @@ extra:
     years: "2026"
     license_name: CC BY 4.0
     license_url: https://creativecommons.org/licenses/by/4.0/
+    repo_url: https://github.com/c-lin-chunyi/blog
     orcid: 0009-0008-9762-8705
     pgp_key: pgp_clin.asc.txt
     pgp_fingerprint: "15C2 CB51 1D1E 1A79 C2B2<br>F5F3 ED31 DE03 7AEF 5C7E"
