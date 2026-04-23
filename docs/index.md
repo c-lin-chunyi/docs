@@ -17,7 +17,8 @@ instead of simply inverting the light palette.
 
 ```css
 [data-md-color-scheme="radix-light"] {
-  --md-primary-fg-color: var(--rx-blue-9);
+  --md-primary-fg-color: var(--theme-surface-bg);
+  --theme-primary-color: var(--rx-blue-9);
   --md-default-bg-color: var(--rx-gray-1);
   --md-code-bg-color: var(--theme-control-bg);
 }
@@ -29,7 +30,8 @@ instead of simply inverting the light palette.
 | --- | --- | --- |
 | Surface | `gray-2` | `gray-3` |
 | Control | `gray-1` | `gray-2` |
-| Primary | `blue-9` | `blue-9` |
+| Header | `gray-2` | `gray-3` |
+| Semantic primary | `blue-9` | `blue-9` |
 | Link text | `blue-11` | `blue-11` |
 
 ### Example admonition

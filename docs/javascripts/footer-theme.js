@@ -17,6 +17,7 @@
     dark: "Dark",
     system: "System",
   };
+  const NO_SCROLL_RESTORE_KEY = "footer-theme-no-scroll-restore";
 
   const paletteByMode = {
     light: paletteInputs.find((input) => input.dataset.mdColorMedia === "(prefers-color-scheme: light)"),
@@ -78,6 +79,64 @@
     });
   }
 
+  function setManualScrollRestoration() {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }
+
+  function setAutoScrollRestoration() {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "auto";
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
+  function resetScrollAfterThemeReload() {
+    let shouldResetScroll = false;
+
+    try {
+      shouldResetScroll = window.sessionStorage.getItem(NO_SCROLL_RESTORE_KEY) === "true";
+      if (shouldResetScroll) {
+        window.sessionStorage.removeItem(NO_SCROLL_RESTORE_KEY);
+      }
+    } catch (_) {}
+
+    if (!shouldResetScroll) {
+      return;
+    }
+
+    setManualScrollRestoration();
+    scrollToTop();
+
+    window.addEventListener("pageshow", scrollToTop, { once: true });
+    window.addEventListener(
+      "load",
+      function () {
+        window.requestAnimationFrame(function () {
+          scrollToTop();
+          window.setTimeout(function () {
+            scrollToTop();
+            setAutoScrollRestoration();
+          }, 100);
+        });
+      },
+      { once: true }
+    );
+  }
+
+  function reloadWithoutScrollRestoration() {
+    try {
+      window.sessionStorage.setItem(NO_SCROLL_RESTORE_KEY, "true");
+    } catch (_) {}
+
+    setManualScrollRestoration();
+    window.location.reload();
+  }
+
   function applyMode(mode, persist) {
     const palette = getPaletteData(mode);
     if (!palette) {
@@ -113,8 +172,14 @@
 
   options.forEach((option) => {
     option.addEventListener("click", function () {
-      applyMode(option.dataset.footerThemeValue, true);
+      const mode = option.dataset.footerThemeValue;
+      if (!modeLabels[mode]) {
+        return;
+      }
+
+      applyMode(mode, true);
       closeMenu();
+      reloadWithoutScrollRestoration();
     });
   });
 
@@ -132,7 +197,8 @@
 
   paletteInputs.forEach((input) => {
     input.addEventListener("change", function () {
-      applyMode(input.dataset.mdColorMedia.includes("dark") ? "dark" : "light", false);
+      applyMode(input.dataset.mdColorMedia.includes("dark") ? "dark" : "light", true);
+      reloadWithoutScrollRestoration();
     });
   });
 
@@ -142,5 +208,6 @@
     }
   });
 
+  resetScrollAfterThemeReload();
   applyMode(getStoredMode(), false);
 })();

@@ -3,6 +3,7 @@ import path from "node:path";
 import * as radix from "@radix-ui/colors";
 
 import {
+  admonitionTypes,
   outputPath,
   scaleOrder,
   schemeSettings,
@@ -76,6 +77,29 @@ function renderRule(selector, declarations) {
   return `${selector} {\n${renderDeclarations(declarations)}\n}`;
 }
 
+function renderAdmonitionRule(type, scaleName) {
+  const color = `var(--rx-${scaleName}-9)`;
+  const titleBackground = `color-mix(in srgb, ${color} 14%, transparent)`;
+  const selectors = [
+    `[data-md-color-scheme^="radix-"] .md-typeset .admonition.${type}`,
+    `[data-md-color-scheme^="radix-"] .md-typeset details.${type}`,
+  ].join(",\n");
+  const titleSelectors = [
+    `[data-md-color-scheme^="radix-"] .md-typeset .${type} > .admonition-title`,
+    `[data-md-color-scheme^="radix-"] .md-typeset .${type} > summary`,
+  ].join(",\n");
+  const iconSelectors = [
+    `[data-md-color-scheme^="radix-"] .md-typeset .${type} > .admonition-title::before`,
+    `[data-md-color-scheme^="radix-"] .md-typeset .${type} > summary::before`,
+  ].join(",\n");
+
+  return [
+    renderRule(selectors, [["border-color", color]]),
+    renderRule(titleSelectors, [["background-color", titleBackground]]),
+    renderRule(iconSelectors, [["background-color", color]]),
+  ].join("\n\n");
+}
+
 const content = [
   header.trimEnd(),
   "",
@@ -84,6 +108,8 @@ const content = [
   renderSchemeBlock("radix-dark", "dark"),
   "",
   ...sharedRules.map(([selector, declarations]) => renderRule(selector, declarations)),
+  "",
+  ...admonitionTypes.map(([type, scaleName]) => renderAdmonitionRule(type, scaleName)),
   "",
 ]
   .join("\n")
