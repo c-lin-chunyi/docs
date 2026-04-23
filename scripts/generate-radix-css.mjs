@@ -3,8 +3,9 @@ import path from "node:path";
 import * as radix from "@radix-ui/colors";
 
 import {
+  alphaScaleOrder,
   admonitionTypes,
-  outputPath,
+  outputPaths,
   scaleOrder,
   schemeSettings,
   sharedRules,
@@ -37,6 +38,22 @@ function scaleFor(name, mode) {
   return scale;
 }
 
+function alphaScaleFor(name, mode) {
+  const exportName =
+    name === "black" || name === "white"
+      ? `${name}A`
+      : mode === "dark"
+        ? `${name}DarkA`
+        : `${name}A`;
+  const scale = radix[exportName];
+
+  if (!scale) {
+    throw new Error(`Missing Radix alpha color export: ${exportName}`);
+  }
+
+  return scale;
+}
+
 function renderScaleVariables(mode) {
   const declarations = [];
 
@@ -47,6 +64,19 @@ function renderScaleVariables(mode) {
 
     for (let step = 1; step <= 12; step += 1) {
       declarations.push(`  --rx-${scaleName}-${step}: ${scale[`${scaleName}${step}`]};`);
+    }
+
+    declarations.push("");
+  }
+
+  declarations.push("  /* alpha */");
+
+  for (const scaleName of alphaScaleOrder) {
+    const scale = alphaScaleFor(scaleName, mode);
+    const radixKeyName = `${scaleName}A`;
+
+    for (let step = 1; step <= 12; step += 1) {
+      declarations.push(`  --rx-${scaleName}-a${step}: ${scale[`${radixKeyName}${step}`]};`);
     }
 
     declarations.push("");
@@ -80,7 +110,7 @@ function renderRule(selector, declarations) {
 
 function renderAdmonitionRule(type, scaleName) {
   const color = `var(--rx-${scaleName}-9)`;
-  const titleBackground = `color-mix(in srgb, ${color} 14%, transparent)`;
+  const containerBackground = `color-mix(in srgb, ${color} 10%, transparent)`;
   const selectors = [
     `[data-md-color-scheme^="radix-"] .md-typeset .admonition.${type}`,
     `[data-md-color-scheme^="radix-"] .md-typeset details.${type}`,
@@ -95,8 +125,11 @@ function renderAdmonitionRule(type, scaleName) {
   ].join(",\n");
 
   return [
-    renderRule(selectors, [["border-color", color]]),
-    renderRule(titleSelectors, [["background-color", titleBackground]]),
+    renderRule(selectors, [
+      ["background-color", containerBackground],
+      ["border-color", color],
+    ]),
+    renderRule(titleSelectors, [["background-color", "transparent"]]),
     renderRule(iconSelectors, [["background-color", color]]),
   ].join("\n\n");
 }
@@ -117,6 +150,10 @@ const content = [
   .trimEnd()
   .concat("\n");
 
-const resolvedOutputPath = path.resolve(outputPath);
-await mkdir(path.dirname(resolvedOutputPath), { recursive: true });
-await writeFile(resolvedOutputPath, content);
+await Promise.all(
+  outputPaths.map(async (outputPath) => {
+    const resolvedOutputPath = path.resolve(outputPath);
+    await mkdir(path.dirname(resolvedOutputPath), { recursive: true });
+    await writeFile(resolvedOutputPath, content);
+  }),
+);

@@ -144,6 +144,25 @@
   font-family: var(--site-font-family-serif);
 }
 
+.md-typeset ul > li,
+.md-typeset ol > li {
+  font-family: var(--site-font-family-serif);
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  font-family: var(--site-font-family-sans-serif);
+}
+
+.md-typeset .admonition-title,
+.md-typeset summary,
+.md-typeset .admonition p,
+.md-typeset .admonition li,
+.md-typeset details p,
+.md-typeset details li {
+  font-family: inherit;
+}
+
 .md-typeset blockquote {
   font-style: italic;
 }
