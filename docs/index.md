@@ -1,4 +1,4 @@
-# Radix Palette
+# Home
 
 This site now uses a custom Radix-based color system for both light and dark mode.
 The palette mapping follows the same design direction as `quarto-ref/`, with Radix

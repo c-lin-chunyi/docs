@@ -29,9 +29,7 @@ pgp_fingerprint = "15C2 CB51 1D1E 1A79 C2B2<br>F5F3 ED31 DE03 7AEF 5C7E"
 [project.theme]
 font = false
 custom_dir = "overrides"
-features = [
-  "navigation.footer",
-]
+features = []
 favicon = "assets/favicon.svg"
 logo = "assets/logo.svg"
 
