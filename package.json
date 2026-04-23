@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run generate:radix-css && mkdocs build",
-    "generate:radix-css": "node scripts/generate-radix-css.mjs"
+    "build": "npm run generate:radix-css && .venv/bin/zensical build",
+    "generate:radix-css": "node scripts/generate-radix-css.mjs",
+    "serve": "npm run generate:radix-css && .venv/bin/zensical serve"
   },
   "devDependencies": {
     "@radix-ui/colors": "^3.0.0"
