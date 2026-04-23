@@ -7,7 +7,7 @@
   border: 0;
   flex-wrap: nowrap;
   font-family: var(--md-text-font);
-  font-size: 0.665rem;
+  font-size: var(--site-footer-font-size, 0.76rem);
   line-height: 1.35;
   min-height: 3rem;
   padding-bottom: 1.0625rem;

@@ -3,6 +3,7 @@ site_url: https://www.chunyi-lin.com
 repo_url: https://github.com/c-lin-chunyi/blog
 
 theme:
+  font: false
   name: material
   custom_dir: overrides
   palette:
@@ -22,6 +23,7 @@ theme:
         name: Switch to light mode
 
 extra_css:
+  - stylesheets/fonts.css
   - stylesheets/radix.css
   - stylesheets/footer.css
 
