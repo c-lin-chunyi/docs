@@ -1,6 +1,7 @@
 # General
 .DS_Store
 .localized
+node_modules/
 __MACOSX/
 .AppleDouble
 .LSOverride

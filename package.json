@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "npm run generate:radix-css && mkdocs build",
+    "generate:radix-css": "node scripts/generate-radix-css.mjs"
+  },
+  "devDependencies": {
+    "@radix-ui/colors": "^3.0.0"
+  }
+}
