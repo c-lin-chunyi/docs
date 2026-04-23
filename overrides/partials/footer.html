@@ -111,19 +111,37 @@
           <div class="site-theme-switcher" data-footer-theme-switcher>
             <button class="site-theme-switcher__trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Color theme" data-footer-theme-trigger>
               <span class="site-footer__inline-icon" aria-hidden="true">
-                {% include ".icons/material/desktop-classic.svg" %}
+                {% include ".icons/fontawesome/solid/desktop.svg" %}
               </span>
               <span data-footer-theme-label>System</span>
             </button>
             <div class="site-theme-switcher__menu" hidden data-footer-theme-menu>
               <button class="site-theme-switcher__option" type="button" data-footer-theme-value="light">
+                <span class="site-theme-switcher__option-icon" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/sun.svg" %}
+                </span>
                 <span class="site-theme-switcher__option-label">Light</span>
+                <span class="site-theme-switcher__check" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/check.svg" %}
+                </span>
               </button>
               <button class="site-theme-switcher__option" type="button" data-footer-theme-value="dark">
+                <span class="site-theme-switcher__option-icon" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/moon.svg" %}
+                </span>
                 <span class="site-theme-switcher__option-label">Dark</span>
+                <span class="site-theme-switcher__check" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/check.svg" %}
+                </span>
               </button>
               <button class="site-theme-switcher__option" type="button" data-footer-theme-value="system">
+                <span class="site-theme-switcher__option-icon" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/desktop.svg" %}
+                </span>
                 <span class="site-theme-switcher__option-label">System</span>
+                <span class="site-theme-switcher__check" aria-hidden="true">
+                  {% include ".icons/fontawesome/solid/check.svg" %}
+                </span>
               </button>
             </div>
           </div>

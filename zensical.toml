@@ -1,29 +1,39 @@
 [project]
-site_name = "My Docs"
-site_url = "https://www.chunyi-lin.com"
+site_name = "Chunyi Lin's Docs"
+site_url = "https://docs.chunyi-lin.com"
+site_author = "Chunyi Lin"
 copyright = """
 Copyright &copy; 2026 Chunyi Lin. Content licensed under
 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
 """
-repo_url = "https://github.com/c-lin-chunyi/blog"
 extra_css = [
+  "stylesheets/fonts.css",
   "stylesheets/radix.css",
+  "stylesheets/header.css",
+  "stylesheets/footer.css",
+]
+extra_javascript = [
+  "javascripts/footer-theme.js",
 ]
 
-[[project.extra.social]]
-icon = "fontawesome/brands/github"
-link = "https://github.com/c-lin-chunyi/blog"
-name = "Source on GitHub"
+[project.extra.footer]
+author_name = "Chunyi Lin"
+years = "2026"
+license_name = "CC BY 4.0"
+license_url = "https://creativecommons.org/licenses/by/4.0/"
+repo_url = "https://github.com/c-lin-chunyi/docs"
+orcid = "0009-0008-9762-8705"
+pgp_key = "pgp_clin.asc.txt"
+pgp_fingerprint = "15C2 CB51 1D1E 1A79 C2B2<br>F5F3 ED31 DE03 7AEF 5C7E"
 
-[[project.extra.social]]
-icon = "fontawesome/brands/orcid"
-link = "https://orcid.org/0009-0008-9762-8705"
-name = "ORCID"
-
-[[project.extra.social]]
-icon = "lucide/key-round"
-link = "pgp_clin.asc.txt"
-name = "PGP public key"
+[project.theme]
+font = false
+custom_dir = "overrides"
+features = [
+  "navigation.footer",
+]
+favicon = "assets/favicon.svg"
+logo = "assets/logo.svg"
 
 [[project.theme.palette]]
 media = "(prefers-color-scheme: light)"
@@ -42,3 +52,6 @@ toggle.icon = "lucide/sun"
 toggle.name = "Switch to light mode"
 
 [project.markdown_extensions.admonition]
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true

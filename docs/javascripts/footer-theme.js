@@ -59,6 +59,19 @@
     };
   }
 
+  function getPaletteIndex(palette) {
+    const index = paletteInputs.findIndex((input) => {
+      return (
+        input.dataset.mdColorMedia === palette.media &&
+        input.dataset.mdColorScheme === palette.scheme &&
+        input.dataset.mdColorPrimary === palette.primary &&
+        input.dataset.mdColorAccent === palette.accent
+      );
+    });
+
+    return index >= 0 ? index : 0;
+  }
+
   function syncHeaderPalette(mode) {
     const source =
       mode === "system"
@@ -148,7 +161,10 @@
     });
 
     if (persist) {
-      window.__md_set("__palette", { color: palette });
+      window.__md_set("__palette", {
+        index: getPaletteIndex(palette),
+        color: palette,
+      });
     }
 
     syncHeaderPalette(mode);
