@@ -14,7 +14,7 @@ extra_css = [
   "stylesheets/footer.css",
 ]
 extra_javascript = [
-  "assets/vendor/mermaid/mermaid.min.js",
+  "/assets/vendor/mermaid/mermaid.min.js",
   "javascripts/mermaid-init.js",
   "javascripts/footer-theme.js",
   "javascripts/safari-toc-highlight.js",

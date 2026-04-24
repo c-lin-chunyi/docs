@@ -281,3 +281,6 @@ __marimo__/
 
 # Misc
 quarto-ref
+
+# Compiled files
+dist/
