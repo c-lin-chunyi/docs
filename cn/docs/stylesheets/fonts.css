@@ -96,8 +96,8 @@
 }
 
 :root {
-  --site-font-family-serif: "STIX Two Text", "STIX Two Text Fallback", Cambria, "Times New Roman", Times, serif;
-  --site-font-family-sans-serif: "Inter", "Inter Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
+  --site-font-family-serif: "STIX Two Text", "STIX Two Text Fallback", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", Cambria, "Times New Roman", "Songti SC", "SimSun", Times, serif;
+  --site-font-family-sans-serif: "Inter", "Inter Fallback", "Noto Sans SC", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
   --site-font-family-monospace: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --site-font-size-base: 0.88rem;
   --site-font-size-sm: 0.77rem;

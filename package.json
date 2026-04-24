@@ -3,8 +3,8 @@
   "type": "module",
   "scripts": {
     "build": "npm run generate:radix-css && npm run build:en && npm run build:cn",
-    "build:en": ".venv/bin/zensical build -f en/zensical.toml",
-    "build:cn": ".venv/bin/zensical build -f cn/zensical.toml",
+    "build:en": ".venv/bin/zensical build -f en/zensical.toml && node scripts/copy-shared-assets.mjs en",
+    "build:cn": ".venv/bin/zensical build -f cn/zensical.toml && node scripts/copy-shared-assets.mjs cn",
     "generate:radix-css": "node scripts/generate-radix-css.mjs",
     "serve": "npm run generate:radix-css && npm run serve:en",
     "serve:en": ".venv/bin/zensical serve -f en/zensical.toml",
