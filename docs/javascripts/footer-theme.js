@@ -56,6 +56,40 @@
     return getStoredMode() || (checked ? getModeFromMedia(checked.dataset.mdColorMedia) : "system");
   }
 
+  function applyMode(mode) {
+    const input = modeLabels[mode] ? getInputForMode(mode) : null;
+
+    if (!input) {
+      return false;
+    }
+
+    const color = {
+      media: input.dataset.mdColorMedia,
+      scheme: input.dataset.mdColorScheme,
+      primary: input.dataset.mdColorPrimary,
+      accent: input.dataset.mdColorAccent,
+    };
+
+    paletteInputs.forEach((candidate) => {
+      candidate.checked = candidate === input;
+    });
+
+    if (typeof window.__md_set === "function") {
+      try {
+        window.__md_set("__palette", { color: color });
+      } catch (_error) {
+        // Ignore storage errors (e.g. private browsing restrictions).
+      }
+    }
+
+    Object.entries(color).forEach(([key, value]) => {
+      document.body.setAttribute("data-md-color-" + key, value);
+    });
+
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+    return true;
+  }
+
   function updateUi(mode) {
     label.textContent = modeLabels[mode];
 
@@ -89,13 +123,10 @@
   options.forEach((option) => {
     option.addEventListener("click", function () {
       const mode = option.dataset.footerThemeValue;
-      const input = modeLabels[mode] ? getInputForMode(mode) : null;
-
-      if (!input) {
+      if (!applyMode(mode)) {
         return;
       }
 
-      input.click();
       updateUi(mode);
       closeMenu();
     });
