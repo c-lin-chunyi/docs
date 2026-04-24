@@ -20,73 +20,73 @@ extra_javascript = [
 ]
 
 nav = [
-  { "Home" = "index.md" },
-  { "Quantitative" = [
-    { "Contents" = "quantitative/index.md" },
-    { "Linear Algebra" = [
-      { "Contents" = "quantitative/linear-algebra/index.md" },
+  { "主页" = "index.md" },
+  { "量化知识" = [
+    { "量化知识目录" = "quantitative/index.md" },
+    { "线性代数" = [
+      { "目录" = "quantitative/linear-algebra/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/linear-algebra/01_/index.md" },
+        { "章节概览" = "quantitative/linear-algebra/01_/index.md" },
         { "01 " = "quantitative/linear-algebra/01_/01_.md" },
       ] },
     ] },
-    { "Probability" = [
-      { "Contents" = "quantitative/probability/index.md" },
+    { "概率论" = [
+      { "目录" = "quantitative/probability/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/probability/01_/index.md" },
+        { "章节概览" = "quantitative/probability/01_/index.md" },
         { "01 " = "quantitative/probability/01_/01_.md" },
       ] },
     ] },
-    { "Statistics" = [
-      { "Contents" = "quantitative/statistics/index.md" },
+    { "统计学" = [
+      { "目录" = "quantitative/statistics/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/statistics/01_/index.md" },
+        { "章节概览" = "quantitative/statistics/01_/index.md" },
         { "01 " = "quantitative/statistics/01_/01_.md" },
       ] },
     ] },
-    { "Experiment Design and Statistical Analysis" = [
-      { "Contents" = "quantitative/experiment-design-and-statistical-analysis/index.md" },
+    { "实验设计与统计分析" = [
+      { "目录" = "quantitative/experiment-design-and-statistical-analysis/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/01_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/01_/index.md" },
         { "01 " = "quantitative/experiment-design-and-statistical-analysis/01_/01_.md" },
       ] },
       { "02" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/02_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/02_/index.md" },
         { "02 " = "quantitative/experiment-design-and-statistical-analysis/02_/02_.md" },
       ] },
       { "03" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/03_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/03_/index.md" },
         { "03 " = "quantitative/experiment-design-and-statistical-analysis/03_/03_.md" },
       ] },
       { "04" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/04_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/04_/index.md" },
         { "04 " = "quantitative/experiment-design-and-statistical-analysis/04_/04_.md" },
       ] },
       { "05" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/05_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/05_/index.md" },
         { "05 " = "quantitative/experiment-design-and-statistical-analysis/05_/05_.md" },
       ] },
       { "06" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/06_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/06_/index.md" },
         { "06 " = "quantitative/experiment-design-and-statistical-analysis/06_/06_.md" },
       ] },
       { "07" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/07_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/07_/index.md" },
         { "07 " = "quantitative/experiment-design-and-statistical-analysis/07_/07_.md" },
       ] },
       { "08" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/08_/index.md" },
+        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/08_/index.md" },
         { "08 " = "quantitative/experiment-design-and-statistical-analysis/08_/08_.md" },
       ] },
     ] },
   ] },
-  { "Qualitative" = [
-    { "Contents" = "qualitative/index.md" },
+  { "质性知识" = [
+    { "目录" = "qualitative/index.md" },
   ] },
-  { "Coursework" = [
-    { "Contents" = "coursework/index.md" },
+  { "课业材料" = [
+    { "目录" = "coursework/index.md" },
   ] },
-  { "Back to main website" = "https://www.chunyi-lin.com" },
+  { "返回主网站" = "https://www.chunyi-lin.com" },
 ]
 
 [project.extra.footer]
@@ -100,6 +100,7 @@ pgp_key = "pgp_clin.asc.txt"
 pgp_fingerprint = "15C2 CB51 1D1E 1A79 C2B2<br>F5F3 ED31 DE03 7AEF 5C7E"
 
 [project.theme]
+language = "zh"
 font = false
 custom_dir = "overrides"
 features = [

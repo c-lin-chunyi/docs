@@ -2,9 +2,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run generate:radix-css && .venv/bin/zensical build",
+    "build": "npm run generate:radix-css && npm run build:en && npm run build:cn",
+    "build:en": ".venv/bin/zensical build -f en/zensical.toml",
+    "build:cn": ".venv/bin/zensical build -f cn/zensical.toml",
     "generate:radix-css": "node scripts/generate-radix-css.mjs",
-    "serve": "npm run generate:radix-css && .venv/bin/zensical serve"
+    "serve": "npm run generate:radix-css && npm run serve:en",
+    "serve:en": ".venv/bin/zensical serve -f en/zensical.toml",
+    "serve:cn": ".venv/bin/zensical serve -f cn/zensical.toml",
+    "start": "npm run serve"
   },
   "devDependencies": {
     "@radix-ui/colors": "^3.0.0"

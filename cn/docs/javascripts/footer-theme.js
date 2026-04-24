@@ -18,9 +18,9 @@
   }
 
   const modeLabels = {
-    light: "Light",
-    dark: "Dark",
-    system: "System",
+    light: "浅色模式",
+    dark: "深色模式",
+    system: "跟随系统",
   };
   const modeIcons = {
     light: "fa-sun",
