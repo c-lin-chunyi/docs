@@ -1,0 +1,24 @@
+.md-typeset .arithmatex {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.md-typeset span.arithmatex {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.md-typeset div.arithmatex {
+  display: block;
+}
+
+.md-typeset .arithmatex mjx-container[jax="SVG"] {
+  max-width: none;
+}
+
+.md-typeset .arithmatex mjx-container[jax="SVG"] > svg {
+  max-width: none;
+}

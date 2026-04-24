@@ -164,6 +164,6 @@ dotlessj=ȷ
 dagger=$\dagger$  
 `\bm{x}` $\bm{x}$
 
-$1+1=2@
+$$1+1=2$$
 
-$E=mc^2$
+$$E=mc^2$$

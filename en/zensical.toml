@@ -8,6 +8,7 @@ Copyright &copy; 2026 Chunyi Lin. Content licensed under
 """
 extra_css = [
   "stylesheets/fonts.css",
+  "stylesheets/math.css",
   "stylesheets/radix.css",
   "stylesheets/header.css",
   "stylesheets/footer.css",
