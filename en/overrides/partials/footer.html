@@ -1,0 +1,95 @@
+{#-
+  Custom footer modeled on quarto-ref with Material palette compatibility.
+-#}
+{% set footer = config.extra.footer %}
+
+<footer class="md-footer site-footer">
+  {% if "navigation.footer" in features %}
+    {% if page.previous_page or page.next_page %}
+      {% if page.meta and page.meta.hide %}
+        {% set hidden = "hidden" if "footer" in page.meta.hide %}
+      {% endif %}
+      <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}" {{ hidden }}>
+        {% if page.previous_page %}
+          {% set direction = lang.t("footer.previous") %}
+          <a href="{{ page.previous_page.url | url }}" class="md-footer__link md-footer__link--prev" aria-label="{{ direction }}: {{ page.previous_page.title | e }}">
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.previous or "material/arrow-left" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ page.previous_page.title }}
+              </div>
+            </div>
+          </a>
+        {% endif %}
+        {% if page.next_page %}
+          {% set direction = lang.t("footer.next") %}
+          <a href="{{ page.next_page.url | url }}" class="md-footer__link md-footer__link--next" aria-label="{{ direction }}: {{ page.next_page.title | e }}">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ page.next_page.title }}
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.next or "material/arrow-right" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endif %}
+
+  <div class="nav-footer" role="contentinfo">
+      <div class="nav-footer-left" aria-label="Copyright and license">
+        <p><span class="faux-block"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> {{ footer.years }} {{ footer.author_name }}</span> <span class="faux-block">All content licensed under<br><a href="{{ footer.license_url }}" target="_blank" rel="noopener"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> Creative Commons {{ footer.license_name }}</a></span></p>
+      </div>
+
+      <div class="nav-footer-center" aria-label="Identifiers">
+        <p><span class="faux-block"><i class="fa-brands fa-orcid" aria-label="orcid"></i> <strong>ORCID</strong> <a href="https://orcid.org/{{ footer.orcid }}" target="_blank" rel="noopener">{{ footer.orcid }}</a></span> <span class="faux-block"><i class="fa-solid fa-key" aria-label="key"></i> <a href="{{ footer.pgp_key | url }}">PGP public key</a> &#8195; <i class="fa-solid fa-fingerprint" aria-label="fingerprint"></i> <strong>Fingerprint:</strong><br><span class="site-footer__fingerprint fingerprint">{{ footer.pgp_fingerprint | safe }}</span></span></p>
+      </div>
+
+      <div class="nav-footer-right" aria-label="Source and theme">
+        <div class="faux-block">
+          Made with <a href="https://zensical.org/" target="_blank" rel="noopener">Zensical</a>
+        </div>
+        <div class="faux-block">
+          <a href="{{ footer.repo_url }}" target="_blank" rel="noopener">
+            View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub
+          </a>
+        </div>
+        <div class="faux-block">
+          <div class="site-theme-switcher theme-switcher" data-footer-theme-switcher>
+            <button class="site-theme-switcher__trigger theme-switcher-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Color theme" data-footer-theme-trigger>
+              <i class="fa-solid fa-desktop theme-switcher-icon" data-footer-theme-icon aria-hidden="true"></i><span class="theme-switcher-label" data-footer-theme-label>System</span>
+            </button>
+            <ul class="site-theme-switcher__menu theme-switcher-menu" hidden data-footer-theme-menu>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="light">
+                  <i class="fa-solid fa-sun" aria-hidden="true"></i><span>Light</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="dark">
+                  <i class="fa-solid fa-moon" aria-hidden="true"></i><span>Dark</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-theme-value="system">
+                  <i class="fa-solid fa-desktop" aria-hidden="true"></i><span>System</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+  </div>
+</footer>

@@ -1,0 +1,178 @@
+[project]
+site_name = "Chunyi Lin's Docs"
+site_url = "https://docs.chunyi-lin.com"
+site_author = "Chunyi Lin"
+copyright = """
+Copyright &copy; 2026 Chunyi Lin. Content licensed under
+<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+"""
+extra_css = [
+  "stylesheets/fonts.css",
+  "stylesheets/radix.css",
+  "stylesheets/header.css",
+  "stylesheets/footer.css",
+]
+extra_javascript = [
+  "assets/vendor/mermaid/mermaid.min.js",
+  "javascripts/mermaid-init.js",
+  "javascripts/footer-theme.js",
+  "javascripts/safari-toc-highlight.js",
+]
+
+nav = [
+  { "Home" = "index.md" },
+  { "Quantitative" = [
+    { "Contents" = "quantitative/index.md" },
+    { "Linear Algebra" = [
+      { "Contents" = "quantitative/linear-algebra/index.md" },
+      { "01" = [
+        { "Chapter Overview" = "quantitative/linear-algebra/01_/index.md" },
+        { "01 " = "quantitative/linear-algebra/01_/01_.md" },
+      ] },
+    ] },
+    { "Probability" = [
+      { "Contents" = "quantitative/probability/index.md" },
+      { "01" = [
+        { "Chapter Overview" = "quantitative/probability/01_/index.md" },
+        { "01 " = "quantitative/probability/01_/01_.md" },
+      ] },
+    ] },
+    { "Statistics" = [
+      { "Contents" = "quantitative/statistics/index.md" },
+      { "01" = [
+        { "Chapter Overview" = "quantitative/statistics/01_/index.md" },
+        { "01 " = "quantitative/statistics/01_/01_.md" },
+      ] },
+    ] },
+    { "Experiment Design and Statistical Analysis" = [
+      { "Contents" = "quantitative/experiment-design-and-statistical-analysis/index.md" },
+      { "01" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/01_/index.md" },
+        { "01 " = "quantitative/experiment-design-and-statistical-analysis/01_/01_.md" },
+      ] },
+      { "02" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/02_/index.md" },
+        { "02 " = "quantitative/experiment-design-and-statistical-analysis/02_/02_.md" },
+      ] },
+      { "03" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/03_/index.md" },
+        { "03 " = "quantitative/experiment-design-and-statistical-analysis/03_/03_.md" },
+      ] },
+      { "04" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/04_/index.md" },
+        { "04 " = "quantitative/experiment-design-and-statistical-analysis/04_/04_.md" },
+      ] },
+      { "05" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/05_/index.md" },
+        { "05 " = "quantitative/experiment-design-and-statistical-analysis/05_/05_.md" },
+      ] },
+      { "06" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/06_/index.md" },
+        { "06 " = "quantitative/experiment-design-and-statistical-analysis/06_/06_.md" },
+      ] },
+      { "07" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/07_/index.md" },
+        { "07 " = "quantitative/experiment-design-and-statistical-analysis/07_/07_.md" },
+      ] },
+      { "08" = [
+        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/08_/index.md" },
+        { "08 " = "quantitative/experiment-design-and-statistical-analysis/08_/08_.md" },
+      ] },
+    ] },
+  ] },
+  { "Qualitative" = [
+    { "Contents" = "qualitative/index.md" },
+  ] },
+  { "Coursework" = [
+    { "Contents" = "coursework/index.md" },
+  ] },
+  { "Back to main website" = "https://www.chunyi-lin.com" },
+]
+
+[project.extra.footer]
+author_name = "Chunyi Lin"
+years = "2026"
+license_name = "CC BY 4.0"
+license_url = "https://creativecommons.org/licenses/by/4.0/"
+repo_url = "https://github.com/c-lin-chunyi/docs"
+orcid = "0009-0008-9762-8705"
+pgp_key = "pgp_clin.asc.txt"
+pgp_fingerprint = "15C2 CB51 1D1E 1A79 C2B2<br>F5F3 ED31 DE03 7AEF 5C7E"
+
+[project.theme]
+font = false
+custom_dir = "overrides"
+features = [
+  "content.code.annotate",
+  "content.code.copy",
+  "content.code.select",
+  "content.footnote.tooltips",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.path",
+  #  "navigation.sections",
+  "navigation.top",
+  "navigation.tabs",
+  "navigation.tracking",
+  "toc.follow",
+  "search.highlight",
+]
+favicon = "assets/favicon.svg"
+logo = "assets/logo.svg"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+scheme = "radix-light"
+primary = "custom"
+accent = "custom"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "radix-light"
+primary = "custom"
+accent = "custom"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "radix-dark"
+primary = "custom"
+accent = "custom"
+
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.betterem]
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+emoji_generator = "zensical.extensions.emoji.to_svg"
+emoji_index = "zensical.extensions.emoji.twemoji"
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.magiclink]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid-source", format = "pymdownx.superfences.fence_code_format" },
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+combine_header_slug = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]

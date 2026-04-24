@@ -1,0 +1,194 @@
+<link rel="preload" href="{{ 'assets/fonts/stix2text-regular.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/stix2text-italic.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/stix2text-bold.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/inter-regular.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/inter-italic.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/inter-bold.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/jetbrains-mono-regular.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ 'assets/fonts/jetbrains-mono-bold.woff2' | url }}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" crossorigin="anonymous">
+
+<style>
+  .md-header__option[data-md-component="palette"] {
+    display: none !important;
+  }
+
+  @font-face {
+    font-family: "STIX Two Text Fallback";
+    src: local("Cambria"), local("Times New Roman");
+    size-adjust: 101%;
+    ascent-override: 90%;
+    descent-override: 22%;
+  }
+
+  @font-face {
+    font-family: "STIX Two Text";
+    src: url("{{ 'assets/fonts/stix2text-regular.woff2' | url }}") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "STIX Two Text";
+    src: url("{{ 'assets/fonts/stix2text-italic.woff2' | url }}") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "STIX Two Text";
+    src: url("{{ 'assets/fonts/stix2text-bold.woff2' | url }}") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "Inter Fallback";
+    src: local("Arial"), local("Helvetica");
+    size-adjust: 107%;
+    ascent-override: 90%;
+    descent-override: 22%;
+    line-gap-override: 0%;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("{{ 'assets/fonts/inter-regular.woff2' | url }}") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("{{ 'assets/fonts/inter-italic.woff2' | url }}") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("{{ 'assets/fonts/inter-bold.woff2' | url }}") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "JetBrains Mono Fallback";
+    src: local("Consolas"), local("Menlo"), local("Courier New");
+    size-adjust: 100%;
+    ascent-override: 90%;
+    descent-override: 22%;
+  }
+
+  @font-face {
+    font-family: "JetBrains Mono";
+    src: url("{{ 'assets/fonts/jetbrains-mono-regular.woff2' | url }}") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+
+  @font-face {
+    font-family: "JetBrains Mono";
+    src: url("{{ 'assets/fonts/jetbrains-mono-bold.woff2' | url }}") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+2122, U+2212;
+  }
+</style>
+
+<script>
+  window.MathJax = {
+    loader: {
+      paths: {
+        "mathjax-stix2": "{{ 'assets/vendor/mathjax-stix2-font' | url }}"
+      }
+    },
+    output: {
+      font: "[mathjax-stix2]"
+    },
+    svg: {
+      fontCache: "local"
+    },
+    tex: {
+      inlineMath: [["$", "$"], ["\\(", "\\)"]],
+      displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+      processEscapes: true,
+      processEnvironments: true
+    },
+    options: {
+      enableMenu: false,
+      enableExplorer: false,
+      enableSpeech: false,
+      enableBraille: false,
+      menuOptions: {
+        settings: {
+          enrich: false,
+          collapsible: false,
+          assistiveMml: false,
+          speech: false,
+          braille: false,
+          inTabOrder: false
+        }
+      },
+      a11y: {
+        speech: false,
+        braille: false,
+        subtitles: false,
+        viewBraille: false,
+        help: false,
+        voicing: false,
+        highlight: "None",
+        magnification: "None",
+        keyMagnifier: false,
+        mouseMagnifier: false,
+        infoType: false,
+        infoRole: false,
+        infoPrefix: false,
+        treeColoring: false,
+        flame: false,
+        hover: false
+      },
+      processHtmlClass: "arithmatex",
+      ignoreHtmlClass: ".*|"
+    }
+  };
+</script>
+<script id="mathjax-script" src="{{ 'assets/vendor/mathjax-4.0.0/tex-svg-nofont.js' | url }}" defer></script>
+<script>
+  function typesetMathJaxSafely() {
+    if (!window.MathJax || !window.MathJax.startup) {
+      return;
+    }
+
+    window.MathJax.startup.promise
+      .then(function () {
+        return window.MathJax.typesetPromise();
+      })
+      .catch(function () {
+        // Keep navigation flow resilient if MathJax is still initializing.
+      });
+  }
+
+  if (typeof document$ !== "undefined") {
+    document$.subscribe(function () {
+      typesetMathJaxSafely();
+    });
+  } else {
+    document.addEventListener("DOMContentLoaded", typesetMathJaxSafely);
+  }
+</script>

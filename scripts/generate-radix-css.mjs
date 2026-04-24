@@ -23,6 +23,8 @@ const header = `/*
  */
 `;
 
+const localeRoots = ["en", "cn"];
+
 function renderDeclarations(entries) {
   return entries.map(([name, value]) => `  ${name}: ${value};`).join("\n");
 }
@@ -150,8 +152,26 @@ const content = [
   .trimEnd()
   .concat("\n");
 
+function localizedOutputPaths(paths) {
+  const allPaths = paths.flatMap((outputPath) => {
+    const normalizedPath = outputPath.replaceAll("\\", "/");
+    const isAlreadyLocalized = localeRoots.some(
+      (localeRoot) =>
+        normalizedPath === localeRoot || normalizedPath.startsWith(`${localeRoot}/`),
+    );
+
+    if (isAlreadyLocalized) {
+      return [outputPath];
+    }
+
+    return localeRoots.map((localeRoot) => path.join(localeRoot, outputPath));
+  });
+
+  return [...new Set(allPaths)];
+}
+
 await Promise.all(
-  outputPaths.map(async (outputPath) => {
+  localizedOutputPaths(outputPaths).map(async (outputPath) => {
     const resolvedOutputPath = path.resolve(outputPath);
     await mkdir(path.dirname(resolvedOutputPath), { recursive: true });
     await writeFile(resolvedOutputPath, content);
