@@ -34,7 +34,20 @@
   .md-nav .md-nav__title[for="__drawer"] {
     gap: 0;
     font-size: 0;
+    justify-content: center;
     line-height: 0;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .md-nav .md-nav__title[for="__drawer"] .md-logo {
+    height: auto;
+    width: min(12rem, 76%);
+  }
+
+  .md-nav .md-nav__title[for="__drawer"] .md-logo img,
+  .md-nav .md-nav__title[for="__drawer"] .md-logo svg {
+    height: auto;
+    width: 100%;
   }
 
   .md-header__inner.md-grid {
