@@ -1,4 +1,6 @@
 (function () {
+  var renderId = 0;
+
   function mermaidThemeVariables() {
     var styles = getComputedStyle(document.body);
     var background = resolveCssColor("backgroundColor", "var(--md-default-bg-color)", "#ffffff");
@@ -6,21 +8,63 @@
     var labelBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-label-bg-color)", "#ffffff");
     var labelForeground = resolveCssColor("color", "var(--md-mermaid-label-fg-color)", "#000000");
     var nodeBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-node-bg-color)", "#f9f9f9");
-    var nodeForeground = resolveCssColor("color", "var(--md-mermaid-node-fg-color)", "#000000");
+    var nodeAccent = resolveCssColor("color", "var(--md-mermaid-node-fg-color)", "#000000");
+    var actorBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-sequence-actor-bg-color)", "#ffffff");
+    var actorForeground = resolveCssColor("color", "var(--md-mermaid-sequence-actor-fg-color)", "#000000");
+    var actorBorder = resolveCssColor("color", "var(--md-mermaid-sequence-actor-border-color)", "#000000");
+    var actorLine = resolveCssColor("color", "var(--md-mermaid-sequence-actor-line-color)", "#000000");
+    var boxBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-sequence-box-bg-color)", "#f9f9f9");
+    var boxForeground = resolveCssColor("color", "var(--md-mermaid-sequence-box-fg-color)", "#000000");
+    var noteBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-sequence-note-bg-color)", "#ffffff");
+    var noteBorder = resolveCssColor("color", "var(--md-mermaid-sequence-note-border-color)", "#000000");
+    var noteForeground = resolveCssColor("color", "var(--md-mermaid-sequence-note-fg-color)", "#000000");
+    var sequenceNumberBackground = resolveCssColor("backgroundColor", "var(--md-mermaid-sequence-number-bg-color)", "#000000");
+    var sequenceNumberForeground = resolveCssColor("color", "var(--md-mermaid-sequence-number-fg-color)", "#ffffff");
+    var fontFamily =
+      styles.getPropertyValue("--md-mermaid-font-family").trim() ||
+      styles.getPropertyValue("--md-text-font-family").trim() ||
+      styles.getPropertyValue("--md-text-font").trim() ||
+      styles.fontFamily ||
+      "Arial, sans-serif";
 
     return {
       background: background,
+      mainBkg: nodeBackground,
+      nodeBkg: nodeBackground,
+      nodeBorder: nodeAccent,
+      nodeTextColor: labelForeground,
       primaryColor: nodeBackground,
-      primaryTextColor: nodeForeground,
-      primaryBorderColor: edge,
-      lineColor: edge,
-      edgeLabelBackground: labelBackground,
-      tertiaryColor: labelBackground,
+      primaryTextColor: labelForeground,
+      primaryBorderColor: nodeAccent,
+      secondaryColor: nodeBackground,
+      secondaryTextColor: labelForeground,
+      secondaryBorderColor: nodeAccent,
+      tertiaryColor: nodeBackground,
       tertiaryTextColor: labelForeground,
-      fontFamily:
-        styles.getPropertyValue("--md-text-font").trim() ||
-        styles.fontFamily ||
-        "Arial, sans-serif"
+      tertiaryBorderColor: nodeAccent,
+      clusterBkg: nodeBackground,
+      clusterBorder: nodeAccent,
+      textColor: labelForeground,
+      titleColor: labelForeground,
+      lineColor: edge,
+      defaultLinkColor: edge,
+      edgeLabelBackground: labelBackground,
+      actorBkg: actorBackground,
+      actorTextColor: actorForeground,
+      actorBorder: actorBorder,
+      actorLineColor: actorLine,
+      labelBoxBkgColor: actorBackground,
+      labelTextColor: actorForeground,
+      labelBoxBorderColor: actorBorder,
+      loopTextColor: boxForeground,
+      signalColor: edge,
+      signalTextColor: edge,
+      noteBkgColor: noteBackground,
+      noteBorderColor: noteBorder,
+      noteTextColor: noteForeground,
+      sequenceNumberColor: sequenceNumberForeground,
+      sequenceNumberBackground: sequenceNumberBackground,
+      fontFamily: fontFamily
     };
   }
 
@@ -38,14 +82,20 @@
   }
 
   function normalizeMermaidBlocks() {
-    document.querySelectorAll("pre.mermaid").forEach(function (pre) {
+    document.querySelectorAll("pre.mermaid, pre.mermaid-source").forEach(function (pre) {
       var code = pre.querySelector("code");
       var source = (code || pre).textContent.trim();
       var block = document.createElement("div");
 
-      block.className = pre.className;
+      block.className = pre.className.replace(/\bmermaid-source\b/g, "").trim();
+
+      if (!/\bmermaid\b/.test(block.className)) {
+        block.className = (block.className + " mermaid").trim();
+      }
+
       block.textContent = source;
       block.dataset.mermaidSource = source;
+      block.__mermaidSource = source;
       pre.replaceWith(block);
     });
   }
@@ -54,28 +104,29 @@
     var blocks = [];
 
     document.querySelectorAll(".mermaid").forEach(function (block) {
-      var source = block.dataset.mermaidSource || block.textContent.trim();
+      var source = block.__mermaidSource || block.dataset.mermaidSource || block.textContent.trim();
 
       if (!source) {
         return;
       }
 
       block.dataset.mermaidSource = source;
+      block.__mermaidSource = source;
 
-      if (force || block.dataset.processed) {
+      if (force) {
         block.removeAttribute("data-processed");
         block.textContent = source;
       }
 
       if (!block.dataset.processed) {
-        blocks.push(block);
+        blocks.push({ block: block, source: source });
       }
     });
 
     return blocks;
   }
 
-  function renderMermaid(force) {
+  async function renderMermaid(force) {
     if (!window.mermaid) {
       return;
     }
@@ -98,9 +149,27 @@
       return;
     }
 
-    window.mermaid.run({ nodes: blocks }).catch(function (error) {
-      console.warn("Mermaid render failed", error);
-    });
+    for (var i = 0; i < blocks.length; i += 1) {
+      var item = blocks[i];
+
+      try {
+        renderId += 1;
+        var result = await window.mermaid.render(
+          "mermaid-" + Date.now() + "-" + renderId,
+          item.source
+        );
+
+        item.block.innerHTML = result.svg;
+        item.block.dataset.processed = "true";
+
+        if (typeof result.bindFunctions === "function") {
+          result.bindFunctions(item.block);
+        }
+      } catch (error) {
+        item.block.textContent = item.source;
+        console.warn("Mermaid render failed", error);
+      }
+    }
   }
 
   function scheduleRender(force) {
@@ -113,6 +182,7 @@
     document$.subscribe(function () {
       scheduleRender(false);
     });
+    scheduleRender(false);
   } else {
     document.addEventListener("DOMContentLoaded", function () {
       scheduleRender(false);
