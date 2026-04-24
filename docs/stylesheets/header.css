@@ -38,7 +38,19 @@
 
   [data-md-color-scheme^="radix-"] .md-header__inner.md-grid {
     max-width: none;
-    margin-left: max(0.2rem, calc((100% - 61rem) / 2));
-    margin-right: 0.2rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0.2rem;
+    padding-right: 0.6rem;
+  }
+
+  [data-md-color-scheme^="radix-"] .md-search {
+    margin-left: auto;
+  }
+
+  [data-md-color-scheme^="radix-"] .md-header__source {
+    display: none;
+    margin-left: 0;
+    width: 0;
   }
 }
