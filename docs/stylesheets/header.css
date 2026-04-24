@@ -38,7 +38,7 @@
   }
 
   .md-header__inner.md-grid {
-    padding-right: 0;
+    padding-right: 0.6rem;
   }
 
   .md-header__button[for="__search"] {

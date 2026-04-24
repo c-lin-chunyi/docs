@@ -12,7 +12,10 @@ extra_css = [
   "stylesheets/header.css",
   "stylesheets/footer.css",
 ]
-extra_javascript = ["javascripts/footer-theme.js"]
+extra_javascript = [
+  "javascripts/footer-theme.js",
+  "javascripts/safari-toc-highlight.js",
+]
 
 nav = [
   { "Home" = "index.md" },
