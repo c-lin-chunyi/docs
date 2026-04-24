@@ -12,8 +12,23 @@ extra_css = [
   "stylesheets/header.css",
   "stylesheets/footer.css",
 ]
-extra_javascript = [
-  "javascripts/footer-theme.js",
+extra_javascript = ["javascripts/footer-theme.js"]
+
+nav = [
+  { "Home" = "index.md" },
+  { "Get started" = [
+      { "A" = "Stats/a.md" },
+      { "B" = "Stats/b.md" },
+    ]
+  },
+  { "Usage" = [
+      { "Command line" = "usage/cli.md" },
+      { "New project" = "usage/new.md" },
+      { "Preview" = "usage/preview.md" },
+      { "Build" = "usage/build.md" },
+    ]
+  },
+  {"Back to main website" = "https://www.chunyi-lin.com"},
 ]
 
 [project.extra.footer]
@@ -41,6 +56,7 @@ features = [
   "navigation.path",
   "navigation.sections",
   "navigation.top",
+  "navigation.tabs",
   "navigation.tracking",
   "search.highlight",
 ]
