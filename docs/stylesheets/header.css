@@ -103,3 +103,37 @@
     border-bottom-color: var(--md-default-fg-color);
   }
 }
+
+@media screen and (min-width: 76.25em) {
+  :root {
+    --toc-footer-offset: clamp(
+      1.5rem,
+      calc(var(--site-footer-ref-min-height, 4rem) * 0.5),
+      2.5rem
+    );
+
+    --toc-expanded-cap: min(
+      45vh,
+      calc(100vh - var(--toc-footer-offset) - 5rem)
+    );
+  }
+
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    max-height: calc(100vh - var(--toc-footer-offset));
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain;
+  }
+
+  .md-header--lifted ~ .md-container .md-sidebar--primary .md-sidebar__scrollwrap {
+    max-height: calc(100vh - var(--toc-footer-offset) - 2.5rem);
+  }
+
+  .md-sidebar--primary
+    .md-nav__toggle:is(:checked, .md-toggle--indeterminate)
+    ~ .md-nav {
+    max-height: var(--toc-expanded-cap);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
