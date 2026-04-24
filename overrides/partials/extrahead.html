@@ -112,19 +112,6 @@
 </style>
 
 <script>
-  // Normalize persisted palette state so core theme code always has a numeric index.
-  if (typeof window.__md_get === "function" && typeof window.__md_set === "function") {
-    var storedPalette = window.__md_get("__palette");
-    if (storedPalette && (!Number.isFinite(storedPalette.index) || storedPalette.index < 0)) {
-      window.__md_set("__palette", {
-        index: 0,
-        color: storedPalette.color || null
-      });
-    }
-  }
-</script>
-
-<script>
   window.MathJax = {
     loader: {
       paths: {

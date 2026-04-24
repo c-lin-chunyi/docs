@@ -64,6 +64,12 @@ favicon = "assets/favicon.svg"
 logo = "assets/logo.svg"
 
 [[project.theme.palette]]
+media = "(prefers-color-scheme)"
+scheme = "radix-light"
+primary = "custom"
+accent = "custom"
+
+[[project.theme.palette]]
 media = "(prefers-color-scheme: light)"
 scheme = "radix-light"
 primary = "custom"

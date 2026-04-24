@@ -1,6 +1,6 @@
 (function () {
   const root = document.querySelector("[data-footer-theme-switcher]");
-  if (!root || typeof window.__md_get !== "function" || typeof window.__md_set !== "function") {
+  if (!root) {
     return;
   }
 
@@ -12,7 +12,11 @@
   const paletteInputs = Array.from(
     document.querySelectorAll('[data-md-component="palette"] input[name="__palette"]')
   );
-  const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  if (!trigger || !menu || !label || paletteInputs.length === 0) {
+    return;
+  }
+
   const modeLabels = {
     light: "Light",
     dark: "Dark",
@@ -23,72 +27,33 @@
     dark: "fa-moon",
     system: "fa-desktop",
   };
-  const NO_SCROLL_RESTORE_KEY = "footer-theme-no-scroll-restore";
-
-  const paletteByMode = {
-    light: paletteInputs.find((input) => input.dataset.mdColorMedia === "(prefers-color-scheme: light)"),
-    dark: paletteInputs.find((input) => input.dataset.mdColorMedia === "(prefers-color-scheme: dark)"),
+  const mediaByMode = {
+    light: "(prefers-color-scheme: light)",
+    dark: "(prefers-color-scheme: dark)",
+    system: "(prefers-color-scheme)",
   };
 
-  function getStoredMode() {
-    const palette = window.__md_get("__palette");
-    const media = palette && palette.color && palette.color.media;
-    if (media === "(prefers-color-scheme: light)") {
-      return "light";
-    }
-    if (media === "(prefers-color-scheme: dark)") {
-      return "dark";
-    }
-    if (media === "(prefers-color-scheme)") {
-      return "system";
-    }
-    return "system";
+  function getModeFromMedia(media) {
+    return Object.keys(mediaByMode).find((mode) => mediaByMode[mode] === media) || "system";
   }
 
-  function getPaletteData(mode) {
-    const source =
-      mode === "system"
-        ? darkQuery.matches
-          ? paletteByMode.dark
-          : paletteByMode.light
-        : paletteByMode[mode];
+  function getInputForMode(mode) {
+    return paletteInputs.find((input) => input.dataset.mdColorMedia === mediaByMode[mode]);
+  }
 
-    if (!source) {
+  function getStoredMode() {
+    if (typeof window.__md_get !== "function") {
       return null;
     }
 
-    return {
-      media: mode === "system" ? "(prefers-color-scheme)" : source.dataset.mdColorMedia,
-      scheme: source.dataset.mdColorScheme,
-      primary: source.dataset.mdColorPrimary,
-      accent: source.dataset.mdColorAccent,
-    };
+    const palette = window.__md_get("__palette");
+    const media = palette && palette.color && palette.color.media;
+    return media ? getModeFromMedia(media) : null;
   }
 
-  function getPaletteIndex(palette) {
-    const index = paletteInputs.findIndex((input) => {
-      return (
-        input.dataset.mdColorMedia === palette.media &&
-        input.dataset.mdColorScheme === palette.scheme &&
-        input.dataset.mdColorPrimary === palette.primary &&
-        input.dataset.mdColorAccent === palette.accent
-      );
-    });
-
-    return index >= 0 ? index : 0;
-  }
-
-  function syncHeaderPalette(mode) {
-    const source =
-      mode === "system"
-        ? darkQuery.matches
-          ? paletteByMode.dark
-          : paletteByMode.light
-        : paletteByMode[mode];
-
-    if (source) {
-      source.checked = true;
-    }
+  function getCurrentMode() {
+    const checked = paletteInputs.find((input) => input.checked);
+    return getStoredMode() || (checked ? getModeFromMedia(checked.dataset.mdColorMedia) : "system");
   }
 
   function updateUi(mode) {
@@ -104,85 +69,6 @@
       option.classList.toggle("is-active", isActive);
       option.classList.toggle("active", isActive);
     });
-  }
-
-  function setManualScrollRestoration() {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-  }
-
-  function setAutoScrollRestoration() {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "auto";
-    }
-  }
-
-  function scrollToTop() {
-    window.scrollTo(0, 0);
-  }
-
-  function resetScrollAfterThemeReload() {
-    let shouldResetScroll = false;
-
-    try {
-      shouldResetScroll = window.sessionStorage.getItem(NO_SCROLL_RESTORE_KEY) === "true";
-      if (shouldResetScroll) {
-        window.sessionStorage.removeItem(NO_SCROLL_RESTORE_KEY);
-      }
-    } catch (_) {}
-
-    if (!shouldResetScroll) {
-      return;
-    }
-
-    setManualScrollRestoration();
-    scrollToTop();
-
-    window.addEventListener("pageshow", scrollToTop, { once: true });
-    window.addEventListener(
-      "load",
-      function () {
-        window.requestAnimationFrame(function () {
-          scrollToTop();
-          window.setTimeout(function () {
-            scrollToTop();
-            setAutoScrollRestoration();
-          }, 100);
-        });
-      },
-      { once: true }
-    );
-  }
-
-  function reloadWithoutScrollRestoration() {
-    try {
-      window.sessionStorage.setItem(NO_SCROLL_RESTORE_KEY, "true");
-    } catch (_) {}
-
-    setManualScrollRestoration();
-    window.location.reload();
-  }
-
-  function applyMode(mode, persist) {
-    const palette = getPaletteData(mode);
-    if (!palette) {
-      return;
-    }
-
-    Object.entries(palette).forEach(([key, value]) => {
-      document.body.setAttribute(`data-md-color-${key}`, value);
-    });
-
-    if (persist) {
-      window.__md_set("__palette", {
-        index: getPaletteIndex(palette),
-        color: palette,
-      });
-    }
-
-    syncHeaderPalette(mode);
-    updateUi(mode);
   }
 
   function closeMenu() {
@@ -203,13 +89,15 @@
   options.forEach((option) => {
     option.addEventListener("click", function () {
       const mode = option.dataset.footerThemeValue;
-      if (!modeLabels[mode]) {
+      const input = modeLabels[mode] ? getInputForMode(mode) : null;
+
+      if (!input) {
         return;
       }
 
-      applyMode(mode, true);
+      input.click();
+      updateUi(mode);
       closeMenu();
-      reloadWithoutScrollRestoration();
     });
   });
 
@@ -227,17 +115,9 @@
 
   paletteInputs.forEach((input) => {
     input.addEventListener("change", function () {
-      applyMode(input.dataset.mdColorMedia.includes("dark") ? "dark" : "light", true);
-      reloadWithoutScrollRestoration();
+      updateUi(getModeFromMedia(input.dataset.mdColorMedia));
     });
   });
 
-  darkQuery.addEventListener("change", function () {
-    if (getStoredMode() === "system") {
-      applyMode("system", false);
-    }
-  });
-
-  resetScrollAfterThemeReload();
-  applyMode(getStoredMode(), false);
+  updateUi(getCurrentMode());
 })();
