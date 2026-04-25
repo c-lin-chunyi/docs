@@ -86,10 +86,14 @@ nav = [
     { "目录" = "qualitative/index.md" },
     { "社会心理学" = [
       { "目录" = "qualitative/social-psychology/index.md" },
-      { "01" = [
-        { "章节概览" = "qualitative/social-psychology/01_/index.md" },
-        { "01 " = "qualitative/social-psychology/01_/01_.md" },
-      ] },
+      { "00 绪论" = "qualitative/social-psychology/00_introduction.md" },
+      { "01 社会动机" = "qualitative/social-psychology/01_social_motivation.md" },
+      { "02 社会认知" = "qualitative/social-psychology/02_social_cognition.md" },
+      { "03 社会知觉" = "qualitative/social-psychology/03_social_perception.md" },
+      { "04 自我" = "qualitative/social-psychology/04_self.md" },
+      { "05 社会态度" = "qualitative/social-psychology/05_social_attitudes.md" },
+      { "06 人际关系" = "qualitative/social-psychology/06_interpersonal_relationships.md" },
+      { "07 社会行为" = "qualitative/social-psychology/07_social_behavior.md" },
     ] },
   ] },
   { "课业材料" = [

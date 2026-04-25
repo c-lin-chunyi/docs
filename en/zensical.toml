@@ -84,9 +84,23 @@ nav = [
   ] },
   { "Qualitative" = [
     { "Contents" = "qualitative/index.md" },
+    { "Social Psychology" = [
+      { "Contents" = "qualitative/social-psychology/index.md" },
+      { "00 Introduction" = "qualitative/social-psychology/00_introduction.md" },
+      { "01 Social Motivation" = "qualitative/social-psychology/01_social_motivation.md" },
+      { "02 Social Cognition" = "qualitative/social-psychology/02_social_cognition.md" },
+      { "03 Social Perception" = "qualitative/social-psychology/03_social_perception.md" },
+      { "04 Self" = "qualitative/social-psychology/04_self.md" },
+      { "05 Social Attitudes" = "qualitative/social-psychology/05_social_attitudes.md" },
+      { "06 Interpersonal Relationships" = "qualitative/social-psychology/06_interpersonal_relationships.md" },
+      { "07 Social Behavior" = "qualitative/social-psychology/07_social_behavior.md" },
+    ] },
   ] },
   { "Coursework" = [
     { "Contents" = "coursework/index.md" },
+    { "Social Psychology PSY3015M" = [
+      { "Course Overview" = "coursework/PSY3015M/index.md" },
+    ] },
   ] },
   { "Back to main website" = "https://www.chunyi-lin.com" },
 ]
