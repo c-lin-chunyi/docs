@@ -23,77 +23,63 @@ extra_javascript = [
 
 nav = [
   { "Home" = "index.md" },
-  { "Quantitative" = [
-    { "Contents" = "quantitative/index.md" },
+  { "Study Notes" = [
+    { "Contents" = "study-notes/index.md" },
     { "Linear Algebra" = [
-      { "Contents" = "quantitative/linear-algebra/index.md" },
+      { "Contents" = "study-notes/linear-algebra/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/linear-algebra/01_/index.md" },
-        { "01 " = "quantitative/linear-algebra/01_/01_.md" },
+        { "Chapter Overview" = "study-notes/linear-algebra/01_/index.md" },
+        { "01 " = "study-notes/linear-algebra/01_/01_.md" },
       ] },
     ] },
     { "Probability" = [
-      { "Contents" = "quantitative/probability/index.md" },
+      { "Contents" = "study-notes/probability/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/probability/01_/index.md" },
-        { "01 " = "quantitative/probability/01_/01_.md" },
+        { "Chapter Overview" = "study-notes/probability/01_/index.md" },
+        { "01 " = "study-notes/probability/01_/01_.md" },
       ] },
     ] },
     { "Statistics" = [
-      { "Contents" = "quantitative/statistics/index.md" },
+      { "Contents" = "study-notes/statistics/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/statistics/01_/index.md" },
-        { "01 " = "quantitative/statistics/01_/01_.md" },
+        { "Chapter Overview" = "study-notes/statistics/01_/index.md" },
+        { "01 " = "study-notes/statistics/01_/01_.md" },
       ] },
     ] },
     { "Experiment Design and Statistical Analysis" = [
-      { "Contents" = "quantitative/experiment-design-and-statistical-analysis/index.md" },
+      { "Contents" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "01" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/01_/index.md" },
-        { "01 " = "quantitative/experiment-design-and-statistical-analysis/01_/01_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/01_/index.md" },
+        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_/01_.md" },
       ] },
       { "02" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/02_/index.md" },
-        { "02 " = "quantitative/experiment-design-and-statistical-analysis/02_/02_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/02_/index.md" },
+        { "02 " = "study-notes/experiment-design-and-statistical-analysis/02_/02_.md" },
       ] },
       { "03" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/03_/index.md" },
-        { "03 " = "quantitative/experiment-design-and-statistical-analysis/03_/03_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/03_/index.md" },
+        { "03 " = "study-notes/experiment-design-and-statistical-analysis/03_/03_.md" },
       ] },
       { "04" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/04_/index.md" },
-        { "04 " = "quantitative/experiment-design-and-statistical-analysis/04_/04_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/04_/index.md" },
+        { "04 " = "study-notes/experiment-design-and-statistical-analysis/04_/04_.md" },
       ] },
       { "05" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/05_/index.md" },
-        { "05 " = "quantitative/experiment-design-and-statistical-analysis/05_/05_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/05_/index.md" },
+        { "05 " = "study-notes/experiment-design-and-statistical-analysis/05_/05_.md" },
       ] },
       { "06" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/06_/index.md" },
-        { "06 " = "quantitative/experiment-design-and-statistical-analysis/06_/06_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/06_/index.md" },
+        { "06 " = "study-notes/experiment-design-and-statistical-analysis/06_/06_.md" },
       ] },
       { "07" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/07_/index.md" },
-        { "07 " = "quantitative/experiment-design-and-statistical-analysis/07_/07_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/07_/index.md" },
+        { "07 " = "study-notes/experiment-design-and-statistical-analysis/07_/07_.md" },
       ] },
       { "08" = [
-        { "Chapter Overview" = "quantitative/experiment-design-and-statistical-analysis/08_/index.md" },
-        { "08 " = "quantitative/experiment-design-and-statistical-analysis/08_/08_.md" },
+        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/08_/index.md" },
+        { "08 " = "study-notes/experiment-design-and-statistical-analysis/08_/08_.md" },
       ] },
-    ] },
-  ] },
-  { "Qualitative" = [
-    { "Contents" = "qualitative/index.md" },
-    { "Social Psychology" = [
-      { "Contents" = "qualitative/social-psychology/index.md" },
-      { "00 Introduction" = "qualitative/social-psychology/00_introduction.md" },
-      { "01 Social Motivation" = "qualitative/social-psychology/01_social_motivation.md" },
-      { "02 Social Cognition" = "qualitative/social-psychology/02_social_cognition.md" },
-      { "03 Social Perception" = "qualitative/social-psychology/03_social_perception.md" },
-      { "04 Self" = "qualitative/social-psychology/04_self.md" },
-      { "05 Social Attitudes" = "qualitative/social-psychology/05_social_attitudes.md" },
-      { "06 Interpersonal Relationships" = "qualitative/social-psychology/06_interpersonal_relationships.md" },
-      { "07 Social Behavior" = "qualitative/social-psychology/07_social_behavior.md" },
     ] },
   ] },
   { "Coursework" = [

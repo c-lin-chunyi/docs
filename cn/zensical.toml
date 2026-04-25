@@ -23,77 +23,63 @@ extra_javascript = [
 
 nav = [
   { "主页" = "index.md" },
-  { "定量知识" = [
-    { "目录" = "quantitative/index.md" },
+  { "学习笔记" = [
+    { "目录" = "study-notes/index.md" },
     { "线性代数" = [
-      { "目录" = "quantitative/linear-algebra/index.md" },
+      { "目录" = "study-notes/linear-algebra/index.md" },
       { "01" = [
-        { "章节概览" = "quantitative/linear-algebra/01_/index.md" },
-        { "01 " = "quantitative/linear-algebra/01_/01_.md" },
+        { "章节概览" = "study-notes/linear-algebra/01_/index.md" },
+        { "01 " = "study-notes/linear-algebra/01_/01_.md" },
       ] },
     ] },
     { "概率论" = [
-      { "目录" = "quantitative/probability/index.md" },
+      { "目录" = "study-notes/probability/index.md" },
       { "01" = [
-        { "章节概览" = "quantitative/probability/01_/index.md" },
-        { "01 " = "quantitative/probability/01_/01_.md" },
+        { "章节概览" = "study-notes/probability/01_/index.md" },
+        { "01 " = "study-notes/probability/01_/01_.md" },
       ] },
     ] },
     { "统计学" = [
-      { "目录" = "quantitative/statistics/index.md" },
+      { "目录" = "study-notes/statistics/index.md" },
       { "01" = [
-        { "章节概览" = "quantitative/statistics/01_/index.md" },
-        { "01 " = "quantitative/statistics/01_/01_.md" },
+        { "章节概览" = "study-notes/statistics/01_/index.md" },
+        { "01 " = "study-notes/statistics/01_/01_.md" },
       ] },
     ] },
     { "实验设计与统计分析" = [
-      { "目录" = "quantitative/experiment-design-and-statistical-analysis/index.md" },
+      { "目录" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "01" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/01_/index.md" },
-        { "01 " = "quantitative/experiment-design-and-statistical-analysis/01_/01_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/01_/index.md" },
+        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_/01_.md" },
       ] },
       { "02" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/02_/index.md" },
-        { "02 " = "quantitative/experiment-design-and-statistical-analysis/02_/02_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/02_/index.md" },
+        { "02 " = "study-notes/experiment-design-and-statistical-analysis/02_/02_.md" },
       ] },
       { "03" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/03_/index.md" },
-        { "03 " = "quantitative/experiment-design-and-statistical-analysis/03_/03_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/03_/index.md" },
+        { "03 " = "study-notes/experiment-design-and-statistical-analysis/03_/03_.md" },
       ] },
       { "04" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/04_/index.md" },
-        { "04 " = "quantitative/experiment-design-and-statistical-analysis/04_/04_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/04_/index.md" },
+        { "04 " = "study-notes/experiment-design-and-statistical-analysis/04_/04_.md" },
       ] },
       { "05" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/05_/index.md" },
-        { "05 " = "quantitative/experiment-design-and-statistical-analysis/05_/05_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/05_/index.md" },
+        { "05 " = "study-notes/experiment-design-and-statistical-analysis/05_/05_.md" },
       ] },
       { "06" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/06_/index.md" },
-        { "06 " = "quantitative/experiment-design-and-statistical-analysis/06_/06_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/06_/index.md" },
+        { "06 " = "study-notes/experiment-design-and-statistical-analysis/06_/06_.md" },
       ] },
       { "07" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/07_/index.md" },
-        { "07 " = "quantitative/experiment-design-and-statistical-analysis/07_/07_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/07_/index.md" },
+        { "07 " = "study-notes/experiment-design-and-statistical-analysis/07_/07_.md" },
       ] },
       { "08" = [
-        { "章节概览" = "quantitative/experiment-design-and-statistical-analysis/08_/index.md" },
-        { "08 " = "quantitative/experiment-design-and-statistical-analysis/08_/08_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/08_/index.md" },
+        { "08 " = "study-notes/experiment-design-and-statistical-analysis/08_/08_.md" },
       ] },
-    ] },
-  ] },
-  { "质性知识" = [
-    { "目录" = "qualitative/index.md" },
-    { "社会心理学" = [
-      { "目录" = "qualitative/social-psychology/index.md" },
-      { "00 绪论" = "qualitative/social-psychology/00_introduction.md" },
-      { "01 社会动机" = "qualitative/social-psychology/01_social_motivation.md" },
-      { "02 社会认知" = "qualitative/social-psychology/02_social_cognition.md" },
-      { "03 社会知觉" = "qualitative/social-psychology/03_social_perception.md" },
-      { "04 自我" = "qualitative/social-psychology/04_self.md" },
-      { "05 社会态度" = "qualitative/social-psychology/05_social_attitudes.md" },
-      { "06 人际关系" = "qualitative/social-psychology/06_interpersonal_relationships.md" },
-      { "07 社会行为" = "qualitative/social-psychology/07_social_behavior.md" },
     ] },
   ] },
   { "课业材料" = [
