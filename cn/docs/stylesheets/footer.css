@@ -122,6 +122,14 @@
   font-family: var(--md-code-font);
 }
 
+[data-md-color-scheme^="radix-"] .site-footer__controls {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
+}
+
 [data-md-color-scheme^="radix-"] .site-theme-switcher {
   display: inline-block;
   margin: var(--site-footer-theme-margin-top) 0 0;
@@ -291,5 +299,9 @@
 
   [data-md-color-scheme^="radix-"] .site-footer .nav-footer-right {
     text-align: right;
+  }
+
+  [data-md-color-scheme^="radix-"] .site-footer__controls {
+    justify-content: flex-end;
   }
 }

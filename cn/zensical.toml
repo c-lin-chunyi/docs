@@ -16,14 +16,15 @@ extra_css = [
 extra_javascript = [
   "/assets/vendor/mermaid/mermaid.min.js",
   "javascripts/mermaid-init.js",
+  "javascripts/footer-language.js",
   "javascripts/footer-theme.js",
   "javascripts/safari-toc-highlight.js",
 ]
 
 nav = [
   { "主页" = "index.md" },
-  { "量化知识" = [
-    { "量化知识目录" = "quantitative/index.md" },
+  { "定量知识" = [
+    { "目录" = "quantitative/index.md" },
     { "线性代数" = [
       { "目录" = "quantitative/linear-algebra/index.md" },
       { "01" = [

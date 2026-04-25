@@ -57,7 +57,7 @@
         <p><span class="faux-block"><i class="fa-brands fa-orcid" aria-label="orcid"></i> <strong>ORCID</strong> <a href="https://orcid.org/{{ footer.orcid }}" target="_blank" rel="noopener">{{ footer.orcid }}</a></span> <span class="faux-block"><i class="fa-solid fa-key" aria-label="key"></i> <a href="{{ footer.pgp_key | url }}">PGP public key</a> &#8195; <i class="fa-solid fa-fingerprint" aria-label="fingerprint"></i> <strong>Fingerprint:</strong><br><span class="site-footer__fingerprint fingerprint">{{ footer.pgp_fingerprint | safe }}</span></span></p>
       </div>
 
-      <div class="nav-footer-right" aria-label="Source and theme">
+      <div class="nav-footer-right" aria-label="Source, language, and theme">
         <div class="faux-block">
           Made with <a href="https://zensical.org/" target="_blank" rel="noopener">Zensical</a>
         </div>
@@ -66,7 +66,24 @@
             View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub
           </a>
         </div>
-        <div class="faux-block">
+        <div class="faux-block site-footer__controls">
+          <div class="site-theme-switcher site-language-switcher" data-footer-language-switcher data-footer-language-current="zh">
+            <button class="site-theme-switcher__trigger theme-switcher-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="语言" data-footer-language-trigger>
+              <i class="fa-solid fa-language theme-switcher-icon" aria-hidden="true"></i><span class="theme-switcher-label" data-footer-language-label>简体中文</span>
+            </button>
+            <ul class="site-theme-switcher__menu theme-switcher-menu" hidden data-footer-language-menu>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-language-value="en">
+                  <span>English</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+              <li>
+                <button class="site-theme-switcher__option theme-switcher-option" type="button" data-footer-language-value="zh">
+                  <span>简体中文</span><i class="fa-solid fa-check site-theme-switcher__check theme-switcher-check" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
           <div class="site-theme-switcher theme-switcher" data-footer-theme-switcher>
             <button class="site-theme-switcher__trigger theme-switcher-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Color theme" data-footer-theme-trigger>
               <i class="fa-solid fa-desktop theme-switcher-icon" data-footer-theme-icon aria-hidden="true"></i><span class="theme-switcher-label" data-footer-theme-label>System</span>
