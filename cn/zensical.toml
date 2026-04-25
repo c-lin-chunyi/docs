@@ -84,9 +84,19 @@ nav = [
   ] },
   { "质性知识" = [
     { "目录" = "qualitative/index.md" },
+    { "社会心理学" = [
+      { "目录" = "qualitative/social-psychology/index.md" },
+      { "01" = [
+        { "章节概览" = "qualitative/social-psychology/01_/index.md" },
+        { "01 " = "qualitative/social-psychology/01_/01_.md" },
+      ] },
+    ] },
   ] },
   { "课业材料" = [
     { "目录" = "coursework/index.md" },
+    { "社会心理学 PSY3015M" = [
+      { "课程概览" = "coursework/PSY3015M/index.md" },
+    ] },
   ] },
   { "返回主网站" = "https://www.chunyi-lin.com" },
 ]
