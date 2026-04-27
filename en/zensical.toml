@@ -27,58 +27,18 @@ nav = [
     { "Contents" = "study-notes/index.md" },
     { "Linear Algebra" = [
       { "Contents" = "study-notes/linear-algebra/index.md" },
-      { "01" = [
-        { "Chapter Overview" = "study-notes/linear-algebra/01_/index.md" },
-        { "01 " = "study-notes/linear-algebra/01_/01_.md" },
-      ] },
     ] },
     { "Probability" = [
       { "Contents" = "study-notes/probability/index.md" },
-      { "01" = [
-        { "Chapter Overview" = "study-notes/probability/01_/index.md" },
-        { "01 " = "study-notes/probability/01_/01_.md" },
-      ] },
     ] },
     { "Statistics" = [
       { "Contents" = "study-notes/statistics/index.md" },
-      { "01" = [
-        { "Chapter Overview" = "study-notes/statistics/01_/index.md" },
-        { "01 " = "study-notes/statistics/01_/01_.md" },
-      ] },
     ] },
     { "Experiment Design and Statistical Analysis" = [
       { "Contents" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "01" = [
         { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/index.md" },
         { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
-      ] },
-      { "02" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/02_/index.md" },
-        { "02 " = "study-notes/experiment-design-and-statistical-analysis/02_/02_.md" },
-      ] },
-      { "03" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/03_/index.md" },
-        { "03 " = "study-notes/experiment-design-and-statistical-analysis/03_/03_.md" },
-      ] },
-      { "04" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/04_/index.md" },
-        { "04 " = "study-notes/experiment-design-and-statistical-analysis/04_/04_.md" },
-      ] },
-      { "05" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/05_/index.md" },
-        { "05 " = "study-notes/experiment-design-and-statistical-analysis/05_/05_.md" },
-      ] },
-      { "06" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/06_/index.md" },
-        { "06 " = "study-notes/experiment-design-and-statistical-analysis/06_/06_.md" },
-      ] },
-      { "07" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/07_/index.md" },
-        { "07 " = "study-notes/experiment-design-and-statistical-analysis/07_/07_.md" },
-      ] },
-      { "08" = [
-        { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/08_/index.md" },
-        { "08 " = "study-notes/experiment-design-and-statistical-analysis/08_/08_.md" },
       ] },
     ] },
   ] },

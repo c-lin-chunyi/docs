@@ -27,58 +27,18 @@ nav = [
     { "目录" = "study-notes/index.md" },
     { "线性代数" = [
       { "目录" = "study-notes/linear-algebra/index.md" },
-      { "01" = [
-        { "章节概览" = "study-notes/linear-algebra/01_/index.md" },
-        { "01 " = "study-notes/linear-algebra/01_/01_.md" },
-      ] },
     ] },
     { "概率论" = [
       { "目录" = "study-notes/probability/index.md" },
-      { "01" = [
-        { "章节概览" = "study-notes/probability/01_/index.md" },
-        { "01 " = "study-notes/probability/01_/01_.md" },
-      ] },
     ] },
     { "统计学" = [
       { "目录" = "study-notes/statistics/index.md" },
-      { "01" = [
-        { "章节概览" = "study-notes/statistics/01_/index.md" },
-        { "01 " = "study-notes/statistics/01_/01_.md" },
-      ] },
     ] },
     { "实验设计与统计分析" = [
       { "目录" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "01" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/01_/index.md" },
-        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_/01_.md" },
-      ] },
-      { "02" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/02_/index.md" },
-        { "02 " = "study-notes/experiment-design-and-statistical-analysis/02_/02_.md" },
-      ] },
-      { "03" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/03_/index.md" },
-        { "03 " = "study-notes/experiment-design-and-statistical-analysis/03_/03_.md" },
-      ] },
-      { "04" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/04_/index.md" },
-        { "04 " = "study-notes/experiment-design-and-statistical-analysis/04_/04_.md" },
-      ] },
-      { "05" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/05_/index.md" },
-        { "05 " = "study-notes/experiment-design-and-statistical-analysis/05_/05_.md" },
-      ] },
-      { "06" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/06_/index.md" },
-        { "06 " = "study-notes/experiment-design-and-statistical-analysis/06_/06_.md" },
-      ] },
-      { "07" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/07_/index.md" },
-        { "07 " = "study-notes/experiment-design-and-statistical-analysis/07_/07_.md" },
-      ] },
-      { "08" = [
-        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/08_/index.md" },
-        { "08 " = "study-notes/experiment-design-and-statistical-analysis/08_/08_.md" },
+        { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/index.md" },
+        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
       ] },
     ] },
   ] },
