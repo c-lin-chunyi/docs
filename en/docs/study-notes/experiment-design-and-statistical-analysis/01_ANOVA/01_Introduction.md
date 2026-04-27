@@ -1,4 +1,8 @@
-# Experimental Design and ANOVA
+# Introduction: Experimental Design and ANOVA
+
+## Starting from An Experiment
+
+### Design and Raw Data
 
 We want to study how feedback type ($A_1$ encouraging, $A_2$ neutral, $A_3$ critical) and task difficulty ($B_1$ easy and $B_2$ difficult) influence participants' task performance.
 
@@ -47,14 +51,30 @@ The results are as follows.
     </tbody>
     </table>
 
+??? info "Click to see grand mean, marginal means, and cell means"
+
+    For this dataset, the cell means, marginal means, and grand mean are:
+
+    | Feedback type | $B_1$ Easy<br>$\bar{y}_{i,1,.}$ | $B_2$ Difficult<br>$\bar{y}_{i,2,.}$ | Feedback marginal mean<br>$\bar{y}_{i,.,.}$ |
+    |---|---:|---:|---:|
+    | $A_1$ Encouraging | 5.00 | 25.00 | 15.00 |
+    | $A_2$ Neutral | 10.00 | 10.00 | 10.00 |
+    | $A_3$ Critical | 25.50 | -5.50 | 10.00 |
+    | Difficulty marginal mean<br>$\bar{y}_{.,j,.}$ | 13.50 | 9.83 | $\hat{\mu}=11.67$ |
+
+??? info "Click to view the interaction plot"
+    ![Interaction plot of cell means.](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_en.svg)
+    The non-parallel lines suggest that the effect of feedback type depends on task difficulty, suggesting the interaction term $(\alpha\beta)_{i,j}$ in the ANOVA model.
+
+### Constructing A Model
+
 We want to ask the question: 
 
-*What causes the variation in performance? Or, where does the variation come from? Is the variation meaningful, or is it just inflated by some random errors?*
+*What causes the variation in performance? Or, where does the variation come from? Is the variation meaningful, or is it just caused by some random errors?*
 
 Now, consider each subject's score.
 
 $$y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leqslant10\})$$
-
 
 What likely causes each participant's score different from the grand mean? 
 
@@ -69,6 +89,26 @@ $$
 y_{i,j,k}
 =
 \mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
+$$
+
+However, this model needs one more technical condition. As written, the parameters are not uniquely determined. For example, we could add a constant to $\mu$ and subtract the same constant from every $\alpha_i$, while leaving the predicted value unchanged.
+
+To make the parameters identifiable, we impose the usual sum-to-zero constraints:
+
+$$
+\sum_i \alpha_i = 0,
+\qquad
+\sum_j \beta_j = 0,
+$$
+
+and
+
+$$
+\sum_i(\alpha\beta)_{i,j}=0
+\quad\text{for every }j,
+\qquad
+\sum_j(\alpha\beta)_{i,j}=0
+\quad\text{for every }i.
 $$
 
 Unfortunately, most of the terms above are not directly observable. We have to estimate the these terms using our already available information.
@@ -133,67 +173,72 @@ and take these back into our formerly defined model:
 
 $$
 \begin{align*}
-y_{i,j,k} &= \hat\mu + (\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) + (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu) + \frac{1}{K} \sum_{k} y_{i,j,k} - \hat\mu + \varepsilon_{i,j,k} \\
+y_{i,j,k} &= \hat\mu + (\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) + (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu) + [\frac{1}{K} \sum_{k} y_{i,j,k} - \hat\mu -(\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) - (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu)] + \varepsilon_{i,j,k} \\
 y_{i,j,k} &= \hat\mu + (\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.}) \\
 y_{i,j,k} - \hat\mu &= \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
 \end{align*}
 $$
 
-Now, what happens if we apply the sample variance operator on both sides?
+!!! note "Why do we need these constraints?"
 
-Since our fitted components are functions of random variables, they too can be considered random variables before putting in the data. 
+    The model contains redundant ways to describe the same fitted value. Without constraints, each parameter would not correspond to a unique numerical value.
 
-Therefore, we want to ask how the variation in $y_{i,j,k}$ is distributed across these fitted components. 
+    The sum-to-zero constraints choose one convenient convention that main effects are deviations from the grand mean, and interaction effects are the leftover cell deviations after the grand mean and main effects have been removed.
 
-Recall how we often compute variance:
+## Analyzing the Whole Dataset Using ANOVA
 
-$$
-\mathrm{Var}(X) = \mathbb{E}(X^2)-(\mathbb{E}(X))^2
-$$
-
-And its sample mean square deviation counterpart
+Previously, we described how an individual observation may be decomposed:
 
 $$
-s^2_N(X) = \frac{1}{N}\sum_{i} (X_i-\bar{X})^2 = \frac{1}{N}\sum_{i}X_i^2-\bar{X}^2
+y_{i,j,k}
+=\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}.
 $$
 
-Now, since the two sides of our model are equal observation by observation, their sample mean square deviations are also equal.
+It says that one participant's score may reflect the grand mean, the effect of feedback type, the effect of task difficulty, their interaction, and residual error.
 
-$$s^2_N(y_{i,j,k} - \hat\mu) = s^2_N[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]$$
-
-The common factor $\frac{1}{N}$ gets cancelled out.
+We also acknowledged that the exact value of $\mu$, $\alpha_i$, $\beta_j$, $(\alpha\beta)_{i,j}$ and $\varepsilon_{i,j,k}$ cannot be known, and we can only *estimate* these components from our existing observations.
 
 $$
-\begin{align*}
-\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 - \frac{1}{IJK}[\sum_{i,j,k}(y_{i,j,k}-\hat\mu)]^2 &= \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 - \frac{1}{IJK}(\sum_{i,j,k} \underbrace{[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]}_{y_{i,j,k}-\hat\mu})^2 \\
-\end{align*}
+y_{i,j,k}
+=
+\hat{\mu}+\widehat{\alpha_i}+\widehat{\beta_j}+\widehat{(\alpha\beta)_{i,j}}+\widehat{\varepsilon_{i,j,k}}
 $$
 
-Notice that 
+However, one cannot estimate all these components from one observation alone. One data point is not enough to pin down several unknown quantities. Therefore, the whole dataset is used to calculate grand mean, marginal means, and cell means, which are then used to estimate these components.
+
+But it seems that our initial problem of *what caused these variations* seems unsolved yet.
+
+Analysis of variance (ANOVA) then comes in.
+
+Its purpose is to answer one question:
+
+> How much of the total variation in the dataset is associated with each component after our decomposition?
+
+And to do so, we need a way to measure the size of each component across the whole dataset.
+
+A common way to measure the size of one quantity, is to take the square of it. And we want to do account for the size *across* the data set.
+
+Thus, we turn to square sum. 
+
+We now take the squared length of both sides across the whole dataset.
+
+$$\sum_{i,j,k}(y_{i,j,k} - \hat\mu)^2 = \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2$$
+
+Because this is a **balanced factorial design**, the four fitted component vectors are mutually *orthogonal*. Therefore, all cross-product terms sum to zero.
+
+Here, orthogonal means that for any two distinct components $u_{i,j,k}$ and $v_{i,j,k}$,
 
 $$
-\begin{gather*}
-\sum_{i,j,k}(y_{i,j,k}-\hat\mu) = \sum_{i,j,k}(y_{i,j,k} - \frac{1}{IJK} \sum_{i,j,k}y_{i,j,k}) = 0 \\
-\sum_{i,j,k} (\bar{y}_{i,.,.} - \hat\mu) = \sum_{j,k} \sum_{i} (\bar{y}_{i,.,.} - \hat\mu) = \sum_{j,k} \sum_{i} \frac{1}{JK} \sum_{j,k}{y_{i,j,k}} - IJK\hat\mu = 0 \\
-\sum_{i,j,k} (\bar{y}_{.,j,.}-\hat\mu) = 0 \\
-\sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) = K \sum_{i,j}\bar{y}_{i,j,.} - JK\sum_{i}\bar{y}_{i,.,.} - IK\sum_{j}\bar{y}_{.,j,.} + IJK\hat\mu = 0 \\
-\sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.}) = IJK\hat\mu -IJK\hat\mu = 0
-\end{gather*}
+\sum_{i,j,k}u_{i,j,k}v_{i,j,k}=0.
 $$
 
-Therefore, we have
+More details will be discussed in the later section. 
 
-$$
-\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 - 0 = \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 - 0 \\
-$$
-
-It happens that all cross-terms on the right-hand side are zero. 
-
-??? info "Expansion on the right-hand side"
+??? info "Click to see the expansion on the right-hand side"
 
     $$
     \begin{align*}
-    \mathrm{LHS} &=  \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 \\
+    \mathrm{RHS} &=  \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 \\
     &= \sum_{i,j,k} [(\bar{y}_{i,.,.} - \hat\mu)^2 +  (\bar{y}_{.,j,.} - \hat\mu)^2 + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + (y_{i,j,k} - \bar{y}_{i,j,.})^2] \\
     &+ 2\sum_{i,j,k} (\bar{y}_{i,.,.} - \hat\mu)(\bar{y}_{.,j,.} - \hat\mu)+ 2\sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) \\
     &+ 2\sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)(y_{i,j,k} - \bar{y}_{i,j,.}) + 2\sum_{i,j,k}(\bar{y}_{.,j,.} - \hat\mu) (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) \\
@@ -283,22 +328,13 @@ It happens that all cross-terms on the right-hand side are zero.
     \end{align*}
     $$
 
-But this is actually not an accident.
-
-This is because here $(\bar{y}_{i,.,.} - \hat\mu)$, $(\bar{y}_{.,j,.} - \hat\mu)$, $(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)$, and $(y_{i,j,k} - \bar{y}_{i,j,.})$ are all *orthogonal*. 
-
-Here, orthogonal means that for any two distinct components $u_{i,j,k}$ and $v_{i,j,k}$,
-
-$$
-\sum_{i,j,k}u_{i,j,k}v_{i,j,k}=0.
-$$
-
-More details will be discussed in the later section. 
-
 Now, we have the following equation:
 
 $$
-\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2\\
+\begin{align*}
+&\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \\ 
+&\sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2
+\end{align*}
 $$
 
 Let 
@@ -318,3 +354,368 @@ We now obtain the classic ANOVA formula for this experiment:
 $$
 \mathrm{SS_T} = \mathrm{SS_A} + \mathrm{SS_B} + \mathrm{SS_{A\times B}} + \mathrm{SS_E}
 $$
+
+In many textbooks however, ANOVA sum of squares are often calculated using a shortcut, called the *bracket form*.
+
+??? info "Calculate sums of squares by hand using the bracket form"
+
+    Let
+
+    $$
+    T_{i,j,.}=\sum_k y_{i,j,k}
+    $$
+
+    be the total score in cell $(i,j)$,
+
+    $$
+    T_{i,.,.}=\sum_{j,k}y_{i,j,k}
+    $$
+
+    be the total score for feedback level $i$,
+
+    $$
+    T_{.,j,.}=\sum_{i,k}y_{i,j,k}
+    $$
+
+    be the total score for difficulty level $j$,
+
+    and
+
+    $$
+    T_{.,.,.}=\sum_{i,j,k}y_{i,j,k}
+    $$
+
+    be the grand total.
+
+    First, the total sum of squares:
+
+    $$
+    \mathrm{SS_T}
+    =
+    \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2.
+    $$
+
+    Expanding the square:
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_T}
+    &=
+    \sum_{i,j,k}
+    \left(
+    y_{i,j,k}^2
+    -
+    2y_{i,j,k}\hat\mu
+    +
+    \hat\mu^2
+    \right) \\
+    &=
+    \sum_{i,j,k}y_{i,j,k}^2
+    -
+    2\hat\mu\sum_{i,j,k}y_{i,j,k}
+    +
+    IJK\hat\mu^2.
+    \end{aligned}
+    $$
+
+    we have
+
+    $$
+    IJK\hat\mu^2
+    =
+    IJK\left(\frac{T_{.,.,.}}{IJK}\right)^2
+    =
+    \frac{T_{.,.,.}^2}{IJK}.
+    $$
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_T}
+    &=
+    \sum_{i,j,k}y_{i,j,k}^2
+    -
+    2\frac{T_{.,.,.}^2}{IJK}
+    +
+    \frac{T_{.,.,.}^2}{IJK} \\
+    &=
+    \sum_{i,j,k}y_{i,j,k}^2
+    -
+    \frac{T_{.,.,.}^2}{IJK}.
+    \end{aligned}
+    $$
+
+    Let $C = \frac{T_{.,.,.}^2}{IJK}$. We call C "the correction term".
+
+    $$
+    \mathrm{SS_T}
+    =
+    \sum_{i,j,k}y_{i,j,k}^2-C.
+    $$
+
+    Now consider $\mathrm{SS_A}$:
+
+    $$
+    \begin{align*}
+    \mathrm{SS_A}
+    &=
+    \sum_{i,j,k}(\bar y_{i,.,.}-\hat\mu)^2 \\
+    &=
+    JK\sum_i(\bar y_{i,.,.}-\hat\mu)^2.
+    \end{align*}
+    $$
+
+    Since
+
+    $$
+    \bar y_{i,.,.}=\frac{T_{i,.,.}}{JK},
+    \qquad
+    \hat\mu=\frac{T_{.,.,.}}{IJK},
+    $$
+
+    expanding and simplifying gives
+
+    $$
+    \mathrm{SS_A}
+    =
+    \sum_i\frac{T_{i,.,.}^2}{JK}
+    -
+    \frac{T_{.,.,.}^2}{IJK}.
+    $$
+
+    Hence,
+
+    $$
+    \mathrm{SS_A}
+    =
+    \sum_i\frac{T_{i,.,.}^2}{JK}
+    -
+    C.
+    $$
+
+    Similarly,
+
+    $$
+    \mathrm{SS_B}
+    =
+    \sum_j\frac{T_{.,j,.}^2}{IK}
+    -
+    C.
+    $$
+
+    Now consider the interaction sum of squares:
+
+    $$
+    \begin{align*}
+    \mathrm{SS_{A\times B}}
+    &=
+    \sum_{i,j,k}
+    (\bar y_{i,j,.}-\bar y_{i,.,.}-\bar y_{.,j,.}+\hat\mu)^2 \\
+    &=
+    K\sum_{i,j}
+    (\bar y_{i,j,.}-\bar y_{i,.,.}-\bar y_{.,j,.}+\hat\mu)^2.
+    \end{align*}
+    $$
+
+    Expanding and simplifying gives
+
+    $$
+    \mathrm{SS_{A\times B}}
+    =
+    K\sum_{i,j}\bar y_{i,j,.}^2
+    -
+    JK\sum_i\bar y_{i,.,.}^2
+    -
+    IK\sum_j\bar y_{.,j,.}^2
+    +
+    IJK\hat\mu^2.
+    $$
+
+    Now rewrite each mean using its corresponding total:
+
+    $$
+    \bar y_{i,j,.}=\frac{T_{i,j,.}}{K},
+    \qquad
+    \bar y_{i,.,.}=\frac{T_{i,.,.}}{JK},
+    \qquad
+    \bar y_{.,j,.}=\frac{T_{.,j,.}}{IK},
+    \qquad
+    \hat\mu=\frac{T_{.,.,.}}{IJK}.
+    $$
+
+    Therefore,
+
+    $$
+    \mathrm{SS_{A\times B}}
+    =
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}
+    -
+    \sum_i\frac{T_{i,.,.}^2}{JK}
+    -
+    \sum_j\frac{T_{.,j,.}^2}{IK}
+    +
+    \frac{T_{.,.,.}^2}{IJK}.
+    $$
+
+    $$
+    \mathrm{SS_{A\times B}}
+    =
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}
+    -
+    \sum_i\frac{T_{i,.,.}^2}{JK}
+    -
+    \sum_j\frac{T_{.,j,.}^2}{IK}
+    +
+    C.
+    $$
+
+    Notice an intermediate quantity:
+
+    $$
+    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    $$
+
+    On many textbooks this is called the **cell sum of squares**:
+
+    $$
+    \mathrm{SS_{cell}}
+    =
+    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    $$
+
+    Using this notation,
+
+    $$
+    \mathrm{SS_{A\times B}}
+    =
+    \mathrm{SS_{cell}}
+    -
+    \mathrm{SS_A}
+    -
+    \mathrm{SS_B}.
+    $$
+
+    Finally, the residual sum of squares measures variation around the cell means:
+
+    $$
+    \mathrm{SS_E}
+    =
+    \sum_{i,j,k}(y_{i,j,k}-\bar y_{ij.})^2.
+    $$
+
+    Expanding within each cell gives
+
+    $$
+    \mathrm{SS_E}
+    =
+    \sum_{i,j,k}y_{i,j,k}^2
+    -
+    \sum_{i,j}\frac{T_{ij.}^2}{K}.
+    $$
+
+    People also calculate $\mathrm{SS_E}$ by the following formula for convenience:
+
+    $$
+    \mathrm{SS_E} = \mathrm{SS_T} - \mathrm{SS_A} - \mathrm{SS_B} - \mathrm{SS_{A\times B}}
+    $$
+
+    In short:
+
+    For this *balanced two-way design*, define the correction term:
+
+    $$
+    C=\frac{T_{.,.,.}^2}{IJK}.
+    $$
+
+    Then calculate the sums of squares in this order:
+
+    $$
+    \mathrm{SS_T}
+    =
+    \sum_{i,j,k}y_{i,j,k}^2-C.
+    $$
+
+    $$
+    \mathrm{SS_A}
+    =
+    \sum_i\frac{T_{i,.,.}^2}{JK}-C.
+    $$
+
+    $$
+    \mathrm{SS_B}
+    =
+    \sum_j\frac{T_{.,j,.}^2}{IK}-C.
+    $$
+
+    $$
+    \mathrm{SS_{cell}}
+    =
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C.
+    $$
+
+    $$
+    \mathrm{SS_{A\times B}}
+    =
+    \mathrm{SS_{cell}}-\mathrm{SS_A}-\mathrm{SS_B}.
+    $$
+
+    $$
+    \mathrm{SS_E}
+    =
+    \mathrm{SS_T}
+    -
+    \mathrm{SS_A}
+    -
+    \mathrm{SS_B}
+    -
+    \mathrm{SS_{A\times B}}.
+    $$
+
+    Equivalently,
+
+    $$
+    \mathrm{SS_E}
+    =
+    \sum_{i,j,k}y_{i,j,k}^2
+    -
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}.
+    $$
+
+## Section Review
+
+We started by asking where the variation in performance comes from.
+
+We have now decomposed each centered observation into four parts:
+
+$$
+y_{i,j,k}-\hat\mu
+=
+\widehat{\alpha_i}
++
+\widehat{\beta_j}
++
+\widehat{(\alpha\beta)_{i,j}}
++
+\widehat{\varepsilon_{i,j,k}}.
+$$
+
+Each participant's deviation from the grand mean is decomposed into a feedback component, a difficulty component, an interaction component, and a residual component.
+
+Because these four fitted component vectors are orthogonal in this balanced design, the observation-level decomposition results in a clean partition of total sum of squares:
+
+$$
+\mathrm{SS_T}
+=
+\mathrm{SS_A}
++
+\mathrm{SS_B}
++
+\mathrm{SS_{A\times B}}
++
+\mathrm{SS_E}.
+$$
+
+What we cannot say yet is whether any one of these pieces is *large enough* relative to residual variation. 
+
+For that, we need to know how these quantities behave under sampling.
+
+In the next section, we will address that by introducing degrees of freedom, mean squares, and the $F$ statistic.
