@@ -32,6 +32,76 @@
     dark: "(prefers-color-scheme: dark)",
     system: "(prefers-color-scheme)",
   };
+  const themeReloadKey = "footer-theme-reload-top";
+  const themeReloadParam = "_themeReload";
+
+  function scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
+  function resetScrollAfterReload() {
+    let shouldReset = false;
+
+    try {
+      shouldReset = window.sessionStorage.getItem(themeReloadKey) === "1";
+      if (shouldReset) {
+        window.sessionStorage.removeItem(themeReloadKey);
+      }
+    } catch (_error) {
+      // Ignore storage errors (e.g. private browsing restrictions).
+    }
+
+    if (!shouldReset) {
+      return;
+    }
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    scrollToTop();
+
+    window.addEventListener("pageshow", scrollToTop, { once: true });
+    window.addEventListener(
+      "load",
+      function () {
+        window.requestAnimationFrame(function () {
+          scrollToTop();
+          window.setTimeout(function () {
+            scrollToTop();
+            if ("scrollRestoration" in window.history) {
+              window.history.scrollRestoration = "auto";
+            }
+          }, 100);
+        });
+      },
+      { once: true }
+    );
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.has(themeReloadParam)) {
+      url.searchParams.delete(themeReloadParam);
+      window.history.replaceState(window.history.state, "", url.toString());
+    }
+  }
+
+  function forceReloadToTop() {
+    try {
+      window.sessionStorage.setItem(themeReloadKey, "1");
+    } catch (_error) {
+      // Ignore storage errors (e.g. private browsing restrictions).
+    }
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set(themeReloadParam, String(Date.now()));
+    window.location.replace(url.toString());
+  }
+
+  resetScrollAfterReload();
 
   function getModeFromMedia(media) {
     return Object.keys(mediaByMode).find((mode) => mediaByMode[mode] === media) || "system";
@@ -129,6 +199,7 @@
 
       updateUi(mode);
       closeMenu();
+      forceReloadToTop();
     });
   });
 
