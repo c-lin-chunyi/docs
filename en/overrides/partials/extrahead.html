@@ -8,6 +8,202 @@
 <link rel="preload" href="/assets/fonts/jetbrains-mono-bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" crossorigin="anonymous">
 
+<script>
+  (function () {
+    var paletteKey = "__palette";
+    var cookieName = "theme-preference";
+    var validModes = ["light", "dark", "system"];
+    var mediaByMode = {
+      light: "(prefers-color-scheme: light)",
+      dark: "(prefers-color-scheme: dark)",
+      system: "(prefers-color-scheme)",
+    };
+    var maxAgeSeconds = 60 * 60 * 24 * 365;
+    var cookiePath = "/";
+    var cookieSameSite = "Lax";
+    var cookieDomain = (
+      window.__themeCookieDomain ||
+      document.documentElement.getAttribute("data-theme-cookie-domain") ||
+      ".chunyi-lin.com"
+    ).trim();
+    var originalGet = typeof window.__md_get === "function" ? window.__md_get : null;
+    var originalSet = typeof window.__md_set === "function" ? window.__md_set : null;
+
+    function getModeFromMedia(media) {
+      for (var i = 0; i < validModes.length; i += 1) {
+        var mode = validModes[i];
+        if (mediaByMode[mode] === media) {
+          return mode;
+        }
+      }
+
+      return "system";
+    }
+
+    function getCookieValue(name) {
+      var prefix = name + "=";
+      var parts = document.cookie ? document.cookie.split(";") : [];
+
+      for (var i = 0; i < parts.length; i += 1) {
+        var part = parts[i].trim();
+        if (!part.startsWith(prefix)) {
+          continue;
+        }
+
+        var rawValue = part.slice(prefix.length);
+        try {
+          return decodeURIComponent(rawValue);
+        } catch (_error) {
+          return rawValue;
+        }
+      }
+
+      return null;
+    }
+
+    function buildCookieAttributes(maxAge) {
+      var attrs = [
+        "Max-Age=" + maxAge,
+        "Path=" + cookiePath,
+        "SameSite=" + cookieSameSite,
+      ];
+
+      if (cookieDomain) {
+        attrs.push("Domain=" + cookieDomain);
+      }
+
+      if (window.location.protocol === "https:") {
+        attrs.push("Secure");
+      }
+
+      return attrs.join("; ");
+    }
+
+    function setCookieValue(name, value, maxAge) {
+      var encodedValue = encodeURIComponent(value);
+      document.cookie = name + "=" + encodedValue + "; " + buildCookieAttributes(maxAge);
+    }
+
+    function removeCookie(name) {
+      document.cookie = name + "=; " + buildCookieAttributes(0);
+    }
+
+    function readThemePreference() {
+      var value = getCookieValue(cookieName);
+      if (validModes.indexOf(value) >= 0) {
+        return value;
+      }
+
+      if (value !== null) {
+        removeCookie(cookieName);
+      }
+
+      return null;
+    }
+
+    function writeThemePreference(mode) {
+      if (validModes.indexOf(mode) < 0) {
+        return;
+      }
+
+      setCookieValue(cookieName, mode, maxAgeSeconds);
+    }
+
+    function paletteFromMode(mode) {
+      var media = mediaByMode[mode];
+      if (!media) {
+        return null;
+      }
+
+      var selector = '[data-md-component="palette"] input[name="__palette"][data-md-color-media="' + media + '"]';
+      var input = document.querySelector(selector);
+      if (!input) {
+        return null;
+      }
+
+      return {
+        color: {
+          media: input.getAttribute("data-md-color-media"),
+          scheme: input.getAttribute("data-md-color-scheme"),
+          primary: input.getAttribute("data-md-color-primary"),
+          accent: input.getAttribute("data-md-color-accent"),
+        },
+      };
+    }
+
+    function removeLegacyPaletteStorage() {
+      if (typeof localStorage === "undefined") {
+        return;
+      }
+
+      if (typeof window.__md_scope === "undefined" || !window.__md_scope || !window.__md_scope.pathname) {
+        return;
+      }
+
+      try {
+        localStorage.removeItem(window.__md_scope.pathname + "." + paletteKey);
+      } catch (_error) {
+        // Ignore storage errors in private browsing or restricted contexts.
+      }
+    }
+
+    function migrateLegacyPalette() {
+      if (!originalGet) {
+        return;
+      }
+
+      if (readThemePreference()) {
+        removeLegacyPaletteStorage();
+        return;
+      }
+
+      var legacyPalette = originalGet(paletteKey);
+      var legacyMedia = legacyPalette && legacyPalette.color && legacyPalette.color.media;
+      if (!legacyMedia) {
+        return;
+      }
+
+      var mode = getModeFromMedia(legacyMedia);
+      writeThemePreference(mode);
+      removeLegacyPaletteStorage();
+    }
+
+    window.__md_get = function (key, storage, scope) {
+      if (key !== paletteKey) {
+        return originalGet ? originalGet(key, storage, scope) : null;
+      }
+
+      var preference = readThemePreference();
+      if (preference) {
+        var palette = paletteFromMode(preference);
+        if (palette) {
+          return palette;
+        }
+      }
+
+      return originalGet ? originalGet(key, storage, scope) : null;
+    };
+
+    window.__md_set = function (key, value, storage, scope) {
+      if (key !== paletteKey) {
+        if (originalSet) {
+          originalSet(key, value, storage, scope);
+        }
+        return;
+      }
+
+      var media = value && value.color && value.color.media;
+      if (media) {
+        writeThemePreference(getModeFromMedia(media));
+      }
+
+      removeLegacyPaletteStorage();
+    };
+
+    migrateLegacyPalette();
+  })();
+</script>
+
 <style>
   .md-header__option[data-md-component="palette"] {
     display: none !important;
