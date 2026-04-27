@@ -1,5 +1,3 @@
 ---
-title: Study Notes
+title: 学习笔记
 ---
-
-lsa
