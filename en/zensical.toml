@@ -1,6 +1,6 @@
 [project]
 site_name = "Chunyi Lin's Docs"
-site_url = "https://docs.chunyi-lin.com"
+site_url = "https://docs.chunyi-lin.com/en"
 site_author = "Chunyi Lin"
 copyright = """
 Copyright &copy; 2026 Chunyi Lin. Content licensed under
