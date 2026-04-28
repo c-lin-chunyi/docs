@@ -1,5 +1,5 @@
 import { constants } from "node:fs";
-import { access, cp, mkdir, rm } from "node:fs/promises";
+import { access, cp, mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -9,6 +9,9 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const distRoot = path.join(repoRoot, "dist");
 const sharedAssetsRoot = path.join(distRoot, "assets");
 const assetDirs = ["fonts", "vendor"];
+const headersContent = `/*
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://static.cloudflareinsights.com; script-src-elem 'self' 'unsafe-inline' https://static.cloudflareinsights.com; worker-src 'self' blob:; connect-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'self'
+`;
 const locales = [
   { name: "English", sourceRoot: "en", outputRoot: "en", config: "en/zensical.toml" },
   { name: "Chinese", sourceRoot: "cn", outputRoot: "zh", config: "cn/zensical.toml" },
@@ -91,6 +94,10 @@ async function copySite(locale) {
   await cp(source, destination, { recursive: true, filter: shouldCopy });
 }
 
+async function writeHeaders() {
+  await writeFile(path.join(distRoot, "_headers"), headersContent, "utf8");
+}
+
 await rm(distRoot, { recursive: true, force: true });
 await mkdir(distRoot, { recursive: true });
 await Promise.all(
@@ -101,6 +108,6 @@ await Promise.all(
 
 const zensicalBin = await resolveZensicalBin();
 await Promise.all(locales.map((locale) => runBuild(zensicalBin, locale)));
-await Promise.all([copySharedAssets(), ...locales.map(copySite)]);
+await Promise.all([writeHeaders(), copySharedAssets(), ...locales.map(copySite)]);
 
-console.log("Built English to dist/en, Chinese to dist/zh, and shared assets to dist/assets.");
+console.log("Built English to dist/en, Chinese to dist/zh, shared assets to dist/assets, and headers to dist/_headers.");
