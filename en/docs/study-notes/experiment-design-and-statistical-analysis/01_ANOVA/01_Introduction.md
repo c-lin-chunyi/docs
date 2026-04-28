@@ -401,7 +401,8 @@ $$
     \end{align*}
     $$
 
-Let 
+Let
+
 $$
 \begin{gather*}
 \mathrm{SS_T} = \|\mathbf{y​}−\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\

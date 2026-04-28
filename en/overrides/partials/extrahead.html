@@ -312,7 +312,11 @@
     loader: {
       paths: {
         "mathjax-stix2": "/assets/vendor/mathjax-stix2-font"
-      }
+      },
+      load: [
+        "[tex]/mathtools",
+        "[tex]/physics"
+      ]
     },
     output: {
       font: "[mathjax-stix2]"
