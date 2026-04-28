@@ -1,6 +1,6 @@
-# Introduction: Experimental Design and ANOVA
+# Introduction: Decomposing an Observation
 
-## Starting from An Experiment
+## An Example
 
 ### Design and Raw Data
 
@@ -64,9 +64,9 @@ The results are as follows.
 
 ??? info "Click to view the interaction plot"
     ![Interaction plot of cell means.](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_en.svg)
-    The non-parallel lines suggest that the effect of feedback type depends on task difficulty, suggesting the interaction term $(\alpha\beta)_{i,j}$ in the ANOVA model.
+    The non-parallel lines suggest that the effect of feedback type depends on task difficulty, suggesting the interaction term $(\alpha\beta)_{i,j}$ in the model.
 
-### Constructing A Model
+### A Two-Way Linear Model
 
 We want to ask the question: 
 
@@ -76,19 +76,21 @@ Now, consider each subject's score.
 
 $$y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leqslant10\})$$
 
-What likely causes each participant's score different from the grand mean? 
+What likely causes each participant's score to be different from the grand mean? 
 
 1. Maybe the feedback type they received causes it;
 2. Maybe it is due to the task difficulty they received;
 3. Maybe, some specific combination of feedback type and task difficulty does something;
-4. Or, it is mostly consistent with residual error?
+4. Or, the difference may simply reflect random variation between participants.
 
-So, we can construct a model that accounts for the above four speculations.
+So, we can construct a model that accounts for the above four possible sources of variation.
 
 $$
+\begin{equation}
 y_{i,j,k}
 =
 \mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
+\end{equation}
 $$
 
 However, this model needs one more technical condition. As written, the parameters are not uniquely determined. For example, we could add a constant to $\mu$ and subtract the same constant from every $\alpha_i$, while leaving the predicted value unchanged.
@@ -111,12 +113,14 @@ $$
 \quad\text{for every }i.
 $$
 
-Unfortunately, most of the terms above are not directly observable. We have to estimate the these terms using our already available information.
+Unfortunately, most of the terms above are not directly observable. We have to estimate these terms using our already available information.
 
 $$
+\begin{equation}
 y_{i,j,k}
 =
 \hat{\mu}+\widehat{\alpha_i}+\widehat{\beta_j}+\widehat{(\alpha\beta)_{i,j}}+\widehat{\varepsilon_{i,j,k}}
+\end{equation}
 $$
 
 where:
@@ -149,7 +153,7 @@ $$
 
 We want to know what $\widehat{(\alpha\beta)_{i,j}}$ does, *on top of* $\widehat{\alpha_i}$, $\widehat{\beta_j}$ and the grand mean $\widehat{\mu}$.
 
-And the remainder $\widehat{\varepsilon_{i,j,k}}$ is the residual error for this participant $k$ in cell $(i,j)$
+And the remainder $\widehat{\varepsilon_{i,j,k}}$ is the residual error for this participant $k$ in cell $(i,j)$.
 
 $$
 \begin{aligned}
@@ -175,8 +179,13 @@ $$
 \begin{align*}
 y_{i,j,k} &= \hat\mu + (\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) + (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu) + [\frac{1}{K} \sum_{k} y_{i,j,k} - \hat\mu -(\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) - (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu)] + \varepsilon_{i,j,k} \\
 y_{i,j,k} &= \hat\mu + (\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.}) \\
-y_{i,j,k} - \hat\mu &= \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
 \end{align*}
+$$
+
+$$
+\begin{equation}
+y_{i,j,k} - \hat\mu = \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
+\end{equation}
 $$
 
 !!! note "Why do we need these constraints?"
@@ -185,7 +194,7 @@ $$
 
     The sum-to-zero constraints choose one convenient convention that main effects are deviations from the grand mean, and interaction effects are the leftover cell deviations after the grand mean and main effects have been removed.
 
-## Analyzing the Whole Dataset Using ANOVA
+## From One Observation to the Whole Dataset
 
 Previously, we described how an individual observation may be decomposed:
 
@@ -206,33 +215,97 @@ $$
 
 However, one cannot estimate all these components from one observation alone. One data point is not enough to pin down several unknown quantities. Therefore, the whole dataset is used to calculate grand mean, marginal means, and cell means, which are then used to estimate these components.
 
-But it seems that our initial problem of *what caused these variations* seems unsolved yet.
-
-Analysis of variance (ANOVA) then comes in.
-
-Its purpose is to answer one question:
-
-> How much of the total variation in the dataset is associated with each component after our decomposition?
-
-And to do so, we need a way to measure the size of each component across the whole dataset.
-
-A common way to measure the size of one quantity, is to take the square of it. And we want to do account for the size *across* the data set.
-
-Thus, we turn to square sum. 
-
-We now take the squared length of both sides across the whole dataset.
-
-$$\sum_{i,j,k}(y_{i,j,k} - \hat\mu)^2 = \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2$$
-
-Because this is a **balanced factorial design**, the four fitted component vectors are mutually *orthogonal*. Therefore, all cross-product terms sum to zero.
-
-Here, orthogonal means that for any two distinct components $u_{i,j,k}$ and $v_{i,j,k}$,
+Let $n(i,j,k)=(i−1)JK+(j−1)K+k$,
 
 $$
-\sum_{i,j,k}u_{i,j,k}v_{i,j,k}=0.
+\mathbf{y}_{n(i,j,k)}=y_{i,j,k} \Leftrightarrow
+\mathbf{y} = 
+\begin{bmatrix}
+y_{1,1,1}\\
+y_{1,1,2}\\
+\vdots \\
+y_{1,1,K} \\
+y_{1,2,1} \\
+\vdots \\
+y_{I,J,K}
+\end{bmatrix}_N,\;
 $$
 
-More details will be discussed in the later section. 
+$$
+\widehat{\boldsymbol{\mu}} =
+\begin{bmatrix}
+\hat\mu \\
+\hat\mu \\
+\vdots \\
+\hat\mu
+\end{bmatrix}_{N},\;
+\widehat{\boldsymbol{\alpha}}_{n(i,j,k)} = \widehat{\alpha_i},\;
+\widehat{\boldsymbol{\beta}}_{n(i,j,k)} = \widehat{\beta_j},\;
+\widehat{\boldsymbol{\alpha\beta}}_{n(i,j,k)} = \widehat{(\alpha\beta)_{i,j}},\;
+$$
+
+and 
+$$
+\widehat{\boldsymbol{\varepsilon}}_{n(i,j,k)}=\widehat{\varepsilon_{i,j,k}}.
+$$
+
+We can now stack all $N=IJK$ observations into vectors in $\mathbb{R}^N$. The decomposition then becomes a single vector equation:
+
+$$
+\begin{equation}
+\mathbf{y​}−\widehat{\boldsymbol{\mu}}​=\widehat{\boldsymbol{\alpha}}​​+\widehat{\boldsymbol{\beta}​​}+\widehat{\boldsymbol{\alpha\beta}}​​+\widehat{\boldsymbol{\varepsilon}}.
+\end{equation}
+$$
+
+### Mutual Orthogonality of Fitted Vectors
+
+As it turns out, each pair of fitted vectors here is orthogonal.
+
+| Orthogonality | Reason |
+|---|---|
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_i\widehat{\alpha_i}=0$ |
+| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_j\widehat{\beta_j}=0$ |
+| $\widehat{\boldsymbol{\alpha\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_{i,j}\widehat{(\alpha\beta)_{i,j}}=0$ |
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\beta}}$ | balanced factorization|
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | $\sum_j\widehat{(\alpha\beta)_{i,j}}=0$ for each $i$ |
+| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | $\sum_i\widehat{(\alpha\beta)_{i,j}}=0$ for each $j$ |
+| $\widehat{\boldsymbol{\varepsilon}}\perp$ all four others | cell-wise $\sum_k\widehat{\varepsilon}_{(i,j,k)}=0$ |
+
+The "balanced factorization" entry above hints at why these orthogonalities are not accidental. This experiment uses a **balanced factorial design**, in which every cell contains the same number of observations $K$. In the later chapters, we will have more details on what this means, and what happens when a design is not *balanced*.
+
+### Measuring Fitted Vectors' Magnitudes
+
+We now want a single number that summarizes the magnitude of each component vector across the whole dataset. The natural geometric measure of a vector's magnitude is its **squared Euclidean norm**:
+
+$$\|\mathbf{v}\|^2 = \sum_{i,j,k} v_{i,j,k}^2.$$
+
+The reason to choose squared Euclidean norm is that it interacts with orthogonality through the Pythagorean theorem:
+
+$$\mathbf{u}\perp\mathbf{v} \Leftrightarrow \|\mathbf{u}+\mathbf{v}\|^2 = \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2,$$
+
+where $\mathbf{u}\perp\mathbf{v} \Leftrightarrow\sum_{i,j,k} u_{i,j,k}\,v_{i,j,k}=0$.
+
+No other natural measure of vector size has this additivity (e.g. $\sum|u_i+v_i|$ is generally not $\sum|u_i|+\sum|v_i|$, even when $\mathbf{u}\perp\mathbf{v}$).
+
+Now, we apply squared Euclidean norm on both sides of equation (4):
+
+$$
+\begin{align}
+\|\mathbf{y​}−\widehat{\boldsymbol{\mu}}\|^2&​=\|\widehat{\boldsymbol{\alpha}}​​+\widehat{\boldsymbol{\beta}​​}+\widehat{\boldsymbol{\alpha\beta}}​​+\widehat{\boldsymbol{\varepsilon}}\|^2 \notag \\
+&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}​​}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}}\rangle \notag\\
+&+2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\alpha\beta}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle +2\langle\widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle\notag \\ 
+&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}​​}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+\end{align}
+$$
+
+Similarly, writing this out in entry-level form gives:
+
+$$
+\begin{align*}
+\sum_{i,j,k}(y_{i,j,k} - \hat\mu)^2 &= \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 \notag \\
+&= \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2.
+\end{align*}
+$$
 
 ??? info "Click to see the expansion on the right-hand side"
 
@@ -328,34 +401,26 @@ More details will be discussed in the later section.
     \end{align*}
     $$
 
-Now, we have the following equation:
-
-$$
-\begin{align*}
-&\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \\ 
-&\sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2
-\end{align*}
-$$
-
 Let 
-
 $$
 \begin{gather*}
-\mathrm{SS_T} = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
-\mathrm{SS_A} = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
-\mathrm{SS_B} = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
-\mathrm{SS_{A\times B}} = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
-\mathrm{SS_E} = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
+\mathrm{SS_T} = \|\mathbf{y​}−\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
+\mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
+\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}​​}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
+\mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
+\mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2 = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
 \end{gather*}
 $$
 
-We now obtain the classic ANOVA formula for this experiment:
+We now obtain the classic SS formula for this experiment:
 
 $$
+\begin{equation}
 \mathrm{SS_T} = \mathrm{SS_A} + \mathrm{SS_B} + \mathrm{SS_{A\times B}} + \mathrm{SS_E}
+\end{equation}
 $$
 
-In many textbooks however, ANOVA sum of squares are often calculated using a shortcut, called the *bracket form*.
+In many textbooks, however, sums of squares are calculated using a shortcut called the *bracket form*.
 
 ??? info "Calculate sums of squares by hand using the bracket form"
 
@@ -418,7 +483,7 @@ In many textbooks however, ANOVA sum of squares are often calculated using a sho
     \end{aligned}
     $$
 
-    we have
+    We have
 
     $$
     IJK\hat\mu^2
@@ -571,15 +636,15 @@ In many textbooks however, ANOVA sum of squares are often calculated using a sho
     Notice an intermediate quantity:
 
     $$
-    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C.
     $$
 
-    On many textbooks this is called the **cell sum of squares**:
+    In many textbooks this is called the **cell sum of squares**:
 
     $$
     \mathrm{SS_{cell}}
     =
-    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C.
     $$
 
     Using this notation,
@@ -594,12 +659,12 @@ In many textbooks however, ANOVA sum of squares are often calculated using a sho
     \mathrm{SS_B}.
     $$
 
-    Finally, the residual sum of squares measures variation around the cell means:
+    Finally, the residual sum of squares is the sum of squared deviations from the cell means:
 
     $$
     \mathrm{SS_E}
     =
-    \sum_{i,j,k}(y_{i,j,k}-\bar y_{ij.})^2.
+    \sum_{i,j,k}(y_{i,j,k}-\bar y_{i,j,.})^2.
     $$
 
     Expanding within each cell gives
@@ -609,7 +674,7 @@ In many textbooks however, ANOVA sum of squares are often calculated using a sho
     =
     \sum_{i,j,k}y_{i,j,k}^2
     -
-    \sum_{i,j}\frac{T_{ij.}^2}{K}.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}.
     $$
 
     People also calculate $\mathrm{SS_E}$ by the following formula for convenience:
@@ -714,7 +779,7 @@ $$
 \mathrm{SS_E}.
 $$
 
-What we cannot say yet is whether any one of these pieces is *large enough* relative to residual variation. 
+What we cannot say yet is whether any one of these pieces is *large enough* relative to $\mathrm{SS_E}$.
 
 For that, we need to know how these quantities behave under sampling.
 
