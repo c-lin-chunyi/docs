@@ -167,6 +167,14 @@
   font-style: italic;
 }
 
+html:lang(zh) .md-typeset em,
+html:lang(zh) .md-typeset i,
+html:lang(zh) .md-typeset cite,
+html:lang(zh) .md-typeset dfn,
+html:lang(zh) .md-typeset blockquote {
+  font-style: normal;
+}
+
 .md-typeset table:not([class]) {
   font-size: var(--site-font-size-sm);
 }
