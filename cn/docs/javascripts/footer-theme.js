@@ -156,7 +156,6 @@
       document.body.setAttribute("data-md-color-" + key, value);
     });
 
-    input.dispatchEvent(new Event("change", { bubbles: true }));
     return true;
   }
 

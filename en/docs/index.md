@@ -2,4 +2,4 @@
 
 Todo:
 
-* [ ] Fix cookies across *.chunyi-lin.com
+* [x] Fix cookies across *.chunyi-lin.com
