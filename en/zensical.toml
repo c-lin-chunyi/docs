@@ -36,9 +36,9 @@ nav = [
     ] },
     { "Experiment Design and Statistical Analysis" = [
       { "Contents" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
-      { "01" = [
+      { "Analysis of Variance (ANOVA)" = [
         { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/index.md" },
-        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
+        { "Introduction: Decomposing an Observation" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
       ] },
     ] },
   ] },

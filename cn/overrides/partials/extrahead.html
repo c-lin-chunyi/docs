@@ -118,13 +118,19 @@
         return null;
       }
 
-      var selector = '[data-md-component="palette"] input[name="__palette"][data-md-color-media="' + media + '"]';
-      var input = document.querySelector(selector);
-      if (!input) {
+      var allInputs = Array.from(
+        document.querySelectorAll('[data-md-component="palette"] input[name="__palette"]')
+      );
+      var index = allInputs.findIndex(function (el) {
+        return el.getAttribute("data-md-color-media") === media;
+      });
+      if (index === -1) {
         return null;
       }
 
+      var input = allInputs[index];
       return {
+        index: index,
         color: {
           media: input.getAttribute("data-md-color-media"),
           scheme: input.getAttribute("data-md-color-scheme"),

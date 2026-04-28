@@ -245,6 +245,7 @@ $$
 $$
 
 and 
+
 $$
 \widehat{\boldsymbol{\varepsilon}}_{n(i,j,k)}=\widehat{\varepsilon_{i,j,k}}.
 $$
