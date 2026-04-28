@@ -254,7 +254,7 @@ We can now stack all $N=IJK$ observations into vectors in $\mathbb{R}^N$. The de
 
 $$
 \begin{equation}
-\mathbf{y​}−\widehat{\boldsymbol{\mu}}​=\widehat{\boldsymbol{\alpha}}​​+\widehat{\boldsymbol{\beta}​​}+\widehat{\boldsymbol{\alpha\beta}}​​+\widehat{\boldsymbol{\varepsilon}}.
+\mathbf{y}−\widehat{\boldsymbol{\mu}}=\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}.
 \end{equation}
 $$
 
@@ -292,10 +292,10 @@ Now, we apply squared Euclidean norm on both sides of equation (4):
 
 $$
 \begin{align}
-\|\mathbf{y​}−\widehat{\boldsymbol{\mu}}\|^2&​=\|\widehat{\boldsymbol{\alpha}}​​+\widehat{\boldsymbol{\beta}​​}+\widehat{\boldsymbol{\alpha\beta}}​​+\widehat{\boldsymbol{\varepsilon}}\|^2 \notag \\
-&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}​​}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}}\rangle \notag\\
+\|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2&=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}\|^2 \notag \\
+&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}}\rangle \notag\\
 &+2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\alpha\beta}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle +2\langle\widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle\notag \\ 
-&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}​​}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
 \end{align}
 $$
 
@@ -406,9 +406,9 @@ Let
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y​}−\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
+\mathrm{SS_T} = \|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
 \mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
-\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}​​}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
+\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
 \mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
 \mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2 = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
 \end{gather*}
