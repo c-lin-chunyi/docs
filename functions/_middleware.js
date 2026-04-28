@@ -85,8 +85,12 @@ export async function onRequest({ request, next }) {
     return next();
   }
 
-  // Root-level static files served as-is.
-  if (ROOT_FILES.has(pathname) || pathname.startsWith("/.well-known/")) {
+  // Static assets and root-level files served as-is.
+  if (
+    pathname.startsWith("/assets/") ||
+    pathname.startsWith("/.well-known/") ||
+    ROOT_FILES.has(pathname)
+  ) {
     return next();
   }
 
