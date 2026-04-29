@@ -1,10 +1,10 @@
-# 实验设计与方差分析
+# 引言：分解一个观测值
 
 !!! warning "注意"
     
     查看原文请点击[这里](/en/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/)
 
-## 从一个实验开始
+## 一个例子
 
 ### 实验设计与原始数据
 
@@ -68,13 +68,13 @@ $$
 
 ??? info "点击查看交互作用图"
     ![单元均值的交互作用图。](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_zh.svg)
-    折线不平行，提示反馈类型的效应取决于任务难度，这意味着方差分析模型中存在交互项 $(\alpha\beta)_{i,j}$。
+    折线不平行，提示反馈类型的效应取决于任务难度，这意味着模型中存在交互项 $(\alpha\beta)_{i,j}$。
 
-### 构建模型
+### 双因素线性模型
 
 我们想问的问题是：
 
-*是什么导致了任务表现的变异？或者说，这些变异从何而来？这些变异是有意义的，还是只是被一些随机误差放大了？*
+*是什么导致了任务表现的变异？或者说，这些变异从何而来？这些变异是有意义的，还是只是被随机误差放大了？*
 
 现在我们来看每一名被试的分数。
 
@@ -85,14 +85,16 @@ $$y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leq
 1. 也许是他们接受的反馈类型；
 2. 也许是他们做的任务难度；
 3. 也许是反馈类型和任务难度的某种特定组合在起作用；
-4. 又或者，主要只是残差误差？
+4. 又或者，差异只反映了被试间的随机变异。
 
-因此，我们可以构建一个模型，把上面四种猜测都纳入考虑：
+因此，我们可以构建一个模型，把上面四种可能的来源都纳入考虑。
 
 $$
+\begin{equation}
 y_{i,j,k}
 =
 \mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
+\end{equation}
 $$
 
 不过这个模型还需要一个技术性条件。按目前的写法，参数并不是唯一确定的。例如，我们可以给 $\mu$ 加上一个常数，同时让每个 $\alpha_i$ 减去同样的常数，预测值保持不变。
@@ -118,9 +120,11 @@ $$
 遗憾的是，上面大多数项并不能直接观测。我们只能利用现有信息去*估计*这些项。
 
 $$
+\begin{equation}
 y_{i,j,k}
 =
 \hat{\mu}+\widehat{\alpha_i}+\widehat{\beta_j}+\widehat{(\alpha\beta)_{i,j}}+\widehat{\varepsilon_{i,j,k}}
+\end{equation}
 $$
 
 其中：
@@ -179,8 +183,13 @@ $$
 \begin{align*}
 y_{i,j,k} &= \hat\mu + (\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) + (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu) + [\frac{1}{K} \sum_{k} y_{i,j,k} - \hat\mu -(\frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat\mu) - (\frac{1}{IK}\sum_{i,k}y_{i,j,k}- \hat\mu)] + \varepsilon_{i,j,k} \\
 y_{i,j,k} &= \hat\mu + (\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.}) \\
-y_{i,j,k} - \hat\mu &= \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
 \end{align*}
+$$
+
+$$
+\begin{equation}
+y_{i,j,k} - \hat\mu = \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
+\end{equation}
 $$
 
 !!! note "为什么需要这些约束？"
@@ -189,7 +198,7 @@ $$
 
     和为零约束选择了一种方便的约定：主效应是相对于总均值的偏差；而交互效应则是去掉总均值与主效应之后，单元剩下的那部分偏差。
 
-## 用方差分析处理整个数据集
+## 从单个观测到整个数据集
 
 前面我们说明了一个单独的观测值可以怎样被分解：
 
@@ -210,33 +219,98 @@ $$
 
 然而仅凭一个观测值，我们无法估计出所有这些成分。一个数据点不足以确定多个未知量。所以我们要用整个数据集来计算总均值、边际均值和单元均值，再用它们去估计这些成分。
 
-但我们最初的问题，即是什么导致了这些变异，似乎还没有解决。
-
-这时方差分析（ANOVA）就登场了。
-
-它的目的是回答一个问题：
-
-> 在我们做完分解之后，数据集中的总变异有多少与每一个成分相关联？
-
-要回答这个问题，我们需要一种方法，在整个数据集上衡量每个成分的大小。
-
-衡量一个量的大小，常见做法是对它取平方。而且我们想衡量这个量*在整个数据集上*的大小。
-
-我们自然地转向平方和。
-
-现在我们对等式两边在整个数据集上取平方求和。
-
-$$\sum_{i,j,k}(y_{i,j,k} - \hat\mu)^2 = \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2$$
-
-因为这是一个**平衡全因子设计**，四个拟合成分向量两两*正交*。所以所有交叉项求和后都等于零。
-
-这里所谓正交是指，对任意两个不同的成分 $u_{i,j,k}$ 与 $v_{i,j,k}$，
+设 $n(i,j,k)=(i-1)JK+(j-1)K+k$，
 
 $$
-\sum_{i,j,k}u_{i,j,k}v_{i,j,k}=0.
+\mathbf{y}_{n(i,j,k)}=y_{i,j,k} \Leftrightarrow
+\mathbf{y} = 
+\begin{bmatrix}
+y_{1,1,1}\\
+y_{1,1,2}\\
+\vdots \\
+y_{1,1,K} \\
+y_{1,2,1} \\
+\vdots \\
+y_{I,J,K}
+\end{bmatrix}_N,\;
 $$
 
-更详细的内容会在后续章节讨论。
+$$
+\widehat{\boldsymbol{\mu}} =
+\begin{bmatrix}
+\hat\mu \\
+\hat\mu \\
+\vdots \\
+\hat\mu
+\end{bmatrix}_{N},\;
+\widehat{\boldsymbol{\alpha}}_{n(i,j,k)} = \widehat{\alpha_i},\;
+\widehat{\boldsymbol{\beta}}_{n(i,j,k)} = \widehat{\beta_j},\;
+\widehat{\boldsymbol{\alpha\beta}}_{n(i,j,k)} = \widehat{(\alpha\beta)_{i,j}},\;
+$$
+
+以及
+
+$$
+\widehat{\boldsymbol{\varepsilon}}_{n(i,j,k)}=\widehat{\varepsilon_{i,j,k}}.
+$$
+
+我们现在可以把全部 $N=IJK$ 个观测值堆叠成 $\mathbb{R}^N$ 中的向量。这样一来，分解就化为一个向量等式：
+
+$$
+\begin{equation}
+\mathbf{y}-\widehat{\boldsymbol{\mu}}=\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}.
+\end{equation}
+$$
+
+### 拟合向量之间的相互正交性
+
+事实上，这里每一对拟合向量都彼此正交。
+
+| 正交关系 | 原因 |
+|---|---|
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_i\widehat{\alpha_i}=0$ |
+| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_j\widehat{\beta_j}=0$ |
+| $\widehat{\boldsymbol{\alpha\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_{i,j}\widehat{(\alpha\beta)_{i,j}}=0$ |
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\beta}}$ | 平衡全因子设计 |
+| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $i$，$\sum_j\widehat{(\alpha\beta)_{i,j}}=0$ |
+| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $j$，$\sum_i\widehat{(\alpha\beta)_{i,j}}=0$ |
+| $\widehat{\boldsymbol{\varepsilon}}\perp$ 其他四个向量 | 单元内 $\sum_k\widehat{\varepsilon}_{(i,j,k)}=0$ |
+
+表中"平衡全因子设计"那一条暗示这些正交关系并非偶然。本实验采用的是**平衡全因子设计**，每个单元都有相同数量的观测 $K$。后续章节会更详细地讨论它的含义，以及当一个设计不再*平衡*时会发生什么。
+
+### 衡量拟合向量的大小
+
+我们现在想用一个数值来概括每个成分向量在整个数据集上的大小。衡量向量大小的自然几何度量，是它的**平方范数**：
+
+$$\|\mathbf{v}\|^2 = \sum_{i,j,k} v_{i,j,k}^2.$$
+
+之所以选择平方范数，是因为它通过勾股定理与正交性相联系：
+
+$$\mathbf{u}\perp\mathbf{v} \Leftrightarrow \|\mathbf{u}+\mathbf{v}\|^2 = \|\mathbf{u}\|^2 + \|\mathbf{v}\|^2,$$
+
+其中 $\mathbf{u}\perp\mathbf{v} \Leftrightarrow\sum_{i,j,k} u_{i,j,k}\,v_{i,j,k}=0$。
+
+其他自然的向量大小度量都不具备这种可加性。例如，即使 $\mathbf{u}\perp\mathbf{v}$，$\sum|u_i+v_i|$ 一般也不等于 $\sum|u_i|+\sum|v_i|$。
+
+现在对等式 (4) 两边取平方范数：
+
+$$
+\begin{align}
+\|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2&=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}\|^2 \notag \\
+&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}}\rangle \notag\\
+&+2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\alpha\beta}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle +2\langle\widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle\notag \\ 
+&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+\end{align}
+$$
+
+类似地，写成分量形式则为：
+
+$$
+\begin{align*}
+\sum_{i,j,k}(y_{i,j,k} - \hat\mu)^2 &= \sum_{i,j,k}[(\bar{y}_{i,.,.} - \hat\mu) + (\bar{y}_{.,j,.} - \hat\mu) + (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu) + (y_{i,j,k} - \bar{y}_{i,j,.})]^2 \notag \\
+&= \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2.
+\end{align*}
+$$
 
 ??? info "点击查看右侧的展开过程"
 
@@ -332,34 +406,27 @@ $$
     \end{align*}
     $$
 
-现在，我们得到下面的等式：
-
-$$
-\begin{align*}
-&\sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 + \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 + \\ 
-&\sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 + \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2
-\end{align*}
-$$
-
 记
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
-\mathrm{SS_A} = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
-\mathrm{SS_B} = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
-\mathrm{SS_{A\times B}} = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
-\mathrm{SS_E} = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
+\mathrm{SS_T} = \|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
+\mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
+\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
+\mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
+\mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2 = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
 \end{gather*}
 $$
 
-我们就得到了本实验的经典 ANOVA 公式：
+我们就得到了本实验的经典平方和分解公式：
 
 $$
+\begin{equation}
 \mathrm{SS_T} = \mathrm{SS_A} + \mathrm{SS_B} + \mathrm{SS_{A\times B}} + \mathrm{SS_E}
+\end{equation}
 $$
 
-不过在许多教材中，方差分析的平方和往往通过一种简便方法来计算，这种方法称作**括号记法**（也叫简便公式）。
+不过在许多教材中，平方和往往通过一种称为*括号记法*的简便方法来计算。
 
 ??? info "用括号记法手工计算平方和"
 
@@ -577,7 +644,7 @@ $$
     注意一个中间量：
 
     $$
-    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C.
     $$
 
     许多教材把它称为**单元平方和**：
@@ -585,7 +652,7 @@ $$
     $$
     \mathrm{SS_{cell}}
     =
-    \sum_{i,j}\frac{T_{ij.}^2}{K}-C.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C.
     $$
 
     在这一记号下，
@@ -605,7 +672,7 @@ $$
     $$
     \mathrm{SS_E}
     =
-    \sum_{i,j,k}(y_{i,j,k}-\bar y_{ij.})^2.
+    \sum_{i,j,k}(y_{i,j,k}-\bar y_{i,j,.})^2.
     $$
 
     在每个单元内展开后得到
@@ -615,7 +682,7 @@ $$
     =
     \sum_{i,j,k}y_{i,j,k}^2
     -
-    \sum_{i,j}\frac{T_{ij.}^2}{K}.
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}.
     $$
 
     为方便起见，人们也常用下面的公式来计算 $\mathrm{SS_E}$：
@@ -720,7 +787,7 @@ $$
 \mathrm{SS_E}.
 $$
 
-但我们目前还说不清，这些部分中是否有哪一个相对于残差变异已经*足够大*。
+但我们目前还说不清，这些部分中是否有哪一个相对于 $\mathrm{SS_E}$ 已经*足够大*。
 
 要回答这个问题，我们需要了解这些量在抽样下的行为。
 

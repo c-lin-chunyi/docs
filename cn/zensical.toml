@@ -36,9 +36,9 @@ nav = [
     ] },
     { "实验设计与统计分析" = [
       { "目录" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
-      { "01" = [
+      { "方差分析（ANOVA）" = [
         { "章节概览" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/index.md" },
-        { "01 " = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
+        { "引言：分解一个观测值" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
       ] },
     ] },
   ] },
