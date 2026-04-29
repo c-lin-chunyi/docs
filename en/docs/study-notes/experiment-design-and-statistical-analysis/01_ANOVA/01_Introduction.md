@@ -6,7 +6,7 @@
 
 We want to study how feedback type ($A_1$ encouraging, $A_2$ neutral, $A_3$ critical) and task difficulty ($B_1$ easy and $B_2$ difficult) influence participants' task performance.
 
-Participants first complete a baseline task, then receive one of three feedback types $A_i \;(i\in\{1,2,3\})$. After which they perform a task of difficulty $B_j \; (j\in\{1,2\})$
+Participants first complete a baseline task, then receive one of three feedback types $A_i \;(i\in\{1,2,3\})$. After that they perform a task of difficulty $B_j \; (j\in\{1,2\})$
 
 The dependent variable $y$ is participants' task performance measured by accuracy and time used, subtract their baseline task performance measured by the same metrics. 
 
@@ -414,7 +414,7 @@ $$
 \end{gather*}
 $$
 
-We now obtain the classic SS formula for this experiment:
+We now obtain the classical SS formula for this experiment:
 
 $$
 \begin{equation}
