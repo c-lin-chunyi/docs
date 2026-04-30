@@ -28,7 +28,7 @@ $$
 Then we propagated this decomposition from one observation to the whole dataset using vectors and sum of squares.
 
 $$
-\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2
 =\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
 $$
 
@@ -36,7 +36,7 @@ Let
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2 \\
+\mathrm{SS_T} = \|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2 \\
 \mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 \\
 \mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 \\
 \mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2  \\
@@ -138,19 +138,19 @@ $$
 Now we vectorize the model using the whole dataset, and taking squared Euclidean norms on both sides:
 
 $$
-\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
 $$
 
 where 
 
 $$
-\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\boldsymbol{\varepsilon}} + \widehat{\boldsymbol{\alpha\beta}}.
 $$ 
 
 Hence
 
 $$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\hat{\boldsymbol{\varepsilon}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \hat{\boldsymbol{\varepsilon}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
 $$
 
 and
@@ -163,7 +163,7 @@ which gives
 
 $$
 \begin{align*}
-\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
 &= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle \\ 
 &=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2.
 \end{align*}
@@ -264,7 +264,7 @@ $$
 Under the normal-error assumption,
 
 $$
-y_{i,j,k}
+Y_{i,j,k}
 =
 \widehat y^{(\mathcal M)}_{i,j,k}
 +
@@ -276,7 +276,7 @@ $$
 Therefore,
 
 $$
-y_{i,j,k}\mid \mathcal M,\sigma^2
+Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
 \mathcal{N}\left(
 \widehat y^{(\mathcal M)}_{i,j,k},
@@ -287,7 +287,7 @@ $$
 Hence, the likelihood of the whole dataset is:
 
 $$
-L(\mathcal M,\sigma^2)
+L(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -309,7 +309,7 @@ Taking logs on both sides:
 
 $$
 \begin{aligned}
-\ell(\mathcal M,\sigma^2)
+\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 &=
 \sum_{i,j,k}
 \left[
@@ -344,7 +344,7 @@ Note that
 
 $$
 \mathrm{SSE}_{\mathcal M}
-=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}}}
+=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
 \|^2=
 \sum_{i,j,k}
 \left(
@@ -357,7 +357,7 @@ $$
 hence we have
 
 $$
-\ell(\mathcal M,\sigma^2)
+\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -376,13 +376,13 @@ i.e., to find
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2).
+=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y}).
 $$
 
 For a fixed model $\mathcal M$, differentiate the log-likelihood with respect to $\sigma^2$:
 
 $$
-\frac{\partial \ell(\mathcal M,\sigma^2)}{\partial \sigma^2}
+\frac{\partial \ell(\mathcal M,\sigma^2 \mid \mathbf{y})}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -410,7 +410,7 @@ Therefore, the maximum-likelihood estimate of $\sigma^2$ under model $\mathcal M
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2)
+\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
@@ -419,11 +419,11 @@ Substituting $\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}$ back into the log-li
 
 $$
 \begin{align*}
-\ell_p(\mathcal M)
+\ell_p(\mathcal M \mid \mathbf{y})
 &=
 \ell\left(
 \mathcal M,
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
+\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)
@@ -451,7 +451,7 @@ and thus the profile likelihood is
 
 $$
 \begin{align*}
-L_p(\mathcal M)
+L_p(\mathcal M \mid \mathbf{y})
 &=\exp\left[-\frac{N}{2}\ln(2\pi) - \frac{N}{2}\ln\left(\frac{\mathrm{SSE}_{\mathcal M}}{N}\right) - \frac{N}{2}\right] \\
 &=\exp\left[-\frac{N}{2} \ln\left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right) \right] \\
 &= \left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}} \\
@@ -477,7 +477,7 @@ Intuitively, we turned to $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$, which
 
 Then after some pondering, we reframed the problem as a model comparison problem and introduced $\mathrm{SSE}_{\mathcal M}$.
 
-And now under the normal-error assumption, we have the profile likelihood $L_p(\mathcal M)$. 
+And now under the normal-error assumption, we have the profile likelihood $L_p(\mathcal M \mid \mathbf{y})$.
 
 One might feel that we are just replacing one number with another arbitrarily.
 
@@ -499,7 +499,7 @@ A generative model, say a random variable $X \sim \mathcal{N}(0,1)$, is also not
 
 But a claim about how our data is generated is different. It is anchored by the data we have observed, it can predict what kind of data is probable, and the claim itself can be embarrassed by our observations. 
 
-Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $L_p(\mathcal{M})$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio. 
+Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $L_p(\mathcal{M} \mid \mathbf{y})$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio.
 
 ### Likelihood Ratio Testing
 
@@ -510,9 +510,9 @@ $$
 \Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 }{
-L_p(\mathcal M_F)
+L_p(\mathcal M_F \mid \mathbf{y})
 }\\
 &=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
@@ -527,9 +527,9 @@ $$
 If the reduced model fits almost as well as the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 \approx
-L_p(\mathcal M_F),
+L_p(\mathcal M_F \mid \mathbf{y}),
 $$
 
 so
@@ -543,9 +543,9 @@ which means removing the interaction component causes little loss of likelihood.
 But if the reduced model fits much worse than the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 \ll
-L_p(\mathcal M_F),
+L_p(\mathcal M_F \mid \mathbf{y}),
 $$
 
 and
@@ -656,7 +656,7 @@ By using likelihood, we have known which comparison matters and why. But yet we 
 Before that, we first go back to the geometry of our decomposition.
 
 $$
-\mathbf{y}−\hat{\boldsymbol{\mu}}=\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}.
+\mathbf{y}-\hat{\boldsymbol{\mu}}=\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}.
 $$
 
 Here, each component vector is allowed to move inside a certain subspace $W$. We call the dimension of that subspace, $\dim W$, its degrees of freedom.

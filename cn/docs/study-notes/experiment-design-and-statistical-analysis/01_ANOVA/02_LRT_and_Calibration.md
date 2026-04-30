@@ -148,13 +148,13 @@ $$
 其中
 
 $$
-\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\boldsymbol{\varepsilon}} + \widehat{\boldsymbol{\alpha\beta}}.
 $$
 
 因此
 
 $$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\hat{\boldsymbol{\varepsilon}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \hat{\boldsymbol{\varepsilon}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
 $$
 
 以及
@@ -269,7 +269,7 @@ $$
 在正态误差假设下，
 
 $$
-y_{i,j,k}
+Y_{i,j,k}
 =
 \widehat y^{(\mathcal M)}_{i,j,k}
 +
@@ -281,7 +281,7 @@ $$
 因此，
 
 $$
-y_{i,j,k}\mid \mathcal M,\sigma^2
+Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
 \mathcal{N}\left(
 \widehat y^{(\mathcal M)}_{i,j,k},
@@ -292,7 +292,7 @@ $$
 于是，整个数据集的似然为：
 
 $$
-L(\mathcal M,\sigma^2)
+L(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -314,7 +314,7 @@ $$
 
 $$
 \begin{aligned}
-\ell(\mathcal M,\sigma^2)
+\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 &=
 \sum_{i,j,k}
 \left[
@@ -349,7 +349,7 @@ $$
 
 $$
 \mathrm{SSE}_{\mathcal M}
-=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}}}
+=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
 \|^2=
 \sum_{i,j,k}
 \left(
@@ -362,7 +362,7 @@ $$
 因此
 
 $$
-\ell(\mathcal M,\sigma^2)
+\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -381,13 +381,13 @@ $$
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2).
+=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y}).
 $$
 
 对固定的模型 $\mathcal M$，对 $\sigma^2$ 求对数似然的导数：
 
 $$
-\frac{\partial \ell(\mathcal M,\sigma^2)}{\partial \sigma^2}
+\frac{\partial \ell(\mathcal M,\sigma^2 \mid \mathbf{y})}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -415,7 +415,7 @@ $$
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2)
+\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
@@ -424,11 +424,11 @@ $$
 
 $$
 \begin{align*}
-\ell_p(\mathcal M)
+\ell_p(\mathcal M \mid \mathbf{y})
 &=
 \ell\left(
 \mathcal M,
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
+\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)
@@ -456,7 +456,7 @@ $$
 
 $$
 \begin{align*}
-L_p(\mathcal M)
+L_p(\mathcal M \mid \mathbf{y})
 &=\exp\left[-\frac{N}{2}\ln(2\pi) - \frac{N}{2}\ln\left(\frac{\mathrm{SSE}_{\mathcal M}}{N}\right) - \frac{N}{2}\right] \\
 &=\exp\left[-\frac{N}{2} \ln\left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right) \right] \\
 &= \left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}} \\
@@ -477,9 +477,9 @@ $$
 \Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 }{
-L_p(\mathcal M_F)
+L_p(\mathcal M_F \mid \mathbf{y})
 }\\
 &=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
@@ -494,9 +494,9 @@ $$
 如果缩减模型的拟合几乎与完整模型一样好，那么
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 \approx
-L_p(\mathcal M_F),
+L_p(\mathcal M_F \mid \mathbf{y}),
 $$
 
 于是
@@ -510,9 +510,9 @@ $$
 但如果缩减模型的拟合远远差于完整模型，那么
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}})
+L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
 \ll
-L_p(\mathcal M_F),
+L_p(\mathcal M_F \mid \mathbf{y}),
 $$
 
 且
