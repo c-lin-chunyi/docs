@@ -268,6 +268,7 @@ I.e., the residual errors are assumed to be independent, normally distributed, c
     In that case, one should consider alternative approches such as bootstrap procedures, data transformations, generalized linear models and more.
 
 ### Maximum Likelihood Estimation
+
 Consider a generic model $\mathcal M$ for our example experiment.
 
 We write its structural mean parameter for observation $(i,j,k)$ as
@@ -285,7 +286,7 @@ Y_{i,j,k}
 +
 \varepsilon_{i,j,k},
 \qquad
-\varepsilon_{i,j,k}\overset{\mathrm{i.i.d}}{\sim}\mathcal{N}(0,\sigma^2).
+\varepsilon_{i,j,k}\overset{\mathrm{i.i.d.}}{\sim}\mathcal N(0,\sigma^2).
 $$
 
 Therefore,
@@ -293,16 +294,16 @@ Therefore,
 $$
 Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
-\mathcal{N}\left(
+\mathcal N\left(
 \mu^{(\mathcal M)}_{i,j,k},
 \sigma^2
 \right).
 $$
 
-Hence, the likelihood of the whole dataset is:
+Hence, the likelihood of the observed dataset is
 
 $$
-L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 ; \mathbf{y}, \mathcal M)
+L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -320,26 +321,11 @@ y_{i,j,k}
 \right].
 $$
 
-Taking logs on both sides:
+Taking logs,
 
 $$
 \begin{aligned}
-\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 ; \mathbf{y}, \mathcal M)
-&=
-\sum_{i,j,k}
-\left[
--\frac{1}{2}\ln(2\pi\sigma^2)
--
-\frac{
-\left(
-y_{i,j,k}
--
-\mu^{(\mathcal M)}_{i,j,k}
-\right)^2
-}{
-2\sigma^2
-}
-\right] \\
+\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 &=
 -\frac{N}{2}\ln(2\pi)
 -
@@ -355,15 +341,19 @@ y_{i,j,k}
 \end{aligned}
 $$
 
-For a fixed model $\mathcal M$, the likelihood contains two kinds of unknown quantities: the structural mean vector $\boldsymbol{\mu}^{(\mathcal M)}$ and the variance $\sigma^2$.
-
-Since our main goal is to compare models rather than study these parameters for their own sake, we will handle them by *profiling*: for each fixed model, choose the parameter values that make that model's likelihood as large as possible, and then compare the resulting optimized likelihoods.
-
-We first profile out the structural mean vector. For fixed $\mathcal M$ and fixed $\sigma^2$, the log-likelihood depends on $\boldsymbol{\mu}^{(\mathcal M)}$ only through
+We now want the parameter values that maximize this likelihood, subject to two constraints:
 
 $$
--
-\frac{1}{2\sigma^2}
+\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M,
+\qquad
+\sigma^2>0.
+$$
+
+The first constraint means that the mean vector must have the structure allowed by model $\mathcal M$. For example, the full model allows the interaction component, while the reduced model does not.
+
+Notice that $\boldsymbol{\mu}^{(\mathcal M)}$ enters the log-likelihood only through the squared-error term
+
+$$
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
@@ -372,120 +362,53 @@ y_{i,j,k}
 \right)^2.
 $$
 
-Therefore, maximizing the normal likelihood over the structural mean parameters is equivalent to minimizing the squared residual sum.
+For any fixed $\sigma^2>0$, the coefficient of this term is
 
-In other words, the model chooses the fitted values allowed by $\mathcal M$ that make the squared residual error as small as possible:
+$$
+-\frac{1}{2\sigma^2}<0.
+$$
+
+Therefore, maximizing the likelihood over $\boldsymbol{\mu}^{(\mathcal M)}$ is equivalent to minimizing the squared-error term. In other words, under normal errors, maximum likelihood fitting of the mean structure gives the *least-squares fit*.
+
+We denote the fitted mean parameters under model $\mathcal M$ by
+
+$$
+\widehat\mu^{(\mathcal M)}_{i,j,k},
+$$
+
+The individual fitted mean parameters are not the main object of interest for our purposes in this chapter, but we will return to them later.
+
+After fitting the mean structure of $\mathcal M$, the log-likelihood becomes
+
+$$
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+=
+-\frac{N}{2}\ln(2\pi)
+-
+\frac{N}{2}\ln(\sigma^2)
+-
+\frac{\sum_{i,j,k}
+\left(
+y_{i,j,k}
+-
+\widehat\mu^{(\mathcal M)}_{i,j,k}
+\right)^2}{2\sigma^2}.
+$$
+
+Note that
 
 $$
 \mathrm{SSE}_{\mathcal M}
 =
-\min_{\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M}
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\mu^{(\mathcal M)}_{i,j,k}
-\right)^2.
+\widehat\mu^{(\mathcal M)}_{i,j,k}
+\right)^2,
 $$
 
-After fitting the model, we write the optimizer as
-
-$$
-\widehat y^{(\mathcal M)}_{i,j,k},
-$$
-
-so
-
-$$
-\mathrm{SSE}_{\mathcal M}
-=
-\sum_{i,j,k}
-\left(
-y_{i,j,k}
--
-\widehat y^{(\mathcal M)}_{i,j,k}
-\right)^2.
-$$
-
-We will not focus on the individual least-squares estimates themselves in this chapter, but we will be back on it later when they become our main object of interest.
-
-??? info "Getting the optimizer"
-
-    For a fixed model $\mathcal M$, the structural mean vector
-
-    $$
-    \boldsymbol{\mu}^{(\mathcal M)}
-    =
-    \left(
-    \mu^{(\mathcal M)}_{1,1,1},
-    \mu^{(\mathcal M)}_{1,1,2},
-    \ldots,
-    \mu^{(\mathcal M)}_{I,J,K}
-    \right)^\top
-    $$
-
-    cannot be any arbitrary vector in $\mathbb R^N$. It must live in the model space allowed by $\mathcal M$.
-
-    Least-squares fitting chooses the point in that model space closest to the observed data vector:
-
-    $$
-    \widehat{\boldsymbol{\mu}}^{(\mathcal M)}
-    =
-    \operatorname*{arg\,min}_{\boldsymbol{\mu}^{(\mathcal M)}\in \mathcal M}
-    \left\|
-    \mathbf y-\boldsymbol{\mu}^{(\mathcal M)}
-    \right\|^2.
-    $$
-
-    This optimizer is the fitted value vector:
-
-    $$
-    \widehat{\boldsymbol{\mu}}^{(\mathcal M)}
-    =
-    \widehat{\mathbf y}^{(\mathcal M)}.
-    $$
-
-    Equivalently, entry by entry,
-
-    $$
-    \widehat{\mu}^{(\mathcal M)}_{i,j,k}
-    =
-    \widehat y^{(\mathcal M)}_{i,j,k}.
-    $$
-
-    Geometrically, $\widehat{\mathbf y}^{(\mathcal M)}$ is the orthogonal projection of $\mathbf y$ onto the model space of $\mathcal M$. The residual vector is the part left over:
-
-    $$
-    \widehat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
-    =
-    \mathbf y-\widehat{\mathbf y}^{(\mathcal M)}.
-    $$
-
-    Therefore,
-
-    $$
-    \mathrm{SSE}_{\mathcal M}
-    =
-    \left\|
-    \widehat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
-    \right\|^2
-    =
-    \left\|
-    \mathbf y-\widehat{\mathbf y}^{(\mathcal M)}
-    \right\|^2.
-    $$
-
-    In the full two-way model, this projection gives the cell means:
-
-    $$
-    \widehat y^{(\mathcal M_F)}_{i,j,k}
-    =
-    \bar y_{i,j,.}.
-    $$
-
-    In the reduced model without interaction, the fitted values are constrained to have no interaction pattern. Therefore, the exact fitted values differ, but the principle is still choosing the closest vector allowed by the reduced model.
-
-After the least-squares fitting step, the log-likelihood becomes
+therefore
 
 $$
 \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
@@ -497,29 +420,17 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-It remains to profile out $\sigma^2$ as well. In this comparison, $\sigma^2$ is a nuisance parameter: it affects the likelihood, but it is not the quantity we are trying to interpret.
-
-The idea is simple. We fix our model of choice $\mathcal{M}$, and choose a $\sigma^2$ that makes the likelihood as large as possible,
-
-i.e., to find
+Now maximize this expression over $\sigma^2$. Differentiating with respect to $\sigma^2$,
 
 $$
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M).
-$$
-
-For a fixed model $\mathcal M$, differentiate the log-likelihood with respect to $\sigma^2$:
-
-$$
-\frac{\partial \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)}{\partial \sigma^2}
+\frac{\partial \ell}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
 \frac{\mathrm{SSE}_{\mathcal M}}{2(\sigma^2)^2}.
 $$
 
-Setting the derivative equal to zero,
+Setting this derivative to zero gives
 
 $$
 -\frac{N}{2\sigma^2}
@@ -535,60 +446,33 @@ $$
 -N\sigma^2+\mathrm{SSE}_{\mathcal M}=0.
 $$
 
-Therefore, the maximum-likelihood estimate of $\sigma^2$ under model $\mathcal M$ is
+Therefore,
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
-=
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
 
-Substituting $\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}$ back into the log-likelihood gives us the profile log-likelihood of model $\mathcal{M}$:
+Substituting both maximum-likelihood estimates back into the likelihood gives the maximized likelihood of model $\mathcal M$:
 
 $$
-\begin{align*}
-\ell_p(\mathcal M ; \mathbf{y})
+\widehat L_{\mathcal M}
+=
+L(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
+$$
+
+Using the previous expression,
+
+$$
+\begin{aligned}
+\widehat L_{\mathcal M}
 &=
-\ell\left(
-\widehat{\boldsymbol{\mu}}^{(\mathcal M)},
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};
-\mathbf y,\mathcal M
-\right)\\
-&=
--\frac{N}{2}\ln(2\pi)
--
-\frac{N}{2}
-\ln\left(
+(2\pi e)^{-N/2}
+\left(
 \frac{\mathrm{SSE}_{\mathcal M}}{N}
-\right)
--
-\frac{\mathrm{SSE}_{\mathcal M}}
-{2(\mathrm{SSE}_{\mathcal M}/N)} \\
-&=
--\frac{N}{2}\ln(2\pi)
--
-\frac{N}{2}
-\ln\left(
-\frac{\mathrm{SSE}_{\mathcal M}}{N}
-\right)
--
-\frac{N}{2}.
-\end{align*}
-$$
-
-and thus the profile likelihood is
-
-$$
-\begin{align*}
-L_p(\mathcal M ; \mathbf{y})
-&=\exp\left[-\frac{N}{2}\ln(2\pi) - \frac{N}{2}\ln\left(\frac{\mathrm{SSE}_{\mathcal M}}{N}\right) - \frac{N}{2}\right] \\
-&=\exp\left[-\frac{N}{2} \ln\left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right) \right] \\
-&= \left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}} \\
-&= (2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}}.
-\end{align*}
+\right)^{-N/2}.
+\end{aligned}
 $$
 
 Unfortunately, a single likelihood value by itself is still hard to interpret.
@@ -609,7 +493,7 @@ Intuitively, we turned to $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$, which
 
 Then after some pondering, we reframed the problem as a model comparison problem and introduced $\mathrm{SSE}_{\mathcal M}$.
 
-And now under the normal-error assumption, we have the profile likelihood $L_p(\mathcal M ; \mathbf{y})$.
+And now under the normal-error assumption, we have the maximized likelihood $\widehat L_{\mathcal M}$.
 
 One might feel that we are just replacing one number with another arbitrarily.
 
@@ -631,20 +515,20 @@ A generative model, say a random variable $X \sim \mathcal{N}(0,1)$, is also not
 
 But a claim about how our data is generated is different. It is anchored by the data we have observed, it can predict what kind of data is probable, and the claim itself can be embarrassed by our observations. 
 
-Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $L_p(\mathcal{M} ; \mathbf{y})$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio.
+Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $\widehat L_{\mathcal M}$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio.
 
 ### Likelihood Ratio Testing
 
-Now, we want to compare the reduced and full models by comparing their profile likelihoods:
+Now, we want to compare the reduced and full models by comparing their maximized likelihoods:
 
 $$
 \begin{align*}
 \Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
-L_p(\mathcal M_F ; \mathbf{y})
+\widehat L_{\mathcal M_F}
 }\\
 &=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
@@ -659,9 +543,9 @@ $$
 If the reduced model fits almost as well as the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 \approx
-L_p(\mathcal M_F ; \mathbf{y}),
+\widehat L_{\mathcal M_F},
 $$
 
 so
@@ -675,9 +559,9 @@ which means removing the interaction component causes little loss of likelihood.
 But if the reduced model fits much worse than the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 \ll
-L_p(\mathcal M_F ; \mathbf{y}),
+\widehat L_{\mathcal M_F},
 $$
 
 and
@@ -1680,7 +1564,7 @@ $$
 
 Thus, the interaction sum of squares can be interpreted as the reduction in residual squared error obtained by allowing the interaction component into the model.
 
-Under the normal-error assumption, likelihood-ratio testing showed that this comparison is connected to profile likelihood:
+Under the normal-error assumption, likelihood-ratio testing showed that this comparison is connected to maximized likelihood:
 
 $$
 -2\ln\Lambda_{\mathrm{A\times B}}
