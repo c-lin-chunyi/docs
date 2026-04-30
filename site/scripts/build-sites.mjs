@@ -17,20 +17,20 @@ const locales = [
   { name: "Chinese", sourceRoot: "cn", outputRoot: "zh", config: "cn/zensical.toml" },
 ];
 
-async function resolveZensicalBin() {
+async function resolveZensicalCommand() {
   if (process.env.ZENSICAL_BIN) {
-    return process.env.ZENSICAL_BIN;
+    return { command: process.env.ZENSICAL_BIN, argsPrefix: [] };
   }
 
-  const localBin = process.platform === "win32"
-    ? path.join(repoRoot, ".venv/Scripts/zensical.exe")
-    : path.join(repoRoot, ".venv/bin/zensical");
+  const localPython = process.platform === "win32"
+    ? path.join(repoRoot, ".venv/Scripts/python.exe")
+    : path.join(repoRoot, ".venv/bin/python");
 
   try {
-    await access(localBin, constants.X_OK);
-    return localBin;
+    await access(localPython, constants.X_OK);
+    return { command: localPython, argsPrefix: ["-m", "zensical"] };
   } catch {
-    return "zensical";
+    return { command: "zensical", argsPrefix: [] };
   }
 }
 
@@ -42,10 +42,10 @@ function pipeWithPrefix(stream, prefix, output) {
   });
 }
 
-function runBuild(zensicalBin, locale) {
+function runBuild(zensicalCommand, locale) {
   const child = spawn(
-    zensicalBin,
-    ["build", "-f", locale.config],
+    zensicalCommand.command,
+    [...zensicalCommand.argsPrefix, "build", "-f", locale.config],
     { cwd: repoRoot },
   );
 
@@ -55,7 +55,7 @@ function runBuild(zensicalBin, locale) {
   return new Promise((resolve, reject) => {
     child.on("error", (error) => {
       reject(new Error(
-        `Failed to start Zensical (${zensicalBin}). Install requirements.txt or set ZENSICAL_BIN. ${error.message}`,
+        `Failed to start Zensical (${zensicalCommand.command}). Install requirements.txt or set ZENSICAL_BIN. ${error.message}`,
       ));
     });
     child.on("close", (code) => {
@@ -106,8 +106,8 @@ await Promise.all(
   ),
 );
 
-const zensicalBin = await resolveZensicalBin();
-await Promise.all(locales.map((locale) => runBuild(zensicalBin, locale)));
+const zensicalCommand = await resolveZensicalCommand();
+await Promise.all(locales.map((locale) => runBuild(zensicalCommand, locale)));
 await Promise.all([writeHeaders(), copySharedAssets(), ...locales.map(copySite)]);
 
 console.log("Built English to dist/en, Chinese to dist/zh, shared assets to dist/assets, and headers to dist/_headers.");

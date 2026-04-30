@@ -225,9 +225,9 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs documentation
-en/site/
-cn/site/
+# Site build output
+site/en/site/
+site/cn/site/
 
 # mypy
 .mypy_cache/
@@ -283,4 +283,4 @@ __marimo__/
 quarto-ref
 
 # Compiled files
-dist/
+site/dist/
