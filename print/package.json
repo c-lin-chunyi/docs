@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "print:test": "node scripts/build-print.mjs en test/test1.md",
+    "print:en": "node scripts/build-print.mjs en test/test1.md --out linear-model-notes-en",
+    "print:cn": "node scripts/build-print.mjs cn test/test0.md --out linear-model-notes-cn"
+  }
+}

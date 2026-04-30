@@ -97,26 +97,27 @@ Avoid theorem-style names such as `definition`, `theorem`, `proof`, and `lemma`;
 
 ## Phase 5: Build Script and Generated-Output Policy
 
-- [ ] **T50** Create `.print-build/` output directory.
+- [x] **T50** Create `.print-build/` output directory.
   - Generated files only. Gitignored.
-- [ ] **T51** Add `.print-build/` to `.gitignore`.
+- [x] **T51** Add `.print-build/` to `.gitignore`.
   - Do not commit generated `.tex` by default.
-- [ ] **T52** Create `print/scripts/build-print.*`.
+- [x] **T52** Create `print/scripts/build-print.*`.
   - Node or Python; use whichever fits the site repo better.
-- [ ] **T53** Add a package script or Makefile target.
-  - Example: `npm run print:en`.
-- [ ] **T54** Generate intermediate `.tex` for inspection.
+- [x] **T53** Add a package script or Makefile target.
+  - Added `print/package.json` scripts: `npm run print:test`, `npm run print:en`, and `npm run print:cn`.
+- [x] **T54** Generate intermediate `.tex` for inspection.
   - Useful for debugging, but untracked.
-- [ ] **T55** Decide release artifact policy.
-  - PDFs can be attached to releases, but usually not committed.
+- [x] **T55** Decide release artifact policy.
+  - Policy: keep `.print-build/` untracked; attach release PDFs externally when needed, but do not commit generated `.tex` or `.pdf` artifacts by default.
 
-Example package scripts from repo root:
+Package scripts from `print/`:
 
 ```json
 {
   "scripts": {
-    "print:en": "node print/scripts/build-print.mjs en",
-    "print:cn": "node print/scripts/build-print.mjs cn"
+    "print:test": "node scripts/build-print.mjs en test/test1.md",
+    "print:en": "node scripts/build-print.mjs en test/test1.md --out linear-model-notes-en",
+    "print:cn": "node scripts/build-print.mjs cn test/test0.md --out linear-model-notes-cn"
   }
 }
 ```
