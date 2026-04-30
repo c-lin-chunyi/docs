@@ -8,7 +8,7 @@
   - Current target: `linear-model-notes.latex`, not `eisvogel.latex`.
 - [x] **T02** Finish title page customization.
 - [x] **T03** Finish font setup.
-- [ ] **T04** Confirm plain Markdown compiles to PDF.
+- [x] **T04** Confirm plain Markdown compiles to PDF.
   - Use one simple chapter without MkDocs callouts first.
 
 ## Phase 1: Core Document Style
@@ -28,28 +28,28 @@
 
 ## Phase 2: Table and Figure Infrastructure
 
-- [ ] **T20** Set table packages.
+- [x] **T20** Set table packages.
   - `booktabs`, `longtable`, `array`, maybe `threeparttable`.
-- [ ] **T21** Tune Pandoc table appearance.
+- [x] **T21** Tune Pandoc table appearance.
   - Especially ANOVA tables and hand-calculation tables.
-- [ ] **T22** Decide policy for wide tables.
+- [x] **T22** Decide policy for wide tables.
   - Options: smaller font, landscape page, manual LaTeX table, or source simplification.
-- [ ] **T23** Define caption style.
+- [x] **T23** Define caption style.
   - Small, sober, possibly left-aligned.
-- [ ] **T24** Define figure placement defaults.
+- [x] **T24** Define figure placement defaults.
   - Avoid float chaos. Since these are notes, stable placement matters more than academic convention.
 
 ## Phase 3: Math Style and Equation Behavior
 
-- [ ] **T30** Check display math spacing.
+- [x] **T30** Check display math spacing.
   - Make sure dense derivations breathe enough.
-- [ ] **T31** Check equation overflow behavior.
+- [x] **T31** Check equation overflow behavior.
   - Especially long likelihood expressions and ANOVA decompositions.
-- [ ] **T32** Add math helper packages.
+- [x] **T32** Add math helper packages.
   - `mathtools`, `amssymb`, maybe `bm`.
-- [ ] **T33** Define notation macros.
+- [x] **T33** Define notation macros.
   - Examples: `\SSE`, `\SSA`, `\SSB`, `\MS`, `\df`.
-- [ ] **T34** Decide whether to number equations.
+- [x] **T34** Decide whether to number equations.
   - For notes, mostly unnumbered is fine unless cross-referencing is planned.
 
 Potential macro layer:
@@ -67,21 +67,21 @@ Potential macro layer:
 
 This is the most important design layer before Lua filters.
 
-- [ ] **T40** Create `partials/boxes.latex`.
+- [x] **T40** Create `partials/boxes.latex`.
   - Keep boxes outside the main template.
-- [ ] **T41** Define `notebox`.
+- [x] **T41** Define `notebox`.
   - General explanatory notes.
-- [ ] **T42** Define `assumptionbox`.
+- [x] **T42** Define `assumptionbox`.
   - For normality, independence, equal variance, etc.
-- [ ] **T43** Define `derivationbox`.
+- [x] **T43** Define `derivationbox`.
   - For optional dense math.
-- [ ] **T44** Define `workedexamplebox`.
+- [x] **T44** Define `workedexamplebox`.
   - For hand calculations and numerical ANOVA examples.
-- [ ] **T45** Define `caveatbox`.
+- [x] **T45** Define `caveatbox`.
   - For warnings and limitations.
-- [ ] **T46** Define `interpretationbox`.
+- [x] **T46** Define `interpretationbox`.
   - For "what this means experimentally."
-- [ ] **T47** Test all boxes manually in a Markdown file using raw LaTeX.
+- [x] **T47** Test all boxes manually in a Markdown file using raw LaTeX.
   - Do this before writing Lua filters.
 
 Use reader-function names:

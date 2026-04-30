@@ -34,6 +34,32 @@ $endif$
 \definecolor{caption-color}{HTML}{777777}
 \usepackage[font={stretch=1.2}, textfont={color=caption-color}, position=top, skip=4mm, labelfont=bf, singlelinecheck=false, justification=$if(caption-justification)$$caption-justification$$else$raggedright$endif$]{caption}
 \setcapindent{0em}
+\captionsetup[table]{position=top,skip=0.45\baselineskip}
+\captionsetup[figure]{position=bottom,skip=0.45\baselineskip}
+
+%
+% math defaults and notation
+%
+\setlength{\abovedisplayskip}{0.85\baselineskip plus 2pt minus 2pt}
+\setlength{\belowdisplayskip}{0.85\baselineskip plus 2pt minus 2pt}
+\setlength{\abovedisplayshortskip}{0.55\baselineskip plus 2pt minus 2pt}
+\setlength{\belowdisplayshortskip}{0.55\baselineskip plus 2pt minus 2pt}
+\allowdisplaybreaks[2]
+\mathtoolsset{showonlyrefs=false}
+\newcommand{\SST}{\mathrm{SS_T}}
+\newcommand{\SSA}{\mathrm{SS_A}}
+\newcommand{\SSB}{\mathrm{SS_B}}
+\newcommand{\SSAB}{\mathrm{SS}_{A\times B}}
+\newcommand{\SSE}{\mathrm{SS_E}}
+\newcommand{\MS}{\mathrm{MS}}
+\newcommand{\MST}{\mathrm{MS_T}}
+\newcommand{\MSA}{\mathrm{MS_A}}
+\newcommand{\MSB}{\mathrm{MS_B}}
+\newcommand{\MSE}{\mathrm{MS_E}}
+\newcommand{\df}{\mathrm{df}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\operatorname{Var}}
 
 %
 % blockquote

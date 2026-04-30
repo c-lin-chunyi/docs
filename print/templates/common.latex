@@ -89,12 +89,20 @@ $--
 $-- tables
 $--
 $if(tables)$
-\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array,tabularx,threeparttable,makecell,ragged2e}
 \newcounter{none} % for unnumbered tables
 $if(multirow)$
 \usepackage{multirow}
 $endif$
 \usepackage{calc} % for calculating minipage widths
+\newcolumntype{L}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\Centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\RaggedLeft\arraybackslash}p{#1}}
+\setlength{\tabcolsep}{6pt}
+\setlength{\LTpre}{0.75\baselineskip}
+\setlength{\LTpost}{0.75\baselineskip}
+\renewcommand{\arraystretch}{1.18}
+\newcommand{\printtablesmall}{\small\setlength{\tabcolsep}{4.5pt}\renewcommand{\arraystretch}{1.12}}
 $if(beamer)$
 \usepackage{caption}
 % Make caption package work with longtable
@@ -107,6 +115,7 @@ $else$
 \makeatletter
 \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
 \makeatother
+\AtBeginEnvironment{longtable}{\printtablesmall}
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
@@ -117,6 +126,7 @@ $-- graphics
 $--
 $if(graphics)$
 \usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,height=0.82\textheight,keepaspectratio}
 \makeatletter
 \newsavebox\pandoc@box
 \newcommand*\pandocbounded[1]{% scales image to fit in text height/width

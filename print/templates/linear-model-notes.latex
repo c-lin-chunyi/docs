@@ -78,7 +78,7 @@ $if(geometry)$
 $else$
 \usepackage[margin=2.5cm,includehead=true,includefoot=true,centering,$for(geometry)$$geometry$$sep$,$endfor$]{geometry}
 $endif$
-\usepackage{amsmath,amssymb}
+\usepackage{amsmath,amssymb,mathtools,bm}
 $if(cancel)$
 \usepackage{cancel}
 $endif$
@@ -138,6 +138,7 @@ $endif$
 \date{$date$}
 
 $linear-model-added.latex()$
+\input{print/partials/boxes.latex}
 
 \begin{document}
 

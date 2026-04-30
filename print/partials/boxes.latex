@@ -1,0 +1,40 @@
+\definecolor{box-note-bg}{HTML}{F6F8FA}
+\definecolor{box-note-rule}{HTML}{6B7280}
+\definecolor{box-assumption-bg}{HTML}{F3F8F6}
+\definecolor{box-assumption-rule}{HTML}{2F7D66}
+\definecolor{box-derivation-bg}{HTML}{F7F6FB}
+\definecolor{box-derivation-rule}{HTML}{6E5AA8}
+\definecolor{box-example-bg}{HTML}{F7F7F1}
+\definecolor{box-example-rule}{HTML}{8A7A34}
+\definecolor{box-caveat-bg}{HTML}{FFF7F5}
+\definecolor{box-caveat-rule}{HTML}{B4533A}
+\definecolor{box-interpretation-bg}{HTML}{F3F7FA}
+\definecolor{box-interpretation-rule}{HTML}{2C6E8F}
+
+\newcommand{\printboxtitle}[1]{%
+  \noindent\textbf{\sffamily #1}\par\vspace{0.25\baselineskip}%
+}
+
+\newenvironment{notebox}[1]
+  {\Needspace{4\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-note-rule,backgroundcolor=box-note-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
+
+\newenvironment{assumptionbox}[1]
+  {\Needspace{4\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-assumption-rule,backgroundcolor=box-assumption-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
+
+\newenvironment{derivationbox}[1]
+  {\Needspace{5\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-derivation-rule,backgroundcolor=box-derivation-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
+
+\newenvironment{workedexamplebox}[1]
+  {\Needspace{5\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-example-rule,backgroundcolor=box-example-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
+
+\newenvironment{caveatbox}[1]
+  {\Needspace{4\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-caveat-rule,backgroundcolor=box-caveat-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
+
+\newenvironment{interpretationbox}[1]
+  {\Needspace{4\baselineskip}\begin{mdframed}[linewidth=1.4pt,linecolor=box-interpretation-rule,backgroundcolor=box-interpretation-bg,topline=false,rightline=false,bottomline=false,innerleftmargin=0.8em,innerrightmargin=0.8em,innertopmargin=0.65em,innerbottommargin=0.65em,skipabove=0.9\baselineskip,skipbelow=0.9\baselineskip]\printboxtitle{#1}}
+  {\end{mdframed}}
