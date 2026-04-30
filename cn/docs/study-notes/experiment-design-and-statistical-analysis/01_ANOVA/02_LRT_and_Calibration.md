@@ -513,10 +513,10 @@ $$
 
 因此，对缩减模型不利的证据越强，对应的似然比就越小。
 
-对 $(\mathcal M_{R,\mathrm{A\times B}})$ 取对数：
+对 $\Lambda_{\mathrm{A\times B}}$ 取对数：
 
 $$
-\ln (\mathcal M_{R,\mathrm{A\times B}})
+\ln \Lambda_{\mathrm{A\times B}}
 =
 -\frac{N}{2}
 \ln\left(
@@ -531,7 +531,7 @@ $$
 因此，
 
 $$
--2\ln (\mathcal M_{R,\mathrm{A\times B}})
+-2\ln \Lambda_{\mathrm{A\times B}}
 =
 N
 \ln\left(
@@ -543,7 +543,7 @@ N
 \right).
 $$
 
-由于两边的符号都被翻转了，现在对缩减模型不利的证据越强，对应的 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 就越大。
+由于乘以 $-2$ 后符号被翻转了，现在对缩减模型不利的证据越强，对应的 $-2\ln \Lambda_{\mathrm{A\times B}}$ 就越大。
 
 回忆
 
@@ -572,12 +572,12 @@ $$
 \geq 1.
 $$
 
-对数中的这个比值至少为 $1$。这个比值越是大于 $1$，去掉交互成分带来的残差误差增量就越大，我们的 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量也就越大，提示对缩减模型不利的证据越强。
+对数中的这个比值至少为 $1$。这个比值越是大于 $1$，去掉交互成分带来的残差误差增量就越大，我们的 $-2\ln \Lambda_{\mathrm{A\times B}}$ 统计量也就越大，提示对缩减模型不利的证据越强。
 
 于是，
 
 $$
--2\ln(\mathcal M_{R,\mathrm{A\times B}})
+-2\ln\Lambda_{\mathrm{A\times B}}
 =
 N\ln\left(
 1+
@@ -585,7 +585,7 @@ N\ln\left(
 \right).
 $$
 
-由于 $N>0$ 且 $\ln(1+x)$ 在 $x\geq 0$ 时严格递增，$-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量是
+由于 $N>0$ 且 $\ln(1+x)$ 在 $x\geq 0$ 时严格递增，$-2\ln \Lambda_{\mathrm{A\times B}}$ 统计量是
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
@@ -599,7 +599,7 @@ $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 $$
 
-与 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量在我们对缩减模型与完整模型的比较中是单调等价的。也就是说，它们对应同样方向的证据强度。
+与 $-2\ln \Lambda_{\mathrm{A\times B}}$ 统计量在我们对缩减模型与完整模型的比较中是单调等价的。也就是说，它们对应同样方向的证据强度。
 
 事实证明，我们最初的比值并非完全错误。它指向了正确的比较。
 

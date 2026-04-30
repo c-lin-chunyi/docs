@@ -25,15 +25,15 @@ nav = [
   { "Home" = "index.md" },
   { "Study Notes" = [
     { "Contents" = "study-notes/index.md" },
-    { "Linear Algebra" = [
-      { "Contents" = "study-notes/linear-algebra/index.md" },
-    ] },
-    { "Probability" = [
-      { "Contents" = "study-notes/probability/index.md" },
-    ] },
-    { "Statistics" = [
-      { "Contents" = "study-notes/statistics/index.md" },
-    ] },
+#    { "Linear Algebra" = [
+#      { "Contents" = "study-notes/linear-algebra/index.md" },
+#    ] },
+#    { "Probability" = [
+#      { "Contents" = "study-notes/probability/index.md" },
+#    ] },
+#    { "Statistics" = [
+#      { "Contents" = "study-notes/statistics/index.md" },
+#    ] },
     { "Experiment Design and Statistical Analysis" = [
       { "Contents" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "Analysis of Variance (ANOVA)" = [

@@ -25,15 +25,15 @@ nav = [
   { "主页" = "index.md" },
   { "学习笔记" = [
     { "目录" = "study-notes/index.md" },
-    { "线性代数" = [
-      { "目录" = "study-notes/linear-algebra/index.md" },
-    ] },
-    { "概率论" = [
-      { "目录" = "study-notes/probability/index.md" },
-    ] },
-    { "统计学" = [
-      { "目录" = "study-notes/statistics/index.md" },
-    ] },
+#    { "线性代数" = [
+#      { "目录" = "study-notes/linear-algebra/index.md" },
+#    ] },
+#    { "概率论" = [
+#      { "目录" = "study-notes/probability/index.md" },
+#    ] },
+#    { "统计学" = [
+#      { "目录" = "study-notes/statistics/index.md" },
+#    ] },
     { "实验设计与统计分析" = [
       { "目录" = "study-notes/experiment-design-and-statistical-analysis/index.md" },
       { "方差分析（ANOVA）" = [
