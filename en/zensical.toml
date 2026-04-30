@@ -39,6 +39,7 @@ nav = [
       { "Analysis of Variance (ANOVA)" = [
         { "Chapter Overview" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/index.md" },
         { "Introduction: Decomposing an Observation" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md" },
+        { "When Is a Sum of Squares Statistically Significant?" = "study-notes/experiment-design-and-statistical-analysis/01_ANOVA/02_LRT_and_Calibration.md" },
       ] },
     ] },
   ] },

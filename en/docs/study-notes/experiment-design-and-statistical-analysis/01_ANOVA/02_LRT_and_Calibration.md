@@ -16,31 +16,31 @@ We then decomposed an individual participant $(i,j,k)$'s task performance into f
 $$
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{(\alpha\beta)_{i,j}}
+\widehat{(\alpha\beta)}_{i,j}
 +
-\widehat{\varepsilon_{i,j,k}}.
+\hat{\varepsilon}_{i,j,k}.
 $$
 
-Then we propagated this decomposition to the whole observation using sum of squares.
+Then we propagated this decomposition from one observation to the whole dataset using vectors and sum of squares.
 
 $$
-\|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2
-=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2
+=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
 $$
 
 Let
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2 \\
-\mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 \\
-\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}}\|^2 \\
+\mathrm{SS_T} = \|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2 \\
+\mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 \\
+\mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 \\
 \mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2  \\
-\mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2,
+\mathrm{SS_E} = \|\hat{\boldsymbol{\varepsilon}}\|^2,
 \end{gather*}
 $$
 
@@ -86,18 +86,18 @@ Before that, let's take a look at what ${\mathrm{SS_{A\times B}}}$ means:
 
 From a vectorized perspective, $\mathrm{SS_{A\times B}}$ measures how much of the centered observation vector is captured by it.
 
-Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\widehat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again.
+Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again.
 
 $$
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{(\alpha\beta)_{i,j}}
+\widehat{(\alpha\beta)}_{i,j}
 +
-\widehat{\varepsilon_{i,j,k}}.
+\hat{\varepsilon}_{i,j,k}.
 $$
 
 If we suspect that the interaction is absent, then why include the interaction component in the model in the first place? Allowing the model to capture an absent effect may only let it chase random fluctuations (i.e., overfitting the data).
@@ -110,57 +110,57 @@ $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}},
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})},
 $$
 
 where 
 
 $$
-\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}} = \widehat{\varepsilon_{i,j,k}} + \widehat{(\alpha\beta)_{i,j}}
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}
 $$
 
 Now we vectorize the model using the whole dataset, and taking squared Euclidean norms on both sides:
 
 $$
-\|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 \ \\
+\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
 $$
 
 where 
 
 $$
-\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
 $$ 
 
 Hence
 
 $$
-\langle\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}, \widehat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \widehat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\widehat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\alpha}}\rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
 $$
 
 and
 
 $$
-\langle\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}, \widehat{\boldsymbol{\beta}} \rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\beta}} \rangle = 0,
 $$
 
 which gives
 
 $$
 \begin{align*}
-\|\mathbf{y}−\widehat{\boldsymbol{\mu}}\|^2&=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 \ \\
-&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\rangle \\ 
-&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2.
+\|\mathbf{y}−\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
+&= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle \\ 
+&=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2.
 \end{align*}
 $$
 
 Since
 
 $$
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \perp
 \widehat{\boldsymbol{\alpha\beta}},
 $$
@@ -169,16 +169,16 @@ we also have
 
 $$
 \begin{aligned}
-\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2
+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2
 &=
 \|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 +
 \widehat{\boldsymbol{\alpha\beta}}
 \|^2 \\
 &=
 \|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \|^2
 +
 \|
@@ -196,14 +196,14 @@ Since different models leave different things unexplained in their residual term
 where 
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\widehat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 and
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -475,7 +475,9 @@ The sum-of-squares decomposition is a *descriptive statistic*. It summarizes wha
 
 A descriptive statistic therefore cannot be right or wrong, because it merely rearranges our data. It does not make any claim, nor any prediction about this world. This is why our attempt to use $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ or SSE to tell whether our decomposed A $\times$ B term is just a conflation of residual errors fails. A description cannot tell us something beyond what is already available to us.
 
-Our normality assumption for residual errors however, is a different kind of object. It is a probability-theoretic claim about the data generating processes. With that, we are asking how things would play out in many probable worlds. However, a probability-theoretic claim not anchored in this world we are living in also cannot tell us what is right or wrong.
+Our normality assumption for residual errors however, is a different kind of object. It is a probability-theoretic claim about the data generating processes. With that, we are asking how things would play out in many probable worlds. 
+
+However, a probability-theoretic claim not anchored in this world we are living in also cannot tell us what is right or wrong.
 
 Inferential statistics is, in a sense, an attempt to rule out many probable worlds using data from this world, by using descriptive statistics and probability-theoretic tools together. 
 
@@ -552,7 +554,7 @@ $$
 -\frac{N}{2}
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,A\times B}}
+\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
 \mathrm{SSE}_{\mathcal M_F}
 }
@@ -567,7 +569,7 @@ $$
 N
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,A\times B}}
+\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
 \mathrm{SSE}_{\mathcal M_F}
 }
@@ -580,14 +582,14 @@ Since the sign on both sides have been flipped, now stronger evidence against th
 Recall that 
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\widehat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 and
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -596,7 +598,7 @@ Thus,
 
 $$
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,A\times B}}
+\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
 \mathrm{SSE}_{\mathcal M_F}
 }=
@@ -642,7 +644,7 @@ By using likelihood, we have known which comparison matters and why. But yet we 
 Before that, we first go back to the geometry of our decomposition.
 
 $$
-\mathbf{y}−\widehat{\boldsymbol{\mu}}=\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}.
+\mathbf{y}−\hat{\boldsymbol{\mu}}=\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}.
 $$
 
 Here, each component vector is allowed to move inside a certain subspace $W$. We call the dimension of that subspace, $\dim W$, its degrees of freedom.
@@ -787,9 +789,9 @@ $$
 =
 \hat\mu
 +
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
 \widehat{(\alpha\beta)}_{i,j}.
 $$
@@ -797,13 +799,13 @@ $$
 Recall the definitions:
 
 $$
-\widehat{\alpha_i}
+\hat{\alpha}_i
 =
 \bar y_{i,.,.}-\hat\mu,
 $$
 
 $$
-\widehat{\beta_j}
+\hat{\beta}_j
 =
 \bar y_{.,j,.}-\hat\mu,
 $$
@@ -1014,16 +1016,16 @@ H_0^{A\times B}:(\alpha\beta)_{i,j}=0
 \quad\text{for all }i,j,
 $$
 
-the fitted interaction component is a projection of the error vector onto the interaction subspace. Write this projection as $P_{A\times B}\boldsymbol\varepsilon$. Then
+the fitted interaction component is a projection of the error vector onto the interaction subspace. Write this projection as $P_{\mathrm{A\times B}}\boldsymbol\varepsilon$. Then
 
 $$
 \widehat{\boldsymbol{\alpha\beta}}
 =
-P_{A\times B}\boldsymbol\varepsilon
+P_{\mathrm{A\times B}}\boldsymbol\varepsilon
 =
-P_{A\times B}(\sigma\mathbf z)
+P_{\mathrm{A\times B}}(\sigma\mathbf z)
 =
-\sigma P_{A\times B}\mathbf z.
+\sigma P_{\mathrm{A\times B}}\mathbf z.
 $$
 
 Therefore,
@@ -1036,23 +1038,23 @@ $$
 \right\|^2
 =
 \left\|
-\sigma P_{A\times B}\mathbf z
+\sigma P_{\mathrm{A\times B}}\mathbf z
 \right\|^2
 =
 \sigma^2
 \left\|
-P_{A\times B}\mathbf z
+P_{\mathrm{A\times B}}\mathbf z
 \right\|^2.
 $$
 
-Similarly, if $P_E$ is the projection onto the residual subspace, then
+Similarly, if $P_{\mathrm{E}}$ is the projection onto the residual subspace, then
 
 $$
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 =
-P_E\boldsymbol\varepsilon
+P_{\mathrm{E}}\boldsymbol\varepsilon
 =
-\sigma P_E\mathbf z,
+\sigma P_{\mathrm{E}}\mathbf z,
 $$
 
 so
@@ -1061,12 +1063,12 @@ $$
 \mathrm{SS_E}
 =
 \left\|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \right\|^2
 =
 \sigma^2
 \left\|
-P_E\mathbf z
+P_{\mathrm{E}}\mathbf z
 \right\|^2.
 $$
 
@@ -1078,7 +1080,7 @@ In addition, we need to know the distribution of those projected squared lengths
 
 To achieve these, we will use a classical result called **Cochran's theorem**.
 
-A simplified version of it is used here. The full theorem is usually stated in terms of quadratic forms and projection matrices. [^cochran1934]. We will discuss more on it in the later chapters.
+A simplified version of it is used here. The full theorem is usually stated in terms of quadratic forms and projection matrices. [^cochran1934] We will discuss more on it in the later chapters.
 
 !!! info "Cochran's Theorem, Simplified"
 
@@ -1093,16 +1095,17 @@ $$
 \frac{\mathrm{SS_{A\times B}}}{\sigma^2}
 =
 \left\|
-P_{A\times B}\mathbf z
+P_{\mathrm{A\times B}}\mathbf z
 \right\|^2.
 $$
 
 Cochran's theorem then gives
+
 $$
 \frac{\mathrm{SS_{A\times B}}}{\sigma^2}
 =
 \left\|
-P_{A\times B}\mathbf z
+P_{\mathrm{A\times B}}\mathbf z
 \right\|^2
 \sim
 \chi^2_{df_{\mathrm{A\times B}}}.
@@ -1114,7 +1117,7 @@ $$
 \frac{\mathrm{SS_E}}{\sigma^2}
 =
 \left\|
-P_E\mathbf z
+P_{\mathrm{E}}\mathbf z
 \right\|^2
 \sim
 \chi^2_{df_{\mathrm{E}}}.
@@ -1132,7 +1135,7 @@ $$
 \chi^2_{df_{\mathrm{A\times B}}},
 $$
 
-then, because a $\chi^2$ random variable with $d$ degrees of freedom has expectation $d$,
+then, because a random variable that conforms to a $\chi^2$ distribution with $d$ degrees of freedom has expectation $d$,
 
 $$
 \mathbb{E}\left[
@@ -1220,7 +1223,7 @@ $$
 
 This marks the end of our calibration steps.
 
-$F_{df_{\mathrm{A\times B}}}$ is the pivot we were looking for. Under the null hypothesis of no interaction, its distribution is known, without depending on an unknown variable.
+$F_\mathrm{{A\times B}}$ is the pivot we were looking for. Under the null hypothesis of no interaction, its distribution is known, without depending on unknown variables.
 
 ## Two-way Analysis of Variance
 
@@ -1230,7 +1233,7 @@ We began with a balanced two-factor design, decomposed the centered data vector 
 
 This procedure is the classical **two-way analysis of variance**, or **two-way ANOVA**.
 
-In this balanced design, the same logic applies to each fitted component:
+In this balanced design, applying the same model comparison and calibration logic to other fitted component gives:
 
 $$
 F_\mathrm{A}
@@ -1286,13 +1289,13 @@ $$
 
 ### The ANOVA Table
 
-People often uses a table, called the ANOVA table to organize the quantities we have derived.
+People often use a table, called the ANOVA table to organize the quantities we have derived.
 
 | Source | SS | df | MS | F |
 |---|---:|---:|---:|---:|
-| Feedback $A$ | $\mathrm{SS_A}$ | $I-1$ | $\mathrm{SS_A}/df_\mathrm{A}$ | $\mathrm{MS_A}/\mathrm{MS_E}$ |
-| Difficulty $B$ | $\mathrm{SS_B}$ | $J-1$ | $\mathrm{SS_B}/df_\mathrm{B}$ | $\mathrm{MS_B}/\mathrm{MS_E}$ |
-| Interaction $A\times B$ | $\mathrm{SS_{A\times B}}$ | $(I-1)(J-1)$ | $\mathrm{SS_{A\times B}}/df_\mathrm{{A\times B}}$ | $\mathrm{MS_{A\times B}}/\mathrm{MS_E}$ |
+| Feedback $\mathrm{A}$ | $\mathrm{SS_A}$ | $I-1$ | $\mathrm{SS_A}/df_\mathrm{A}$ | $\mathrm{MS_A}/\mathrm{MS_E}$ |
+| Difficulty $\mathrm{B}$ | $\mathrm{SS_B}$ | $J-1$ | $\mathrm{SS_B}/df_\mathrm{B}$ | $\mathrm{MS_B}/\mathrm{MS_E}$ |
+| Interaction $\mathrm{A\times B}$ | $\mathrm{SS_{A\times B}}$ | $(I-1)(J-1)$ | $\mathrm{SS_{A\times B}}/df_\mathrm{{A\times B}}$ | $\mathrm{MS_{A\times B}}/\mathrm{MS_E}$ |
 | Error | $\mathrm{SS_E}$ | $IJ(K-1)$ | $\mathrm{SS_E}/df_\mathrm{E}$ | |
 | Total | $\mathrm{SS_T}$ | $IJK-1$ | | |
 
@@ -1319,13 +1322,18 @@ The numerical two-way ANOVA table is:
 
 | Source | SS | df | MS | F | p |
 |---|---:|---:|---:|---:|---:|
-| Feedback $A$ | 333.33 | 2 | 166.67 | 89.59 | $7.03\times 10^{-18}$ |
-| Difficulty $B$ | 201.67 | 1 | 201.67 | 108.40 | $1.61\times 10^{-14}$ |
-| Interaction $A\times B$ | 6603.33 | 2 | 3301.67 | 1774.74 | $5.54\times 10^{-50}$ |
+| Feedback $\mathrm{A}$ | 333.33 | 2 | 166.67 | 89.59 | $7.03\times 10^{-18}$ |
+| Difficulty $\mathrm{B}$ | 201.67 | 1 | 201.67 | 108.40 | $1.61\times 10^{-14}$ |
+| Interaction $\mathrm{A\times B}$ | 6603.33 | 2 | 3301.67 | 1774.74 | $5.54\times 10^{-50}$ |
 | Error | 100.46 | 54 | 1.86 | | |
 | Total | 7238.79 | 59 | | | |
 
 Thus, for this dataset, feedback type, task difficulty, and especially their interaction all account for much more variation than would be expected from the residual variation alone under the corresponding null hypotheses.
+
+!!! note
+
+    The values in our example data are computer generated for illustrative purposes only. Effects in real feedback paradigms are far smaller.
+
 
 ??? info "Click to expand the hand calculation using bracket form"
 
@@ -1519,7 +1527,7 @@ To make the comparison more principled, we reframed the problem as a comparison 
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}_{\mathcal M_{R,A\times B}}
+\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 -
 \mathrm{SSE}_{\mathcal M_F}.
 $$
@@ -1529,7 +1537,7 @@ Thus, the interaction sum of squares can be interpreted as the reduction in resi
 Under the normal-error assumption, likelihood-ratio testing showed that this comparison is connected to profile likelihood:
 
 $$
--2\ln\Lambda_{A\times B}
+-2\ln\Lambda_{\mathrm{A\times B}}
 =
 N\ln\left(
 1+
@@ -1542,7 +1550,7 @@ So the original ratio was not completely arbitrary. It is monotone-equivalent to
 However, likelihood ordering alone was still not enough. We needed a reference distribution. Degrees of freedom told us how many independent directions each component could vary in, and Cochran's theorem gave the finite-sample calibration:
 
 $$
-F_{A\times B}
+F_{\mathrm{A\times B}}
 =
 \frac{
 \mathrm{SS_{A\times B}}/df_{\mathrm{A\times B}}
