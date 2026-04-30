@@ -20,31 +20,31 @@
 $$
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{(\alpha\beta)_{i,j}}
+\widehat{(\alpha\beta)}_{i,j}
 +
-\widehat{\varepsilon_{i,j,k}}.
+\hat{\varepsilon}_{i,j,k}.
 $$
 
 接着，我们用平方和把这一分解从单个观测推广到了整个数据集：
 
 $$
-\|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2
-=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2
+=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
 $$
 
 记
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2 \\
-\mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 \\
-\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}}\|^2 \\
+\mathrm{SS_T} = \|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2 \\
+\mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 \\
+\mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 \\
 \mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2  \\
-\mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2,
+\mathrm{SS_E} = \|\hat{\boldsymbol{\varepsilon}}\|^2,
 \end{gather*}
 $$
 
@@ -90,18 +90,18 @@ $$
 
 从向量化的视角看，$\mathrm{SS_{A\times B}}$ 衡量的是中心化观测向量中有多少被它捕获。
 
-我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\widehat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。
+我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\hat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。
 
 $$
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{(\alpha\beta)_{i,j}}
+\widehat{(\alpha\beta)}_{i,j}
 +
-\widehat{\varepsilon_{i,j,k}}.
+\hat{\varepsilon}_{i,j,k}.
 $$
 
 如果我们怀疑交互作用根本不存在，那么一开始就把交互项放进模型里又是为了什么？让模型去捕捉一个不存在的效应，可能只会让它去追逐随机波动（即对数据过拟合）。
@@ -114,57 +114,57 @@ $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}},
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})},
 $$
 
 其中
 
 $$
-\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}} = \widehat{\varepsilon_{i,j,k}} + \widehat{(\alpha\beta)_{i,j}}
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}
 $$
 
 现在用整个数据集把模型向量化，并对两边取平方范数：
 
 $$
-\|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 \ \\
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
 $$
 
 其中
 
 $$
-\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \widehat{\boldsymbol{{\varepsilon}}} + \widehat{\boldsymbol{\alpha\beta}}.
 $$
 
 因此
 
 $$
-\langle\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}, \widehat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \widehat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\widehat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\alpha}}\rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\widehat{\boldsymbol{{\varepsilon}}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \widehat{\boldsymbol{{\varepsilon}}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
 $$
 
 以及
 
 $$
-\langle\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}, \widehat{\boldsymbol{\beta}} \rangle = 0,
+\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\beta}} \rangle = 0,
 $$
 
 由此得到
 
 $$
 \begin{align*}
-\|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2&=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 \ \\
-&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\rangle \\
-&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2.
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
+&= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle \\
+&=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2.
 \end{align*}
 $$
 
 由于
 
 $$
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \perp
 \widehat{\boldsymbol{\alpha\beta}},
 $$
@@ -173,16 +173,16 @@ $$
 
 $$
 \begin{aligned}
-\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2
+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2
 &=
 \|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 +
 \widehat{\boldsymbol{\alpha\beta}}
 \|^2 \\
 &=
 \|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \|^2
 +
 \|
@@ -198,14 +198,14 @@ $$
 因为不同的模型在残差项里留下的内容不同，我们引入一个表示模型残差平方和的记号 $\mathrm{SSE}$（sum of squared errors，误差平方和）：
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\widehat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 以及
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -462,16 +462,16 @@ $$
 
 $$
 \begin{align*}
-\Lambda_{A\times B}
+\Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 }{
 L_p(\mathcal M_F)
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,A\times B}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
-\mathrm{SSE}_{\mathcal{M}_{R,A\times B}}
+\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}
 }{
 \mathrm{SSE}_{\mathcal{M}_F}
 }\right)^{-\frac{N}{2}}
@@ -482,7 +482,7 @@ $$
 如果缩减模型的拟合几乎与完整模型一样好，那么
 
 $$
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 \approx
 L_p(\mathcal M_F),
 $$
@@ -490,7 +490,7 @@ $$
 于是
 
 $$
-\Lambda_{A\times B}\approx 1,
+\Lambda_{\mathrm{A\times B}}\approx 1,
 $$
 
 这意味着去掉交互成分几乎不会带来似然损失。
@@ -498,7 +498,7 @@ $$
 但如果缩减模型的拟合远远差于完整模型，那么
 
 $$
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 \ll
 L_p(\mathcal M_F),
 $$
@@ -506,17 +506,17 @@ $$
 且
 
 $$
-\Lambda_{A\times B}\ll 1,
+\Lambda_{\mathrm{A\times B}}\ll 1,
 $$
 
 这意味着去掉交互成分会带来很大的似然损失。
 
 因此，对缩减模型不利的证据越强，对应的似然比就越小。
 
-对 $\Lambda_{A\times B}$ 取对数：
+对 $(\mathcal M_{R,\mathrm{A\times B}})$ 取对数：
 
 $$
-\ln \Lambda_{A\times B}
+\ln (\mathcal M_{R,\mathrm{A\times B}})
 =
 -\frac{N}{2}
 \ln\left(
@@ -531,7 +531,7 @@ $$
 因此，
 
 $$
--2\ln \Lambda_{A\times B}
+-2\ln (\mathcal M_{R,\mathrm{A\times B}})
 =
 N
 \ln\left(
@@ -543,19 +543,19 @@ N
 \right).
 $$
 
-由于两边的符号都被翻转了，现在对缩减模型不利的证据越强，对应的 $-2\ln \Lambda_{A\times B}$ 就越大。
+由于两边的符号都被翻转了，现在对缩减模型不利的证据越强，对应的 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 就越大。
 
 回忆
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\widehat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 以及
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\widehat{\boldsymbol{\varepsilon}^{\mathcal{M}_{R, \mathrm{A\times B}}}}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -572,12 +572,12 @@ $$
 \geq 1.
 $$
 
-对数中的这个比值至少为 $1$。这个比值越是大于 $1$，去掉交互成分带来的残差误差增量就越大，我们的 $-2\ln \Lambda_{A\times B}$ 统计量也就越大，提示对缩减模型不利的证据越强。
+对数中的这个比值至少为 $1$。这个比值越是大于 $1$，去掉交互成分带来的残差误差增量就越大，我们的 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量也就越大，提示对缩减模型不利的证据越强。
 
 于是，
 
 $$
--2\ln\Lambda_{A\times B}
+-2\ln(\mathcal M_{R,\mathrm{A\times B}})
 =
 N\ln\left(
 1+
@@ -585,7 +585,7 @@ N\ln\left(
 \right).
 $$
 
-由于 $N>0$ 且 $\ln(1+x)$ 在 $x\geq 0$ 时严格递增，$-2\ln \Lambda_{A\times B}$ 统计量是
+由于 $N>0$ 且 $\ln(1+x)$ 在 $x\geq 0$ 时严格递增，$-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量是
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
@@ -599,7 +599,7 @@ $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 $$
 
-与 $-2\ln \Lambda_{A\times B}$ 统计量在我们对缩减模型与完整模型的比较中是单调等价的。也就是说，它们对应同样方向的证据强度。
+与 $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ 统计量在我们对缩减模型与完整模型的比较中是单调等价的。也就是说，它们对应同样方向的证据强度。
 
 事实证明，我们最初的比值并非完全错误。它指向了正确的比较。
 
@@ -612,7 +612,7 @@ $$
 在此之前，我们先回到分解的几何上来。
 
 $$
-\mathbf{y}-\widehat{\boldsymbol{\mu}}=\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}.
+\mathbf{y}-\hat{\boldsymbol{\mu}}=\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}.
 $$
 
 这里，每一个成分向量都被允许在某个子空间 $W$ 内移动。我们把这个子空间的维数 $\dim W$ 称为它的自由度。
@@ -758,9 +758,9 @@ $$
 =
 \hat\mu
 +
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
 \widehat{(\alpha\beta)}_{i,j}.
 $$
@@ -768,13 +768,13 @@ $$
 回忆这些定义：
 
 $$
-\widehat{\alpha_i}
+\hat{\alpha}_i
 =
 \bar y_{i,.,.}-\hat\mu,
 $$
 
 $$
-\widehat{\beta_j}
+\hat{\beta}_j
 =
 \bar y_{.,j,.}-\hat\mu,
 $$
@@ -1020,7 +1020,7 @@ $$
 类似地，若 $P_{\mathrm{E}}$ 是到残差子空间的投影，则
 
 $$
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 =
 P_{\mathrm{E}}\boldsymbol\varepsilon
 =
@@ -1033,7 +1033,7 @@ $$
 \mathrm{SS_E}
 =
 \left\|
-\widehat{\boldsymbol{\varepsilon}}
+\hat{\boldsymbol{\varepsilon}}
 \right\|^2
 =
 \sigma^2

@@ -156,7 +156,7 @@ $$
 \widehat{(\alpha\beta)}_{i,j} = \frac{1}{K} \sum_{k} y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j
 $$
 
-We want to know what $\widehat{(\alpha\beta)}_{i,j}$ does, *on top of* $\hat{\alpha}_i$, $\hat{\beta}_j$ and the grand mean $\widehat{\mu}$.
+We want to know what $\widehat{(\alpha\beta)}_{i,j}$ does, *on top of* $\hat{\alpha}_i$, $\hat{\beta}_j$ and the grand mean $\hat{\mu}$.
 
 And the remainder $\hat{\varepsilon}_{i,j,k}$ is the residual error for this participant $k$ in cell $(i,j)$.
 

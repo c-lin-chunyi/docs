@@ -70,6 +70,10 @@ $$
     ![单元均值的交互作用图。](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_zh.svg)
     折线不平行，提示反馈类型的效应取决于任务难度，这意味着模型中存在交互项 $(\alpha\beta)_{i,j}$。
 
+!!! note
+
+    例子中的数据值是出于演示目的由计算机生成的。
+
 ### 双因素线性模型
 
 我们想问的问题是：
@@ -91,11 +95,13 @@ $$y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leq
 
 $$
 \begin{equation}
-y_{i,j,k}
+Y_{i,j,k}
 =
 \mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
 \end{equation}
 $$
+
+这里 $Y_{i,j,k}$ 表示模型会生成的随机分数。一旦数据被观测到，我们就把观测值写作 $y_{i,j,k}$。
 
 不过这个模型还需要一个技术性条件。按目前的写法，参数并不是唯一确定的。例如，我们可以给 $\mu$ 加上一个常数，同时让每个 $\alpha_i$ 减去同样的常数，预测值保持不变。
 
@@ -123,7 +129,7 @@ $$
 \begin{equation}
 y_{i,j,k}
 =
-\hat{\mu}+\widehat{\alpha_i}+\widehat{\beta_j}+\widehat{(\alpha\beta)_{i,j}}+\widehat{\varepsilon_{i,j,k}}
+\hat{\mu}+\hat{\alpha}_i+\hat{\beta}_j+\widehat{(\alpha\beta)}_{i,j}+\hat{\varepsilon}_{i,j,k}
 \end{equation}
 $$
 
@@ -134,7 +140,7 @@ $$\hat{\mu} = \frac{1}{IJK} \sum_{i,j,k}y_{i,j,k}$$
 称为因变量 $y$ 的总均值。
 
 $$
-\widehat{\alpha_i} = \frac{1}{JK}\sum_{j,k} (y_{i,j,k} -\hat{\mu}) = \frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat{\mu}
+\hat{\alpha}_i = \frac{1}{JK}\sum_{j,k} (y_{i,j,k} -\hat{\mu}) = \frac{1}{JK} \sum_{j,k} y_{i,j,k} - \hat{\mu}
 $$
 
 称为反馈类型的主效应。注意这里减去了总均值。
@@ -144,25 +150,25 @@ $$
 类似地，对于任务难度的主效应：
 
 $$
-\widehat{\beta_j} = \frac{1}{IK}\sum_{i,k}(y_{i,j,k}- \hat{\mu}) = \frac{1}{IK}\sum_{i,k}y_{i,j,k}-\hat{\mu}
+\hat{\beta}_j = \frac{1}{IK}\sum_{i,k}(y_{i,j,k}- \hat{\mu}) = \frac{1}{IK}\sum_{i,k}y_{i,j,k}-\hat{\mu}
 $$
 
-那么 $\widehat{(\alpha\beta)_{i,j}}$ 这一项呢？
+那么 $\widehat{(\alpha\beta)}_{i,j}$ 这一项呢？
 
 它称为反馈类型与任务难度的交互作用。
 
 $$
-\widehat{(\alpha\beta)_{i,j}} = \frac{1}{K} \sum_{k} y_{i,j,k} - \hat{\mu} - \widehat{\alpha_i} - \widehat{\beta_j}
+\widehat{(\alpha\beta)}_{i,j} = \frac{1}{K} \sum_{k} y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j
 $$
 
-我们想知道 $\widehat{(\alpha\beta)_{i,j}}$ 在 $\widehat{\alpha_i}$、$\widehat{\beta_j}$ 和总均值 $\widehat{\mu}$ *之上*还做了什么。
+我们想知道 $\widehat{(\alpha\beta)}_{i,j}$ 在 $\hat{\alpha}_i$、$\hat{\beta}_j$ 和总均值 $\hat{\mu}$ *之上*还做了什么。
 
-而剩下的 $\widehat{\varepsilon_{i,j,k}}$ 就是单元 $(i,j)$ 中第 $k$ 名被试的残差误差。
+而剩下的 $\hat{\varepsilon}_{i,j,k}$ 就是单元 $(i,j)$ 中第 $k$ 名被试的残差误差。
 
 $$
 \begin{aligned}
-\widehat{\varepsilon_{i,j,k}} &= y_{i,j,k}-\hat{\mu} - \widehat{\alpha_i} -\widehat{\beta_j} - \widehat{(\alpha\beta)_{i,j}} \\
-&= y_{i,j,k} - \hat{\mu} - \widehat{\alpha_i} - \widehat{\beta_j} - (\frac{1}{K} \sum_{k} y_{i,j,k} - \hat{\mu} - \widehat{\alpha_i} - \widehat{\beta_j}) \\
+\hat{\varepsilon}_{i,j,k} &= y_{i,j,k}-\hat{\mu} - \hat{\alpha}_i -\hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j} \\
+&= y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - (\frac{1}{K} \sum_{k} y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j) \\
 &= y_{i,j,k} - \frac{1}{K} \sum_{k} y_{i,j,k}
 \end{aligned}
 $$
@@ -188,7 +194,7 @@ $$
 
 $$
 \begin{equation}
-y_{i,j,k} - \hat\mu = \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\widehat{\alpha_i}} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\widehat{\beta_j}} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)_{i,j}}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\widehat{\varepsilon_{i,j,k}}}
+y_{i,j,k} - \hat\mu = \underbrace{(\bar{y}_{i,.,.} - \hat\mu)}_{\hat{\alpha}_i} + \underbrace{(\bar{y}_{.,j,.} - \hat\mu)}_{\hat{\beta}_j} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)}_{\widehat{(\alpha\beta)}_{i,j}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\hat{\varepsilon}_{i,j,k}}
 \end{equation}
 $$
 
@@ -214,7 +220,7 @@ $$
 $$
 y_{i,j,k}
 =
-\hat{\mu}+\widehat{\alpha_i}+\widehat{\beta_j}+\widehat{(\alpha\beta)_{i,j}}+\widehat{\varepsilon_{i,j,k}}
+\hat{\mu}+\hat{\alpha}_i+\hat{\beta}_j+\widehat{(\alpha\beta)}_{i,j}+\hat{\varepsilon}_{i,j,k}
 $$
 
 然而仅凭一个观测值，我们无法估计出所有这些成分。一个数据点不足以确定多个未知量。所以我们要用整个数据集来计算总均值、边际均值和单元均值，再用它们去估计这些成分。
@@ -236,29 +242,29 @@ y_{I,J,K}
 $$
 
 $$
-\widehat{\boldsymbol{\mu}} =
+\hat{\boldsymbol{\mu}} =
 \begin{bmatrix}
 \hat\mu \\
 \hat\mu \\
 \vdots \\
 \hat\mu
 \end{bmatrix}_{N},\;
-\widehat{\boldsymbol{\alpha}}_{n(i,j,k)} = \widehat{\alpha_i},\;
-\widehat{\boldsymbol{\beta}}_{n(i,j,k)} = \widehat{\beta_j},\;
-\widehat{\boldsymbol{\alpha\beta}}_{n(i,j,k)} = \widehat{(\alpha\beta)_{i,j}},\;
+\hat{\boldsymbol{\alpha}}_{n(i,j,k)} = \hat{\alpha}_i,\;
+\hat{\boldsymbol{\beta}}_{n(i,j,k)} = \hat{\beta}_j,\;
+\widehat{\boldsymbol{\alpha\beta}}_{n(i,j,k)} = \widehat{(\alpha\beta)}_{i,j},\;
 $$
 
 以及
 
 $$
-\widehat{\boldsymbol{\varepsilon}}_{n(i,j,k)}=\widehat{\varepsilon_{i,j,k}}.
+\hat{\boldsymbol{\varepsilon}}_{n(i,j,k)}=\hat{\varepsilon}_{i,j,k}.
 $$
 
 我们现在可以把全部 $N=IJK$ 个观测值堆叠成 $\mathbb{R}^N$ 中的向量。这样一来，分解就化为一个向量等式：
 
 $$
 \begin{equation}
-\mathbf{y}-\widehat{\boldsymbol{\mu}}=\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}.
+\mathbf{y}-\hat{\boldsymbol{\mu}}=\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}.
 \end{equation}
 $$
 
@@ -268,13 +274,13 @@ $$
 
 | 正交关系 | 原因 |
 |---|---|
-| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_i\widehat{\alpha_i}=0$ |
-| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_j\widehat{\beta_j}=0$ |
-| $\widehat{\boldsymbol{\alpha\beta}}\perp\widehat{\boldsymbol{\mu}}$ | $\sum_{i,j}\widehat{(\alpha\beta)_{i,j}}=0$ |
-| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\beta}}$ | 平衡全因子设计 |
-| $\widehat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $i$，$\sum_j\widehat{(\alpha\beta)_{i,j}}=0$ |
-| $\widehat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $j$，$\sum_i\widehat{(\alpha\beta)_{i,j}}=0$ |
-| $\widehat{\boldsymbol{\varepsilon}}\perp$ 其他四个向量 | 单元内 $\sum_k\widehat{\varepsilon}_{(i,j,k)}=0$ |
+| $\hat{\boldsymbol{\alpha}}\perp\hat{\boldsymbol{\mu}}$ | $\sum_i\hat{\alpha}_i=0$ |
+| $\hat{\boldsymbol{\beta}}\perp\hat{\boldsymbol{\mu}}$ | $\sum_j\hat{\beta}_j=0$ |
+| $\widehat{\boldsymbol{\alpha\beta}}\perp\hat{\boldsymbol{\mu}}$ | $\sum_{i,j}\widehat{(\alpha\beta)}_{i,j}=0$ |
+| $\hat{\boldsymbol{\alpha}}\perp\hat{\boldsymbol{\beta}}$ | 平衡全因子设计 |
+| $\hat{\boldsymbol{\alpha}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $i$，$\sum_j\widehat{(\alpha\beta)}_{i,j}=0$ |
+| $\hat{\boldsymbol{\beta}}\perp\widehat{\boldsymbol{\alpha\beta}}$ | 对每个 $j$，$\sum_i\widehat{(\alpha\beta)}_{i,j}=0$ |
+| $\hat{\boldsymbol{\varepsilon}}\perp$ 其他四个向量 | 单元内 $\sum_k\widehat{\varepsilon}_{(i,j,k)}=0$ |
 
 表中"平衡全因子设计"那一条暗示这些正交关系并非偶然。本实验采用的是**平衡全因子设计**，每个单元都有相同数量的观测 $K$。后续章节会更详细地讨论它的含义，以及当一个设计不再*平衡*时会发生什么。
 
@@ -296,10 +302,10 @@ $$\mathbf{u}\perp\mathbf{v} \Leftrightarrow \|\mathbf{u}+\mathbf{v}\|^2 = \|\mat
 
 $$
 \begin{align}
-\|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2&=\|\widehat{\boldsymbol{\alpha}}+\widehat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\widehat{\boldsymbol{\varepsilon}}\|^2 \notag \\
-&= \|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\widehat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\varepsilon}}\rangle \notag\\
-&+2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\alpha\beta}}\rangle +2\langle\widehat{\boldsymbol{\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle +2\langle\widehat{\boldsymbol{\alpha\beta}},\widehat{\boldsymbol{\varepsilon}}\rangle\notag \\ 
-&=\|\widehat{\boldsymbol{\alpha}}\|^2+\|\widehat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\widehat{\boldsymbol{\varepsilon}}\|^2.
+\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\widehat{\boldsymbol{\alpha\beta}}+\hat{\boldsymbol{\varepsilon}}\|^2 \notag \\
+&= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\widehat{\boldsymbol{\alpha\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}\rangle \notag\\
+&+2\langle\hat{\boldsymbol{\beta}},\widehat{\boldsymbol{\alpha\beta}}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}\rangle +2\langle\widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\varepsilon}}\rangle\notag \\ 
+&=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
 \end{align}
 $$
 
@@ -410,11 +416,11 @@ $$
 
 $$
 \begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}-\widehat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
-\mathrm{SS_A} = \|\widehat{\boldsymbol{\alpha}}\|^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
-\mathrm{SS_B} = \|\widehat{\boldsymbol{\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
+\mathrm{SS_T} = \|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2 = \sum_{i,j,k}(y_{i,j,k}-\hat\mu)^2 \\
+\mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 = \sum_{i,j,k}(\bar{y}_{i,.,.} - \hat\mu)^2 \\
+\mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{.,j,.} - \hat\mu)^2 \\
 \mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2 = \sum_{i,j,k} (\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \hat\mu)^2 \\
-\mathrm{SS_E} = \|\widehat{\boldsymbol{\varepsilon}}\|^2 = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
+\mathrm{SS_E} = \|\hat{\boldsymbol{\varepsilon}}\|^2 = \sum_{i,j,k} (y_{i,j,k} - \bar{y}_{i,j,.})^2 
 \end{gather*}
 $$
 
@@ -762,13 +768,13 @@ $$
 $$
 y_{i,j,k}-\hat\mu
 =
-\widehat{\alpha_i}
+\hat{\alpha}_i
 +
-\widehat{\beta_j}
+\hat{\beta}_j
 +
-\widehat{(\alpha\beta)_{i,j}}
+\widehat{(\alpha\beta)}_{i,j}
 +
-\widehat{\varepsilon_{i,j,k}}.
+\hat{\varepsilon}_{i,j,k}.
 $$
 
 每名被试相对于总均值的偏差被分解为：反馈成分、难度成分、交互成分和残差成分。
