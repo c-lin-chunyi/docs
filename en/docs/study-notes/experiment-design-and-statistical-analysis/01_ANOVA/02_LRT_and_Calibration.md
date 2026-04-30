@@ -86,7 +86,22 @@ Before that, let's take a look at what ${\mathrm{SS_{A\times B}}}$ means:
 
 From a vectorized perspective, $\mathrm{SS_{A\times B}}$ measures how much of the centered observation vector is captured by it.
 
-Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again.
+Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again. We call it the "full model", denoted by $\mathcal{M}_{F}$. In structural form, it is
+
+$$
+\mathcal{M}_{F}:
+Y_{i,j,k}-\mu
+=
+{\alpha}_i
++
+{\beta}_j
++
+{(\alpha\beta)}_{i,j}
++
+{\varepsilon}_{i,j,k}^{(\mathcal{M}_{F})}.
+$$
+
+One fitting attempt of the model using our observed dataset is
 
 $$
 y_{i,j,k}-\hat\mu
@@ -104,7 +119,7 @@ If we suspect that the interaction is absent, then why include the interaction c
 
 Let's see what happens if we drop the interaction term and push it to the residual error. 
 
-We call our originally proposed model as "full model" denoted by $\mathcal{M}_{F}$, and our new model with the interaction term removed a "reduced model", denoted by $\mathcal{M}_{R, \mathrm{A\times B}}$:
+We call our new model with the interaction term removed a "reduced model", denoted by $\mathcal{M}_{R, \mathrm{A\times B}}$:
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
@@ -255,10 +270,10 @@ I.e., the residual errors are assumed to be independent, normally distributed, c
 ### Maximum Likelihood Estimation
 Consider a generic model $\mathcal M$ for our example experiment.
 
-We write its fitted value for observation $y_{i,j,k}$ as
+We write its structural mean parameter for observation $(i,j,k)$ as
 
 $$
-\widehat y^{(\mathcal M)}_{i,j,k}.
+\mu^{(\mathcal M)}_{i,j,k}.
 $$
 
 Under the normal-error assumption,
@@ -266,7 +281,7 @@ Under the normal-error assumption,
 $$
 Y_{i,j,k}
 =
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 +
 \varepsilon_{i,j,k},
 \qquad
@@ -276,10 +291,10 @@ $$
 Therefore,
 
 $$
-Y_{i,j,k}\mid \mathcal M,\sigma^2
+Y_{i,j,k}; \mathcal M,\sigma^2
 \sim
 \mathcal{N}\left(
-\widehat y^{(\mathcal M)}_{i,j,k},
+\mu^{(\mathcal M)}_{i,j,k},
 \sigma^2
 \right).
 $$
@@ -287,7 +302,7 @@ $$
 Hence, the likelihood of the whole dataset is:
 
 $$
-L(\mathcal M,\sigma^2 \mid \mathbf{y})
+L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 ; \mathbf{y}, \mathcal M)
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -297,7 +312,7 @@ L(\mathcal M,\sigma^2 \mid \mathbf{y})
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2
 }{
 2\sigma^2
@@ -309,7 +324,7 @@ Taking logs on both sides:
 
 $$
 \begin{aligned}
-\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 ; \mathbf{y}, \mathcal M)
 &=
 \sum_{i,j,k}
 \left[
@@ -319,7 +334,7 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2
 }{
 2\sigma^2
@@ -335,12 +350,81 @@ y_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2.
 \end{aligned}
 $$
 
-Note that 
+For a fixed model $\mathcal M$ and a fixed value of $\sigma^2$, the first two terms of the log-likelihood,
+
+$$
+-\frac{N}{2}\ln(2\pi)
+-
+\frac{N}{2}\ln(\sigma^2),
+$$
+
+do not depend on the structural mean vector
+
+$$
+\boldsymbol{\mu}^{(\mathcal M)}
+=
+\left(
+\mu^{(\mathcal M)}_{1,1,1},
+\mu^{(\mathcal M)}_{1,1,2},
+\ldots,
+\mu^{(\mathcal M)}_{I,J,K}
+\right)^\top.
+$$
+
+Therefore, maximizing the log-likelihood over $\boldsymbol{\mu}^{(\mathcal M)}$ is equivalent to minimizing
+
+$$
+\sum_{i,j,k}
+\left(
+y_{i,j,k}
+-
+\mu^{(\mathcal M)}_{i,j,k}
+\right)^2.
+$$
+
+However, $\boldsymbol{\mu}^{(\mathcal M)}$ cannot be any arbitrary vector in $\mathbb R^N$. It must have the structure allowed by model $\mathcal M$.
+
+For example, in the full two-way model, the structural mean must have the form
+
+$$
+\mu^{(\mathcal M_F)}_{i,j,k}
+=
+\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}.
+$$
+
+In the reduced model without interaction, it must have the form
+
+$$
+\mu^{(\mathcal M_{R,A\times B})}_{i,j,k}
+=
+\mu+\alpha_i+\beta_j.
+$$
+
+So, this means the maximization over $\boldsymbol{\mu}^{(\mathcal M)}$ requires us to choose the parameter values allowed by $\mathcal M$ that make the fitted mean vector as close as possible to the observed data vector.
+
+
+The resulting optimizer is the fitted mean vector under model $\mathcal M$. We write it as
+
+$$
+\widehat{\boldsymbol{\mu}}^{(\mathcal M)}
+=
+\widehat{\mathbf y}^{(\mathcal M)}.
+$$
+
+Entry-wise,
+
+$$
+\widehat{\mu}^{(\mathcal M)}_{i,j,k}
+=
+\widehat y^{(\mathcal M)}_{i,j,k}.
+$$
+
+After this maximization over $\boldsymbol{\mu}^{(\mathcal M)}$, note that
 
 $$
 \mathrm{SSE}_{\mathcal M}
@@ -354,10 +438,10 @@ y_{i,j,k}
 \right)^2,
 $$
 
-hence we have
+hence the maximized log-likelihood for fixed $\mathcal M$ and $\sigma^2$ is
 
 $$
-\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\ell(\mathcal M,\sigma^2 ; \mathbf{y})
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -366,7 +450,7 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-We want to find the specific combination of $\mathcal{M}$ and $\sigma^2$ that gives the maximum likelihood. However, we are currently not interested in studying $\sigma^2$ itself. 
+After the structural mean parameters have been optimized within each model, we want to find the specific combination of $\mathcal{M}$ and $\sigma^2$ that gives the maximum likelihood. However, we are currently not interested in studying $\sigma^2$ itself.
 
 In this case, $\sigma^2$ is called a nuisance parameter, and people often use a method called *profile likelihood* to deal with it.
 
@@ -376,13 +460,13 @@ i.e., to find
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y}).
+=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 ; \mathbf{y}).
 $$
 
 For a fixed model $\mathcal M$, differentiate the log-likelihood with respect to $\sigma^2$:
 
 $$
-\frac{\partial \ell(\mathcal M,\sigma^2 \mid \mathbf{y})}{\partial \sigma^2}
+\frac{\partial \ell(\mathcal M,\sigma^2 ; \mathbf{y})}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -410,7 +494,7 @@ Therefore, the maximum-likelihood estimate of $\sigma^2$ under model $\mathcal M
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 ; \mathbf{y})
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
@@ -419,11 +503,10 @@ Substituting $\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}$ back into the log-li
 
 $$
 \begin{align*}
-\ell_p(\mathcal M \mid \mathbf{y})
+\ell_p(\mathcal M ; \mathbf{y})
 &=
 \ell\left(
-\mathcal M,
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
+\mathcal M,\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} ; \mathbf{y}
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)
@@ -451,7 +534,7 @@ and thus the profile likelihood is
 
 $$
 \begin{align*}
-L_p(\mathcal M \mid \mathbf{y})
+L_p(\mathcal M ; \mathbf{y})
 &=\exp\left[-\frac{N}{2}\ln(2\pi) - \frac{N}{2}\ln\left(\frac{\mathrm{SSE}_{\mathcal M}}{N}\right) - \frac{N}{2}\right] \\
 &=\exp\left[-\frac{N}{2} \ln\left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right) \right] \\
 &= \left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}} \\
@@ -477,7 +560,7 @@ Intuitively, we turned to $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$, which
 
 Then after some pondering, we reframed the problem as a model comparison problem and introduced $\mathrm{SSE}_{\mathcal M}$.
 
-And now under the normal-error assumption, we have the profile likelihood $L_p(\mathcal M \mid \mathbf{y})$.
+And now under the normal-error assumption, we have the profile likelihood $L_p(\mathcal M ; \mathbf{y})$.
 
 One might feel that we are just replacing one number with another arbitrarily.
 
@@ -499,7 +582,7 @@ A generative model, say a random variable $X \sim \mathcal{N}(0,1)$, is also not
 
 But a claim about how our data is generated is different. It is anchored by the data we have observed, it can predict what kind of data is probable, and the claim itself can be embarrassed by our observations. 
 
-Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $L_p(\mathcal{M} \mid \mathbf{y})$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio.
+Therefore, by passing from $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ to $L_p(\mathcal{M} ; \mathbf{y})$ we are not solely using increasingly complex tools for the sake of complexity. It is what will allow us, in the next section, to construct a *probabilistic standard* for our earlier ratio.
 
 ### Likelihood Ratio Testing
 
@@ -510,9 +593,9 @@ $$
 \Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
 }{
-L_p(\mathcal M_F \mid \mathbf{y})
+L_p(\mathcal M_F ; \mathbf{y})
 }\\
 &=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
@@ -527,9 +610,9 @@ $$
 If the reduced model fits almost as well as the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
 \approx
-L_p(\mathcal M_F \mid \mathbf{y}),
+L_p(\mathcal M_F ; \mathbf{y}),
 $$
 
 so
@@ -543,9 +626,9 @@ which means removing the interaction component causes little loss of likelihood.
 But if the reduced model fits much worse than the full model, then
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+L_p(\mathcal M_{R,\mathrm{A\times B}} ; \mathbf{y})
 \ll
-L_p(\mathcal M_F \mid \mathbf{y}),
+L_p(\mathcal M_F ; \mathbf{y}),
 $$
 
 and
@@ -994,6 +1077,8 @@ Calibration tries to answer the problem:
 It does so by building a reference standard for interpreting a statistic, i.e., constructing a reference distribution under the reduced model by using something called a **pivot**.
 
 A pivot is a statistic whose distribution is known under the null hypothesis and does not depend on unknown parameters. 
+
+From here on, we treat the estimators as functions of the random vector $\mathbf{Y}$ rather than the observed vector $\mathbf{y}$. Thus quantities such as $\widehat{\boldsymbol{\alpha\beta}}$ and $\mathrm{SS_{A\times B}}$ are now random variables, even though their observed realized values are fixed numbers once the data have been collected.
 
 Recall our normal-error assumption:
 

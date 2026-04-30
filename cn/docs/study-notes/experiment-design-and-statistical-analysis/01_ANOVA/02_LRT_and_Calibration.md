@@ -90,7 +90,22 @@ $$
 
 从向量化的视角看，$\mathrm{SS_{A\times B}}$ 衡量的是中心化观测向量中有多少被它捕获。
 
-我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\hat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。
+我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\hat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。我们把它称为"完整模型"，记作 $\mathcal{M}_{F}$。在结构形式下，它是
+
+$$
+\mathcal{M}_{F}:
+Y_{i,j,k}-\mu
+=
+{\alpha}_i
++
+{\beta}_j
++
+{(\alpha\beta)}_{i,j}
++
+{\varepsilon}_{i,j,k}^{(\mathcal{M}_{F})}.
+$$
+
+而使用我们的观测数据对该模型进行的一次拟合为
 
 $$
 y_{i,j,k}-\hat\mu
@@ -108,7 +123,7 @@ $$
 
 让我们来看一看，如果把交互项去掉、把它推到残差误差里，会发生什么。
 
-我们把最初提出的模型称为"完整模型"，记作 $\mathcal{M}_{F}$；把去掉交互项之后得到的新模型称为"缩减模型"，记作 $\mathcal{M}_{R, \mathrm{A\times B}}$：
+我们把去掉交互项之后得到的新模型称为"缩减模型"，记作 $\mathcal{M}_{R, \mathrm{A\times B}}$：
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
@@ -260,10 +275,10 @@ $$
 
 考虑我们这个例子实验的一个一般性模型 $\mathcal M$。
 
-将其对观测 $y_{i,j,k}$ 的拟合值写作
+将其在观测位置 $(i,j,k)$ 上的结构均值参数写作
 
 $$
-\widehat y^{(\mathcal M)}_{i,j,k}.
+\mu^{(\mathcal M)}_{i,j,k}.
 $$
 
 在正态误差假设下，
@@ -271,7 +286,7 @@ $$
 $$
 Y_{i,j,k}
 =
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 +
 \varepsilon_{i,j,k},
 \qquad
@@ -284,7 +299,7 @@ $$
 Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
 \mathcal{N}\left(
-\widehat y^{(\mathcal M)}_{i,j,k},
+\mu^{(\mathcal M)}_{i,j,k},
 \sigma^2
 \right).
 $$
@@ -292,7 +307,7 @@ $$
 于是，整个数据集的似然为：
 
 $$
-L(\mathcal M,\sigma^2 \mid \mathbf{y})
+L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 \mid \mathbf{y}, \mathcal M)
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -302,7 +317,7 @@ L(\mathcal M,\sigma^2 \mid \mathbf{y})
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2
 }{
 2\sigma^2
@@ -314,7 +329,7 @@ $$
 
 $$
 \begin{aligned}
-\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 \mid \mathbf{y}, \mathcal M)
 &=
 \sum_{i,j,k}
 \left[
@@ -324,7 +339,7 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2
 }{
 2\sigma^2
@@ -340,12 +355,20 @@ y_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\mu^{(\mathcal M)}_{i,j,k}
 \right)^2.
 \end{aligned}
 $$
 
-注意到
+对于固定的 $\mathcal M$ 和 $\sigma^2$，在 $\mathcal M$ 所允许的结构均值上最大化这个似然，等价于在 $\mathcal M$ 所编码的约束下最小化平方误差项。这个优化问题的解就是拟合值：
+
+$$
+\widehat{\mu}^{(\mathcal M)}_{i,j,k}
+=
+\widehat y^{(\mathcal M)}_{i,j,k}.
+$$
+
+在对 $\boldsymbol{\mu}^{(\mathcal M)}$ 完成最大化之后，注意到
 
 $$
 \mathrm{SSE}_{\mathcal M}
@@ -359,7 +382,7 @@ y_{i,j,k}
 \right)^2,
 $$
 
-因此
+因此，对固定 $\mathcal M$ 和 $\sigma^2$ 而言，已经对结构均值最大化后的对数似然为
 
 $$
 \ell(\mathcal M,\sigma^2 \mid \mathbf{y})
@@ -371,7 +394,7 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-我们想找出能使似然达到最大的 $\mathcal{M}$ 和 $\sigma^2$ 的具体组合。但目前我们并不关心 $\sigma^2$ 本身。
+在每个模型内部的结构均值参数已经被优化之后，我们想找出能使似然达到最大的 $\mathcal{M}$ 和 $\sigma^2$ 的具体组合。但目前我们并不关心 $\sigma^2$ 本身。
 
 在这种情况下，$\sigma^2$ 被称为冗余参数（nuisance parameter，又称讨厌参数），人们常常使用一种叫做*剖面似然*（profile likelihood）的方法来处理它。
 
@@ -427,8 +450,7 @@ $$
 \ell_p(\mathcal M \mid \mathbf{y})
 &=
 \ell\left(
-\mathcal M,
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
+\mathcal M,\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)
@@ -964,6 +986,8 @@ $$
 它通过为统计量构造一个参考标准来做到这一点，也就是借助一个名为**枢轴量**（pivot）的东西，在缩减模型下构造参考分布。
 
 枢轴量是一个统计量，它在零假设下的分布是已知的，并且不依赖于未知参数。
+
+从这里开始，我们把估计量看作随机向量 $\mathbf{Y}$ 的函数，而不是观测向量 $\mathbf{y}$ 的函数。因此，像 $\widehat{\boldsymbol{\alpha\beta}}$ 和 $\mathrm{SS_{A\times B}}$ 这样的量现在是随机变量，尽管一旦数据被收集到，它们的观测实现值就是固定的数。
 
 回忆我们的正态误差假设：
 
