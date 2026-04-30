@@ -291,7 +291,7 @@ $$
 Therefore,
 
 $$
-Y_{i,j,k}; \mathcal M,\sigma^2
+Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
 \mathcal{N}\left(
 \mu^{(\mathcal M)}_{i,j,k},
@@ -355,30 +355,14 @@ y_{i,j,k}
 \end{aligned}
 $$
 
-For a fixed model $\mathcal M$ and a fixed value of $\sigma^2$, the first two terms of the log-likelihood,
+For a fixed model $\mathcal M$ and fixed $\sigma^2$, maximizing the normal likelihood over the structural mean parameters is equivalent to least-squares estimation.
+
+In other words, the model chooses the fitted values allowed by $\mathcal M$ that make the squared residual error as small as possible:
 
 $$
--\frac{N}{2}\ln(2\pi)
--
-\frac{N}{2}\ln(\sigma^2),
-$$
-
-do not depend on the structural mean vector
-
-$$
-\boldsymbol{\mu}^{(\mathcal M)}
+\mathrm{SSE}_{\mathcal M}
 =
-\left(
-\mu^{(\mathcal M)}_{1,1,1},
-\mu^{(\mathcal M)}_{1,1,2},
-\ldots,
-\mu^{(\mathcal M)}_{I,J,K}
-\right)^\top.
-$$
-
-Therefore, maximizing the log-likelihood over $\boldsymbol{\mu}^{(\mathcal M)}$ is equivalent to minimizing
-
-$$
+\min_{\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M}
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
@@ -387,61 +371,107 @@ y_{i,j,k}
 \right)^2.
 $$
 
-However, $\boldsymbol{\mu}^{(\mathcal M)}$ cannot be any arbitrary vector in $\mathbb R^N$. It must have the structure allowed by model $\mathcal M$.
-
-For example, in the full two-way model, the structural mean must have the form
+After fitting the model, we write the optimizer as
 
 $$
-\mu^{(\mathcal M_F)}_{i,j,k}
-=
-\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}.
+\widehat y^{(\mathcal M)}_{i,j,k},
 $$
 
-In the reduced model without interaction, it must have the form
-
-$$
-\mu^{(\mathcal M_{R,A\times B})}_{i,j,k}
-=
-\mu+\alpha_i+\beta_j.
-$$
-
-So, this means the maximization over $\boldsymbol{\mu}^{(\mathcal M)}$ requires us to choose the parameter values allowed by $\mathcal M$ that make the fitted mean vector as close as possible to the observed data vector.
-
-
-The resulting optimizer is the fitted mean vector under model $\mathcal M$. We write it as
-
-$$
-\widehat{\boldsymbol{\mu}}^{(\mathcal M)}
-=
-\widehat{\mathbf y}^{(\mathcal M)}.
-$$
-
-Entry-wise,
-
-$$
-\widehat{\mu}^{(\mathcal M)}_{i,j,k}
-=
-\widehat y^{(\mathcal M)}_{i,j,k}.
-$$
-
-After this maximization over $\boldsymbol{\mu}^{(\mathcal M)}$, note that
+so
 
 $$
 \mathrm{SSE}_{\mathcal M}
-=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
-\|^2=
+=
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
 -
 \widehat y^{(\mathcal M)}_{i,j,k}
-\right)^2,
+\right)^2.
 $$
 
-hence the maximized log-likelihood for fixed $\mathcal M$ and $\sigma^2$ is
+We will not focus on the individual least-squares estimates themselves in this chapter, but we will be back on it later when they become our main object of interest.
+
+??? info "Getting the optimizer"
+
+    For a fixed model $\mathcal M$, the structural mean vector
+
+    $$
+    \boldsymbol{\mu}^{(\mathcal M)}
+    =
+    \left(
+    \mu^{(\mathcal M)}_{1,1,1},
+    \mu^{(\mathcal M)}_{1,1,2},
+    \ldots,
+    \mu^{(\mathcal M)}_{I,J,K}
+    \right)^\top
+    $$
+
+    cannot be any arbitrary vector in $\mathbb R^N$. It must live in the model space allowed by $\mathcal M$.
+
+    Least-squares fitting chooses the point in that model space closest to the observed data vector:
+
+    $$
+    \widehat{\boldsymbol{\mu}}^{(\mathcal M)}
+    =
+    \operatorname*{arg\,min}_{\boldsymbol{\mu}^{(\mathcal M)}\in \mathcal M}
+    \left\|
+    \mathbf y-\boldsymbol{\mu}^{(\mathcal M)}
+    \right\|^2.
+    $$
+
+    This optimizer is the fitted value vector:
+
+    $$
+    \widehat{\boldsymbol{\mu}}^{(\mathcal M)}
+    =
+    \widehat{\mathbf y}^{(\mathcal M)}.
+    $$
+
+    Equivalently, entry by entry,
+
+    $$
+    \widehat{\mu}^{(\mathcal M)}_{i,j,k}
+    =
+    \widehat y^{(\mathcal M)}_{i,j,k}.
+    $$
+
+    Geometrically, $\widehat{\mathbf y}^{(\mathcal M)}$ is the orthogonal projection of $\mathbf y$ onto the model space of $\mathcal M$. The residual vector is the part left over:
+
+    $$
+    \widehat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
+    =
+    \mathbf y-\widehat{\mathbf y}^{(\mathcal M)}.
+    $$
+
+    Therefore,
+
+    $$
+    \mathrm{SSE}_{\mathcal M}
+    =
+    \left\|
+    \widehat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
+    \right\|^2
+    =
+    \left\|
+    \mathbf y-\widehat{\mathbf y}^{(\mathcal M)}
+    \right\|^2.
+    $$
+
+    In the full two-way model, this projection gives the cell means:
+
+    $$
+    \widehat y^{(\mathcal M_F)}_{i,j,k}
+    =
+    \bar y_{i,j,.}.
+    $$
+
+    In the reduced model without interaction, the fitted values are constrained to have no interaction pattern. Therefore, the exact fitted values differ, but the principle is still choosing the closest vector allowed by the reduced model.
+
+After the least-squares fitting step, the log-likelihood becomes
 
 $$
-\ell(\mathcal M,\sigma^2 ; \mathbf{y})
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -450,7 +480,7 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-After the structural mean parameters have been optimized within each model, we want to find the specific combination of $\mathcal{M}$ and $\sigma^2$ that gives the maximum likelihood. However, we are currently not interested in studying $\sigma^2$ itself.
+Now, we want to  however, we are currently not interested in studying $\sigma^2$ itself.
 
 In this case, $\sigma^2$ is called a nuisance parameter, and people often use a method called *profile likelihood* to deal with it.
 
