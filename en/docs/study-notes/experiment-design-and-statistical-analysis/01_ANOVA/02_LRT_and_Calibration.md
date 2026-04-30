@@ -108,6 +108,18 @@ We call our originally proposed model as "full model" denoted by $\mathcal{M}_{F
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
+Y_{i,j,k}-\mu
+=
+{\alpha}_i
++
+{\beta}_j
++
+{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})}.
+$$
+
+and one fitting attempt of the model using our observed dataset:
+
+$$
 y_{i,j,k}-\hat\mu
 =
 \hat{\alpha}_i
@@ -120,7 +132,7 @@ $$
 where 
 
 $$
-\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
 Now we vectorize the model using the whole dataset, and taking squared Euclidean norms on both sides:

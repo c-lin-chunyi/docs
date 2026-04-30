@@ -112,6 +112,18 @@ $$
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
+Y_{i,j,k}-\mu
+=
+{\alpha}_i
++
+{\beta}_j
++
+{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})}.
+$$
+
+以及使用我们的观测数据对该模型进行的一次拟合：
+
+$$
 y_{i,j,k}-\hat\mu
 =
 \hat{\alpha}_i
@@ -124,7 +136,7 @@ $$
 其中
 
 $$
-\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}
+\hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
 现在用整个数据集把模型向量化，并对两边取平方范数：
