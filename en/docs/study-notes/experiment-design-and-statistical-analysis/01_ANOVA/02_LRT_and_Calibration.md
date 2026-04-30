@@ -945,7 +945,7 @@ $$
 
 points in the right direction. Larger values correspond to larger likelihood-ratio evidence against the reduced model.
 
-Second, our degrees-of-freedom derivation showed that the numerator and denominator come from spaces with different dimensions:
+Second, our degrees-of-freedom derivation showed that the numerator and denominator of our original ratio come from spaces with different dimensions:
 
 $$
 df_{\mathrm{A\times B}}=(I-1)(J-1),
@@ -953,7 +953,23 @@ df_{\mathrm{A\times B}}=(I-1)(J-1),
 df_{\mathrm{E}}=IJ(K-1).
 $$
 
-So the raw ratio is still not the final object. It does not tell us what values should be considered ordinary or unusual under the reduced model yet.
+A squared length accumulated over two directions should not be compared directly with a squared length accumulated over fifty-four directions. So, intuitively, the ratio should compare squared length *per available direction*:
+
+$$
+\frac{
+\mathrm{SS_{A\times B}}/df_{\mathrm{A\times B}}
+}{
+\mathrm{SS_E}/df_{\mathrm E}
+}.
+$$
+
+This is the dimension-adjusted version of our original comparison.
+
+The numerator measures how much squared variation the interaction component captures per interaction degree of freedom. The denominator measures how much squared variation remains as residual error per residual degree of freedom.
+
+If the reduced model is adequate, then the fitted interaction component is only fitting random error. In that case, the numerator should be comparable to the denominator. If the numerator is much larger than the denominator, the interaction component has captured more variation per dimension than we would expect from residual noise alone.
+
+Yet this is still not the final object. Even with the per-dimension form, we don't have a reference distribution for it. Thus, it does not tell us what values should be considered ordinary or unusual under the reduced model yet.
 
 This is where *calibration* enters.
 
@@ -961,47 +977,108 @@ Calibration tries to answer the problem:
 
 > If our reduced model were true, what values of this comparison would be ordinary?
 
-It does so by building a reference standard for interpreting a statistic, i.e., constructing a reference distribution under the reduced model.
+It does so by building a reference standard for interpreting a statistic, i.e., constructing a reference distribution under the reduced model by using something called a **pivot**.
 
-In our example, the reduced model says that the true interaction component is absent. Under that model, any fitted interaction component comes only from random residual fluctuation. 
+A pivot is a statistic whose distribution is known under the null hypothesis and does not depend on unknown parameters. 
 
-Therefore, calibration asks:
-
-How large can $\mathrm{SS_{A\times B}}$ become just by fitting random fluctuation?
-
-But we should also compare it with the amount of residual fluctuation left in the full model. Therefore, the calibrated comparison should have the form
+Recall our normal-error assumption:
 
 $$
-\frac{
-\text{interaction squared length per interaction dimension}
-}{
-\text{residual squared length per residual dimension}
-}.
+\varepsilon_{i,j,k}\overset{\mathrm{i.i.d.}}{\sim}\mathcal N(0,\sigma^2).
 $$
 
-That is,
+Equivalently, we can write
 
 $$
-\frac{
-\mathrm{SS_{A\times B}}/df_{\mathrm{A\times B}}
-}{
-\mathrm{SS_E}/df_{\mathrm{E}}
-}.
+\varepsilon_{i,j,k}
+=
+\sigma z_{i,j,k},
+\qquad
+z_{i,j,k}\overset{\mathrm{i.i.d.}}{\sim}\mathcal N(0,1).
 $$
 
-The numerator measures how much squared variation the interaction component captures per interaction degree of freedom, and similarly, the denominator measures how much squared variation remains as residual error per residual degree of freedom.
+So the entire error vector can be written as
 
-If the reduced model is adequate, then the fitted interaction component is only fitting random error. In that case, the numerator should be comparable to the denominator. If the numerator is much larger than the denominator, the interaction component has captured more variation per dimension than we would expect from residual noise alone.
+$$
+\boldsymbol\varepsilon
+=
+\sigma \mathbf z,
+\qquad
+\mathbf z\sim \mathcal N(\mathbf 0,I).
+$$
 
-However, this is still just an intuition yet. 
+Under the null hypothesis
 
-To turn it into a statistical test, we need the probability distribution of this calibrated ratio under the reduced model.
+$$
+H_0^{A\times B}:(\alpha\beta)_{i,j}=0
+\quad\text{for all }i,j,
+$$
 
-### Cochran's Theorem
+the fitted interaction component is a projection of the error vector onto the interaction subspace. Write this projection as $P_{A\times B}\boldsymbol\varepsilon$. Then
 
-Now we will use a classical result called **Cochran's theorem**. 
+$$
+\widehat{\boldsymbol{\alpha\beta}}
+=
+P_{A\times B}\boldsymbol\varepsilon
+=
+P_{A\times B}(\sigma\mathbf z)
+=
+\sigma P_{A\times B}\mathbf z.
+$$
 
-We will use only a simplified version of it here. The full theorem is usually stated in terms of quadratic forms and projection matrices. [^cochran1934].
+Therefore,
+
+$$
+\mathrm{SS_{A\times B}}
+=
+\left\|
+\widehat{\boldsymbol{\alpha\beta}}
+\right\|^2
+=
+\left\|
+\sigma P_{A\times B}\mathbf z
+\right\|^2
+=
+\sigma^2
+\left\|
+P_{A\times B}\mathbf z
+\right\|^2.
+$$
+
+Similarly, if $P_E$ is the projection onto the residual subspace, then
+
+$$
+\widehat{\boldsymbol{\varepsilon}}
+=
+P_E\boldsymbol\varepsilon
+=
+\sigma P_E\mathbf z,
+$$
+
+so
+
+$$
+\mathrm{SS_E}
+=
+\left\|
+\widehat{\boldsymbol{\varepsilon}}
+\right\|^2
+=
+\sigma^2
+\left\|
+P_E\mathbf z
+\right\|^2.
+$$
+
+Therefore, both $\mathrm{SS_{A\times B}}$ and $\mathrm{SS_E}$ are measured on the scale of $\sigma^2$. If the residual noise were larger, both sums of squares would tend to be larger. 
+
+So, a useful calibrated statistic should remove this unknown scale.
+
+In addition, we need to know the distribution of those projected squared lengths.
+
+To achieve these, we will use a classical result called **Cochran's theorem**.
+
+A simplified version of it is used here. The full theorem is usually stated in terms of quadratic forms and projection matrices. [^cochran1934]. We will discuss more on it in the later chapters.
 
 !!! info "Cochran's Theorem, Simplified"
 
@@ -1010,38 +1087,110 @@ We will use only a simplified version of it here. The full theorem is usually st
     The degrees of freedom of each $\chi^2$ distribution equals the dimension of the corresponding component space.
 
 
-Under the normal-error model, and under the null hypothesis that the population interaction component is zero,
-
-$$
-H_0^{A\times B}:(\alpha\beta)_{ij}=0
-\quad\text{for all }i,j,
-$$
-
-the fitted interaction component $\widehat{\boldsymbol{\alpha\beta}}$ is a projection of pure error onto the interaction subspace. Cochran's theorem then gives
+From the projection representation above,
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\sigma^2}
 =
-\frac{
-\|\widehat{\boldsymbol{\alpha\beta}}\|^2
-}{\sigma^2}
+\left\|
+P_{A\times B}\mathbf z
+\right\|^2.
+$$
+
+Cochran's theorem then gives
+$$
+\frac{\mathrm{SS_{A\times B}}}{\sigma^2}
+=
+\left\|
+P_{A\times B}\mathbf z
+\right\|^2
 \sim
 \chi^2_{df_{\mathrm{A\times B}}}.
 $$
 
-The residual component is also a projection of the same normal error vector onto the residual subspace, so
+Similarly, for the residual component:
 
 $$
 \frac{\mathrm{SS_E}}{\sigma^2}
 =
-\frac{
-\|\widehat{\boldsymbol{\varepsilon}}\|^2
-}{\sigma^2}
+\left\|
+P_E\mathbf z
+\right\|^2
 \sim
 \chi^2_{df_{\mathrm{E}}}.
 $$
 
 Because the interaction subspace and the residual subspace are orthogonal, Cochran's theorem also gives independence between these two $\chi^2$ variables.
+
+Cochran's theorem also makes our earlier intuition precise:
+
+If
+
+$$
+\frac{\mathrm{SS_{A\times B}}}{\sigma^2}
+\sim
+\chi^2_{df_{\mathrm{A\times B}}},
+$$
+
+then, because a $\chi^2$ random variable with $d$ degrees of freedom has expectation $d$,
+
+$$
+\mathbb{E}\left[
+\frac{\mathrm{SS_{A\times B}}}{\sigma^2}
+\right]
+=
+df_{\mathrm{A\times B}}.
+$$
+
+Multiplying both sides by $\sigma^2$,
+
+$$
+\mathbb{E}\left[
+\mathrm{SS_{A\times B}}
+\right]
+=
+df_{\mathrm{A\times B}}\sigma^2.
+$$
+
+Therefore,
+
+$$
+\mathbb{E}\left[
+\frac{\mathrm{SS_{A\times B}}}{df_{\mathrm{A\times B}}}
+\right]
+=
+\sigma^2.
+$$
+
+Similarly,
+
+$$
+\mathbb{E}\left[
+\frac{\mathrm{SS_E}}{df_{\mathrm E}}
+\right]
+=
+\sigma^2.
+$$
+
+So under the null hypothesis, both dimension-adjusted squared lengths are unbiased estimators of the same variance $\sigma^2$, which makes them comparable.
+
+Now recall the definition of $F$ distribution.
+
+If
+
+$$
+U\sim \chi^2_{d_1},
+\qquad
+V\sim \chi^2_{d_2},
+$$
+
+and $U$ and $V$ are independent, then
+
+$$
+\frac{U/d_1}{V/d_2}
+\sim
+F_{d_1,d_2}.
+$$
 
 Therefore,
 
@@ -1068,6 +1217,10 @@ F_\mathrm{{A\times B}}
 \sim
 F_{df_{\mathrm{A\times B}},df_{\mathrm{E}}}.
 $$
+
+This marks the end of our calibration steps.
+
+$F_{df_{\mathrm{A\times B}}}$ is the pivot we were looking for. Under the null hypothesis of no interaction, its distribution is known, without depending on an unknown variable.
 
 ## Two-way Analysis of Variance
 
