@@ -265,7 +265,7 @@ I.e., the residual errors are assumed to be independent, normally distributed, c
 
     If this assumption is seriously violated, many classical normal-theory tools including the one we are going to derive in this section may no longer be appropriate.
 
-    In that case, one should consider alternative approches such as bootstrap procedures, data transformations, generalized linear models and more.
+    In that case, one should consider alternative approaches such as bootstrap procedures, data transformations, generalized linear models and more.
 
 ### Maximum Likelihood Estimation
 
@@ -485,7 +485,7 @@ Before we proceed further, I think we need to take a moment to reflect on what w
 
 We want to know what likely causes each participant's score to be different from the grand mean, and have successfully decomposed one individual observation into multiple mutually orthogonal sources. 
 
-Then we have vectorized one single observation to the whole dataset, and used squared Euclidean norms to facilitate the orthogonality, landing ourselves with an SS decomposition formula, which tells us about how much does each of the likely sources contribute to the deviation of scores from the grand mean.
+Then we have vectorized one single observation to the whole dataset, and used squared Euclidean norms to facilitate the orthogonality, landing ourselves with an SS decomposition formula, which tells us how much each likely source contributes to the deviation of scores from the grand mean.
 
 But decomposition by itself is still not enough, we want to know whether one likely source (here being A $\times$ B) is just reflecting residual errors.
 
@@ -497,7 +497,7 @@ And now under the normal-error assumption, we have the maximized likelihood $\wi
 
 One might feel that we are just replacing one number with another arbitrarily.
 
-But in statistics, replacing one number with another is never arbitrary when the two numbers are trying to answer different kinds of question. 
+But in statistics, replacing one number with another is never arbitrary when the two numbers are trying to answer different kinds of questions. 
 
 The sum-of-squares decomposition is a *descriptive statistic*. It summarizes what is present in the data we happen to have. 
 
@@ -1153,7 +1153,7 @@ P_{\mathrm{E}}\mathbf z
 \chi^2_{df_{\mathrm{E}}}.
 $$
 
-Because the interaction subspace and the residual subspace are orthogonal, Cochran's theorem also gives independence between these two $\chi^2$ variables.
+Because the interaction subspace and the residual subspace are orthogonal, Cochran's theorem also gives independence of these two $\chi^2$ variables.
 
 Cochran's theorem also makes our earlier intuition precise:
 
@@ -1263,7 +1263,7 @@ We began with a balanced two-factor design, decomposed the centered data vector 
 
 This procedure is the classical **two-way analysis of variance**, or **two-way ANOVA**.
 
-In this balanced design, applying the same model comparison and calibration logic to other fitted component gives:
+In this balanced design, applying the same model comparison and calibration logic to the other fitted components gives:
 
 $$
 F_\mathrm{A}

@@ -360,15 +360,19 @@ y_{i,j,k}
 \end{aligned}
 $$
 
-对于固定的模型 $\mathcal M$，似然里有两类未知量：结构均值向量 $\boldsymbol{\mu}^{(\mathcal M)}$ 和方差 $\sigma^2$。
-
-我们的主要目标是比较模型，而不是研究这些参数本身。因此，我们会用*剖面化*（profiling）的思路来处理它们：对每一个固定的模型，选取能让该模型似然尽可能大的参数值，然后比较这些已经优化过的似然。
-
-我们先剖面化掉结构均值向量。对固定的 $\mathcal M$ 和 $\sigma^2$，对数似然中依赖 $\boldsymbol{\mu}^{(\mathcal M)}$ 的部分只有
+现在我们想找到使这个似然最大的参数值，并且要求满足两个约束：
 
 $$
--
-\frac{1}{2\sigma^2}
+\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M,
+\qquad
+\sigma^2>0.
+$$
+
+第一个约束的意思是，均值向量必须具有模型 $\mathcal M$ 所允许的结构。例如，完整模型允许交互成分，而缩减模型不允许。
+
+注意，$\boldsymbol{\mu}^{(\mathcal M)}$ 只通过平方误差项进入对数似然：
+
+$$
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
@@ -377,32 +381,56 @@ y_{i,j,k}
 \right)^2.
 $$
 
-因此，在 $\mathcal M$ 所允许的结构均值上最大化这个正态似然，等价于最小化平方残差和。这个优化问题的解就是拟合值：
+对任意固定的 $\sigma^2>0$，这一项前面的系数是
 
 $$
-\widehat{\mu}^{(\mathcal M)}_{i,j,k}
+-\frac{1}{2\sigma^2}<0.
+$$
+
+因此，在 $\boldsymbol{\mu}^{(\mathcal M)}$ 上最大化似然，等价于最小化平方误差项。换言之，在正态误差下，对均值结构进行极大似然拟合会给出*最小二乘拟合*。
+
+我们把模型 $\mathcal M$ 下的拟合均值参数记作
+
+$$
+\widehat\mu^{(\mathcal M)}_{i,j,k},
+$$
+
+在本章的讨论中，单个拟合均值参数并不是我们最关心的对象，不过后面我们还会回到它们。
+
+拟合完模型 $\mathcal M$ 的均值结构后，对数似然变为
+
+$$
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
-\widehat y^{(\mathcal M)}_{i,j,k}.
+-\frac{N}{2}\ln(2\pi)
+-
+\frac{N}{2}\ln(\sigma^2)
+-
+\frac{\sum_{i,j,k}
+\left(
+y_{i,j,k}
+-
+\widehat\mu^{(\mathcal M)}_{i,j,k}
+\right)^2}{2\sigma^2}.
 $$
 
-在对 $\boldsymbol{\mu}^{(\mathcal M)}$ 完成最大化之后，注意到
+注意
 
 $$
 \mathrm{SSE}_{\mathcal M}
-=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal M)}
-\|^2=
+=
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+\widehat\mu^{(\mathcal M)}_{i,j,k}
 \right)^2,
 $$
 
-因此，对固定 $\mathcal M$ 和 $\sigma^2$ 而言，已经对结构均值最大化后的对数似然为
+因此
 
 $$
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -411,22 +439,10 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-接下来还需要把 $\sigma^2$ 也剖面化掉。在这个比较中，$\sigma^2$ 是冗余参数（nuisance parameter，又称讨厌参数）：它会影响似然，但它本身并不是我们想解释的对象。
-
-思路很简单。我们固定所选模型 $\mathcal{M}$，并选取一个使似然尽可能大的 $\sigma^2$，
-
-也即求
+现在对 $\sigma^2$ 最大化这个表达式。对 $\sigma^2$ 求导：
 
 $$
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M).
-$$
-
-对固定的模型 $\mathcal M$，对 $\sigma^2$ 求对数似然的导数：
-
-$$
-\frac{\partial \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)}{\partial \sigma^2}
+\frac{\partial \ell}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -443,67 +459,39 @@ $$
 0.
 $$
 
-两边同乘 $2(\sigma^2)^2$：
+两边乘以 $2(\sigma^2)^2$：
 
 $$
 -N\sigma^2+\mathrm{SSE}_{\mathcal M}=0.
 $$
 
-因此，模型 $\mathcal M$ 下 $\sigma^2$ 的极大似然估计为
+因此，
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=
-\operatorname*{arg\,max}_{\sigma^2}
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
 
-把 $\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}$ 代回对数似然，就得到模型 $\mathcal{M}$ 的剖面对数似然：
+把两个极大似然估计都代回似然，就得到模型 $\mathcal M$ 的最大化似然：
 
 $$
-\begin{align*}
-\ell_p(\mathcal M \mid \mathbf{y})
+\widehat L_{\mathcal M}
+=
+L(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
+$$
+
+利用前面的表达式，
+
+$$
+\begin{aligned}
+\widehat L_{\mathcal M}
 &=
-\ell\left(
-\widehat{\boldsymbol{\mu}}^{(\mathcal M)},
-\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-\mid
-\mathbf{y},\mathcal M
-\right)\\
-&=
--\frac{N}{2}\ln(2\pi)
--
-\frac{N}{2}
-\ln\left(
+(2\pi e)^{-N/2}
+\left(
 \frac{\mathrm{SSE}_{\mathcal M}}{N}
-\right)
--
-\frac{\mathrm{SSE}_{\mathcal M}}
-{2(\mathrm{SSE}_{\mathcal M}/N)} \\
-&=
--\frac{N}{2}\ln(2\pi)
--
-\frac{N}{2}
-\ln\left(
-\frac{\mathrm{SSE}_{\mathcal M}}{N}
-\right)
--
-\frac{N}{2}.
-\end{align*}
-$$
-
-于是剖面似然为
-
-$$
-\begin{align*}
-L_p(\mathcal M \mid \mathbf{y})
-&=\exp\left[-\frac{N}{2}\ln(2\pi) - \frac{N}{2}\ln\left(\frac{\mathrm{SSE}_{\mathcal M}}{N}\right) - \frac{N}{2}\right] \\
-&=\exp\left[-\frac{N}{2} \ln\left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right) \right] \\
-&= \left( \frac{2\pi e \cdot \mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}} \\
-&= (2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M}}{N} \right)^{-\frac{N}{2}}.
-\end{align*}
+\right)^{-N/2}.
+\end{aligned}
 $$
 
 可惜的是，单看一个似然值，本身仍很难解释。
@@ -512,16 +500,16 @@ $$
 
 ### 似然比检验
 
-现在，我们想通过比较两个模型的剖面似然来比较缩减模型与完整模型：
+现在，我们想通过比较两个模型的最大化似然来比较缩减模型与完整模型：
 
 $$
 \begin{align*}
 \Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
-L_p(\mathcal M_F \mid \mathbf{y})
+\widehat L_{\mathcal M_F}
 }\\
 &=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
@@ -536,9 +524,9 @@ $$
 如果缩减模型的拟合几乎与完整模型一样好，那么
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 \approx
-L_p(\mathcal M_F \mid \mathbf{y}),
+\widehat L_{\mathcal M_F},
 $$
 
 于是
@@ -552,9 +540,9 @@ $$
 但如果缩减模型的拟合远远差于完整模型，那么
 
 $$
-L_p(\mathcal M_{R,\mathrm{A\times B}} \mid \mathbf{y})
+\widehat L_{\mathcal M_{R,\mathrm{A\times B}}}
 \ll
-L_p(\mathcal M_F \mid \mathbf{y}),
+\widehat L_{\mathcal M_F},
 $$
 
 且
@@ -1560,7 +1548,7 @@ $$
 
 因此，交互平方和可以被解释为：把交互成分纳入模型后，残差平方误差所减少的量。
 
-在正态误差假设下，似然比检验表明，这一比较与剖面似然相联系：
+在正态误差假设下，似然比检验表明，这一比较与最大化似然相联系：
 
 $$
 -2\ln\Lambda_{\mathrm{A\times B}}
