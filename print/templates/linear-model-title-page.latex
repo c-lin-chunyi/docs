@@ -1,0 +1,74 @@
+$if(titlepage)$
+\begin{titlepage}
+$if(titlepage-background)$
+\newgeometry{top=2.5cm, right=3.5cm, bottom=2.5cm, left=3.5cm}
+$else$
+\newgeometry{top=2.5cm, right=3.5cm, bottom=2.5cm, left=3.5cm}
+$endif$
+$if(titlepage-color)$
+\definecolor{titlepage-color}{HTML}{$titlepage-color$}
+\newpagecolor{titlepage-color}\afterpage{\restorepagecolor}
+$endif$
+$if(titlepage-background)$
+\tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{$titlepage-background$}};
+$endif$
+\definecolor{linear-title-text}{HTML}{$if(titlepage-text-color)$$titlepage-text-color$$else$25272A$endif$}
+\definecolor{linear-title-muted}{HTML}{$if(titlepage-muted-color)$$titlepage-muted-color$$else$6B7280$endif$}
+\definecolor{linear-title-rule}{HTML}{$if(titlepage-rule-color)$$titlepage-rule-color$$else$435488$endif$}
+\definecolor{linear-title-accent}{HTML}{$if(titlepage-accent-color)$$titlepage-accent-color$$else$9A6A2F$endif$}
+\newcommand{\linearTitleBlock}[1]{\parbox[t]{0.88\textwidth}{\raggedright #1}}
+\pagestyle{empty}
+\begin{flushleft}
+\color{linear-title-text}
+
+$if(titlepage-background)$
+% The titlepage with a background image has other text spacing and text size
+{
+  \setstretch{1.15}
+  \vfill
+  \vskip -6em
+  \noindent\textcolor{linear-title-accent}{\rule{18mm}{1.2pt}}\hspace{4mm}\textcolor{linear-title-rule}{\rule{48mm}{1.2pt}}
+  \vskip 2.2em
+  \noindent {\fontsize{31}{36}\selectfont\bfseries\textsf{\linearTitleBlock{$title$}}\par}
+  $if(subtitle)$
+  \vskip 1.1em
+  {\fontsize{16}{21}\selectfont\textsf{\textcolor{linear-title-muted}{$subtitle$}}\par}
+  $endif$
+  \vskip 3.6em
+  \noindent {\fontsize{15}{19}\selectfont\bfseries\textsf{$for(author)$$author$$sep$, $endfor$}\par}
+  \vfill
+  $if(date)$
+  \noindent {\fontsize{10}{13}\selectfont\textsf{\textcolor{linear-title-muted}{$date$}}\par}
+  $endif$
+}
+$else$
+{
+  \setstretch{1.12}
+  \vspace*{0.7cm}
+  \noindent\textcolor{linear-title-accent}{\rule{20mm}{1.2pt}}\hspace{4mm}\textcolor{linear-title-rule}{\rule{52mm}{1.2pt}}
+  \vfill
+  \vskip -2cm
+  \noindent {\fontsize{31}{36}\selectfont\bfseries\textsf{\linearTitleBlock{$title$}}\par}
+  $if(subtitle)$
+  \vskip 1.1em
+  {\fontsize{16}{21}\selectfont\textsf{\textcolor{linear-title-muted}{$subtitle$}}\par}
+  $endif$
+  \vskip 3.8em
+  \noindent {\fontsize{15}{19}\selectfont\bfseries\textsf{$for(author)$$author$$sep$, $endfor$}\par}
+  \vfill
+  $if(date)$
+  \noindent {\fontsize{10}{13}\selectfont\textsf{\textcolor{linear-title-muted}{$date$}}\par}
+  $endif$
+}
+$endif$
+
+$if(titlepage-logo)$
+\vskip 1.8em
+\noindent
+\includegraphics[width=$if(logo-width)$$logo-width$$else$35mm$endif$, left]{$titlepage-logo$}
+$endif$
+\end{flushleft}
+\end{titlepage}
+\restoregeometry
+\pagenumbering{arabic}
+$endif$
