@@ -271,7 +271,7 @@ I.e., the residual errors are assumed to be independent, normally distributed, c
 
 Consider a generic model $\mathcal M$ for our example experiment.
 
-We write its structural mean parameter for observation $(i,j,k)$ as
+We write the mean predicted by model $\mathcal M$ for observation $(i,j,k)$ as
 
 $$
 \mu^{(\mathcal M)}_{i,j,k}.
@@ -800,6 +800,7 @@ df_\mathrm{A}=I-1.
 $$
 
 The same logic applies to the difficulty component $B$. Since there are $J$ difficulty-level deviations and one sum-to-zero constraint,
+
 $$
 df_\mathrm{B}=J-1.
 $$
@@ -871,6 +872,7 @@ $$
 $$
 
 So in the full model, every observation in cell $(i,j)$ receives the same fitted value:
+
 $$
 \widehat y_{i,j,k}
 =
