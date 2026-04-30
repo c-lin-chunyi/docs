@@ -495,16 +495,16 @@ Now, we want to compare the reduced and full models by comparing their profile l
 
 $$
 \begin{align*}
-\Lambda_{A\times B}
+\Lambda_{\mathrm{A\times B}}
 &=
 \frac{
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 }{
 L_p(\mathcal M_F)
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,A\times B}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
-\mathrm{SSE}_{\mathcal{M}_{R,A\times B}}
+\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}
 }{
 \mathrm{SSE}_{\mathcal{M}_F}
 }\right)^{-\frac{N}{2}}
@@ -515,7 +515,7 @@ $$
 If the reduced model fits almost as well as the full model, then
 
 $$
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 \approx
 L_p(\mathcal M_F),
 $$
@@ -523,7 +523,7 @@ $$
 so
 
 $$
-\Lambda_{A\times B}\approx 1,
+\Lambda_{\mathrm{A\times B}}\approx 1,
 $$
 
 which means removing the interaction component causes little loss of likelihood.
@@ -531,7 +531,7 @@ which means removing the interaction component causes little loss of likelihood.
 But if the reduced model fits much worse than the full model, then
 
 $$
-L_p(\mathcal M_{R,A\times B})
+L_p(\mathcal M_{R,\mathrm{A\times B}})
 \ll
 L_p(\mathcal M_F),
 $$
@@ -539,17 +539,17 @@ $$
 and
 
 $$
-\Lambda_{A\times B}\ll 1,
+\Lambda_{\mathrm{A\times B}}\ll 1,
 $$
 
 which means removing the interaction component causes a large loss of likelihood. 
 
 Therefore, stronger evidence against the reduced model corresponds to a smaller likelihood ratio.
 
-Taking logs on $\Lambda_{A\times B}$:
+Taking logs on $(\mathcal M_{R,\mathrm{A\times B}})$:
 
 $$
-\ln \Lambda_{A\times B}
+\ln (\mathcal M_{R,\mathrm{A\times B}})
 =
 -\frac{N}{2}
 \ln\left(
@@ -564,7 +564,7 @@ $$
 Therefore,
 
 $$
--2\ln \Lambda_{A\times B}
+-2\ln (\mathcal M_{R,\mathrm{A\times B}})
 =
 N
 \ln\left(
@@ -576,7 +576,7 @@ N
 \right).
 $$
 
-Since the sign on both sides have been flipped, now stronger evidence against the reduced model corresponds to a larger $-2\ln \Lambda_{A\times B}$.
+Since the sign on both sides have been flipped, now stronger evidence against the reduced model corresponds to a larger $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$.
 
 
 Recall that 
@@ -606,12 +606,12 @@ $$
 \geq 1.
 $$
 
-The ratio inside the logarithm is at least $1$. The farther this ratio is above $1$, the more residual error is added by removing the interaction component, and the larger our $-2\ln \Lambda_{A\times B}$ statistic becomes, suggesting stronger evidence against the reduced model.
+The ratio inside the logarithm is at least $1$. The farther this ratio is above $1$, the more residual error is added by removing the interaction component, and the larger our $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ statistic becomes, suggesting stronger evidence against the reduced model.
 
 Thus,
 
 $$
--2\ln\Lambda_{A\times B}
+-2\ln(\mathcal M_{R,\mathrm{A\times B}})
 =
 N\ln\left(
 1+
@@ -619,7 +619,7 @@ N\ln\left(
 \right).
 $$
 
-Because $N>0$, and $\ln(1+x)$ is strictly increasing for $x\geq 0$, the $-2\ln \Lambda_{A\times B}$ statistic is a strictly increasing function of
+Because $N>0$, and $\ln(1+x)$ is strictly increasing for $x\geq 0$, the $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ statistic is a strictly increasing function of
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}.
@@ -631,7 +631,7 @@ $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 $$
 
-is monotone-equivalent to the $-2\ln \Lambda_{A\times B}$ statistic evidence for our reduced-versus-full comparison.
+is monotone-equivalent to the $-2\ln (\mathcal M_{R,\mathrm{A\times B}})$ statistic evidence for our reduced-versus-full comparison.
 
 As it turns out, our original ratio was not outright wrong. It was pointing toward the right comparison.
 
