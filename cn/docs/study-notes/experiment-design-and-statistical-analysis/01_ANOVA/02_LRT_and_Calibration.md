@@ -360,7 +360,24 @@ y_{i,j,k}
 \end{aligned}
 $$
 
-对于固定的 $\mathcal M$ 和 $\sigma^2$，在 $\mathcal M$ 所允许的结构均值上最大化这个似然，等价于在 $\mathcal M$ 所编码的约束下最小化平方误差项。这个优化问题的解就是拟合值：
+对于固定的模型 $\mathcal M$，似然里有两类未知量：结构均值向量 $\boldsymbol{\mu}^{(\mathcal M)}$ 和方差 $\sigma^2$。
+
+我们的主要目标是比较模型，而不是研究这些参数本身。因此，我们会用*剖面化*（profiling）的思路来处理它们：对每一个固定的模型，选取能让该模型似然尽可能大的参数值，然后比较这些已经优化过的似然。
+
+我们先剖面化掉结构均值向量。对固定的 $\mathcal M$ 和 $\sigma^2$，对数似然中依赖 $\boldsymbol{\mu}^{(\mathcal M)}$ 的部分只有
+
+$$
+-
+\frac{1}{2\sigma^2}
+\sum_{i,j,k}
+\left(
+y_{i,j,k}
+-
+\mu^{(\mathcal M)}_{i,j,k}
+\right)^2.
+$$
+
+因此，在 $\mathcal M$ 所允许的结构均值上最大化这个正态似然，等价于最小化平方残差和。这个优化问题的解就是拟合值：
 
 $$
 \widehat{\mu}^{(\mathcal M)}_{i,j,k}
@@ -385,7 +402,7 @@ $$
 因此，对固定 $\mathcal M$ 和 $\sigma^2$ 而言，已经对结构均值最大化后的对数似然为
 
 $$
-\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -394,9 +411,7 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-在每个模型内部的结构均值参数已经被优化之后，我们想找出能使似然达到最大的 $\mathcal{M}$ 和 $\sigma^2$ 的具体组合。但目前我们并不关心 $\sigma^2$ 本身。
-
-在这种情况下，$\sigma^2$ 被称为冗余参数（nuisance parameter，又称讨厌参数），人们常常使用一种叫做*剖面似然*（profile likelihood）的方法来处理它。
+接下来还需要把 $\sigma^2$ 也剖面化掉。在这个比较中，$\sigma^2$ 是冗余参数（nuisance parameter，又称讨厌参数）：它会影响似然，但它本身并不是我们想解释的对象。
 
 思路很简单。我们固定所选模型 $\mathcal{M}$，并选取一个使似然尽可能大的 $\sigma^2$，
 
@@ -404,13 +419,14 @@ $$
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y}).
+=\operatorname*{arg\,max}_{\sigma^2}
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M).
 $$
 
 对固定的模型 $\mathcal M$，对 $\sigma^2$ 求对数似然的导数：
 
 $$
-\frac{\partial \ell(\mathcal M,\sigma^2 \mid \mathbf{y})}{\partial \sigma^2}
+\frac{\partial \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -438,7 +454,8 @@ $$
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 \mid \mathbf{y})
+\operatorname*{arg\,max}_{\sigma^2}
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2 \mid \mathbf{y},\mathcal M)
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
@@ -450,7 +467,10 @@ $$
 \ell_p(\mathcal M \mid \mathbf{y})
 &=
 \ell\left(
-\mathcal M,\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} \mid \mathbf{y}
+\widehat{\boldsymbol{\mu}}^{(\mathcal M)},
+\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
+\mid
+\mathbf{y},\mathcal M
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)

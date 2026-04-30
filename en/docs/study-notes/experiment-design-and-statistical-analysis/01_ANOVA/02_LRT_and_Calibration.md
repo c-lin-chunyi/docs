@@ -355,7 +355,24 @@ y_{i,j,k}
 \end{aligned}
 $$
 
-For a fixed model $\mathcal M$ and fixed $\sigma^2$, maximizing the normal likelihood over the structural mean parameters is equivalent to least-squares estimation.
+For a fixed model $\mathcal M$, the likelihood contains two kinds of unknown quantities: the structural mean vector $\boldsymbol{\mu}^{(\mathcal M)}$ and the variance $\sigma^2$.
+
+Since our main goal is to compare models rather than study these parameters for their own sake, we will handle them by *profiling*: for each fixed model, choose the parameter values that make that model's likelihood as large as possible, and then compare the resulting optimized likelihoods.
+
+We first profile out the structural mean vector. For fixed $\mathcal M$ and fixed $\sigma^2$, the log-likelihood depends on $\boldsymbol{\mu}^{(\mathcal M)}$ only through
+
+$$
+-
+\frac{1}{2\sigma^2}
+\sum_{i,j,k}
+\left(
+y_{i,j,k}
+-
+\mu^{(\mathcal M)}_{i,j,k}
+\right)^2.
+$$
+
+Therefore, maximizing the normal likelihood over the structural mean parameters is equivalent to minimizing the squared residual sum.
 
 In other words, the model chooses the fitted values allowed by $\mathcal M$ that make the squared residual error as small as possible:
 
@@ -480,9 +497,7 @@ $$
 \frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
 $$
 
-Now, we want to  however, we are currently not interested in studying $\sigma^2$ itself.
-
-In this case, $\sigma^2$ is called a nuisance parameter, and people often use a method called *profile likelihood* to deal with it.
+It remains to profile out $\sigma^2$ as well. In this comparison, $\sigma^2$ is a nuisance parameter: it affects the likelihood, but it is not the quantity we are trying to interpret.
 
 The idea is simple. We fix our model of choice $\mathcal{M}$, and choose a $\sigma^2$ that makes the likelihood as large as possible,
 
@@ -490,13 +505,14 @@ i.e., to find
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
-=\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 ; \mathbf{y}).
+=\operatorname*{arg\,max}_{\sigma^2}
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M).
 $$
 
 For a fixed model $\mathcal M$, differentiate the log-likelihood with respect to $\sigma^2$:
 
 $$
-\frac{\partial \ell(\mathcal M,\sigma^2 ; \mathbf{y})}{\partial \sigma^2}
+\frac{\partial \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)}{\partial \sigma^2}
 =
 -\frac{N}{2\sigma^2}
 +
@@ -524,7 +540,8 @@ Therefore, the maximum-likelihood estimate of $\sigma^2$ under model $\mathcal M
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\operatorname*{arg\,max}_{\sigma^2}\ell(\mathcal M,\sigma^2 ; \mathbf{y})
+\operatorname*{arg\,max}_{\sigma^2}
+\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 \frac{\mathrm{SSE}_{\mathcal M}}{N}.
 $$
@@ -536,7 +553,9 @@ $$
 \ell_p(\mathcal M ; \mathbf{y})
 &=
 \ell\left(
-\mathcal M,\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}} ; \mathbf{y}
+\widehat{\boldsymbol{\mu}}^{(\mathcal M)},
+\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};
+\mathbf y,\mathcal M
 \right)\\
 &=
 -\frac{N}{2}\ln(2\pi)
