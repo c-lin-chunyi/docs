@@ -1322,11 +1322,11 @@ The numerical two-way ANOVA table is:
 
 | Source | SS | df | MS | F | p |
 |---|---:|---:|---:|---:|---:|
-| Feedback $\mathrm{A}$ | 333.33 | 2 | 166.67 | 89.59 | $7.03\times 10^{-18}$ |
-| Difficulty $\mathrm{B}$ | 201.67 | 1 | 201.67 | 108.40 | $1.61\times 10^{-14}$ |
-| Interaction $\mathrm{A\times B}$ | 6603.33 | 2 | 3301.67 | 1774.74 | $5.54\times 10^{-50}$ |
-| Error | 100.46 | 54 | 1.86 | | |
-| Total | 7238.79 | 59 | | | |
+| Feedback $\mathrm{A}$ | $333.33$ | $2$ | $166.67$ | $89.59$ | $7.03\times 10^{-18}$ |
+| Difficulty $\mathrm{B}$ | $201.67$ | $1$ | $201.67$ | $108.40$ | $1.61\times 10^{-14}$ |
+| Interaction $\mathrm{A\times B}$ | $6603.33$ | $2$ | $3301.67$ | $1774.74$ | $5.54\times 10^{-50}$ |
+| Error | $100.46$ | $54$ | $1.86$ | | |
+| Total | $7238.79$ | $59$ | | | |
 
 Thus, for this dataset, feedback type, task difficulty, and especially their interaction all account for much more variation than would be expected from the residual variation alone under the corresponding null hypotheses.
 
@@ -1341,10 +1341,10 @@ Thus, for this dataset, feedback type, task difficulty, and especially their int
 
     | Feedback type | $T_{i,1,.}$ for $B_1$ Easy | $T_{i,2,.}$ for $B_2$ Difficult | $T_{i,.,.}$ |
     |---|---:|---:|---:|
-    | $A_1$ Encouraging | 50 | 250 | 300 |
-    | $A_2$ Neutral | 100 | 100 | 200 |
-    | $A_3$ Critical | 255 | -55 | 200 |
-    | $T_{.,j,.}$ | 405 | 295 | $T_{.,.,.}=700$ |
+    | $A_1$ Encouraging | $50$ | $250$ | $300$ |
+    | $A_2$ Neutral | $100$ | $100$ | $200$ |
+    | $A_3$ Critical | $255$ | $-55$ | $200$ |
+    | $T_{.,j,.}$ | $405$ | $295$ | $T_{.,.,.}=700$ |
 
     First calculate the correction term:
 

@@ -57,10 +57,10 @@ The results are as follows.
 
     | Feedback type | $B_1$ Easy<br>$\bar{y}_{i,1,.}$ | $B_2$ Difficult<br>$\bar{y}_{i,2,.}$ | Feedback marginal mean<br>$\bar{y}_{i,.,.}$ |
     |---|---:|---:|---:|
-    | $A_1$ Encouraging | 5.00 | 25.00 | 15.00 |
-    | $A_2$ Neutral | 10.00 | 10.00 | 10.00 |
-    | $A_3$ Critical | 25.50 | -5.50 | 10.00 |
-    | Difficulty marginal mean<br>$\bar{y}_{.,j,.}$ | 13.50 | 9.83 | $\hat{\mu}=11.67$ |
+    | $A_1$ Encouraging | $5.00$ | $25.00$ | $15.00$ |
+    | $A_2$ Neutral | $10.00$ | $10.00$ | $10.00$ |
+    | $A_3$ Critical | $25.50$ | $-5.50$ | $10.00$ |
+    | Difficulty marginal mean<br>$\bar{y}_{.,j,.}$ | $13.50$ | $9.83$ | $\hat{\mu}=11.67$ |
 
 ??? info "Click to view the interaction plot"
     ![Interaction plot of cell means.](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_en.svg)
