@@ -100,7 +100,7 @@ y_{i,j,k}-\hat\mu
 \widehat{\varepsilon_{i,j,k}}.
 $$
 
-If we suspect that the interaction is absent, then why include the interaction component in the model in the first place? Allowing the model to capture an absent effect may only let it chase random fluctuations (i.e, overfitting the data).
+If we suspect that the interaction is absent, then why include the interaction component in the model in the first place? Allowing the model to capture an absent effect may only let it chase random fluctuations (i.e., overfitting the data).
 
 Let's see what happens if we drop the interaction term and push it to the residual error. 
 
@@ -120,7 +120,7 @@ $$
 where 
 
 $$
-\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}}, = \widehat{\varepsilon_{i,j,k}} + \widehat{(\alpha\beta)_{i,j}}
+\widehat{\varepsilon_{i,j,k}^{\mathcal{M}_{R, \mathrm{A\times B}}}} = \widehat{\varepsilon_{i,j,k}} + \widehat{(\alpha\beta)_{i,j}}
 $$
 
 Now we vectorize the model using the whole dataset, and taking squared Euclidean norms on both sides:
@@ -191,7 +191,7 @@ $$
 \end{aligned}
 $$
 
-Since different models leave different things unexplained in their residual terms, we now introduce a general notation for the residual sum of squares of a model: $\mathrm{SSE}$, or sum of squared errors,
+Since different models leave different things unexplained in their residual terms, we now introduce a notation for the residual sum of squares of a model: $\mathrm{SSE}$, or sum of squared errors,
 
 where 
 
@@ -220,7 +220,7 @@ looks small or large from an arbitrary standard, we can ask a different question
 
 Does the full model fit our data reasonably better than one of the reduced models? 
 
-One principled way of answering this question comes from likelihood. Each model assigns a probability density to the observed data. A model that gives higher likelihood to the observed data can be said to fit the data better in the likelihood sense.
+One way of answering this question comes from likelihood. Each model assigns a probability density to the observed data. A model that gives higher likelihood to the observed data can be said to fit the data better in the likelihood sense.
 
 ## Likelihood Ratio Testing and Calibration
 ### Normality Assumption
@@ -358,9 +358,9 @@ We want to find the specific combination of $\mathcal{M}$ and $\sigma^2$ that gi
 
 In this case, $\sigma^2$ is called a nuisance parameter, and people often use a method called *profile likelihood* to deal with it.
 
-The idea is simple, we fix our model of choice $\mathcal{M}$, and choose a $\sigma^2$ that makes the likelihood as large as possible,
+The idea is simple. We fix our model of choice $\mathcal{M}$, and choose a $\sigma^2$ that makes the likelihood as large as possible,
 
-i.e. to find
+i.e., to find
 
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
@@ -617,7 +617,7 @@ N\ln\left(
 \right).
 $$
 
-Because $N>0$, and $\ln(1+x)$ is strictly increasing for $x\geq 0$, the likelihood-ratio statistic is a strictly increasing function of
+Because $N>0$, and $\ln(1+x)$ is strictly increasing for $x\geq 0$, the $-2\ln \Lambda_{A\times B}$ statistic is a strictly increasing function of
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}.
@@ -629,13 +629,11 @@ $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 $$
 
-is monotone-equivalent to the likelihood-ratio evidence for our reduced-versus-full comparison.
+is monotone-equivalent to the $-2\ln \Lambda_{A\times B}$ statistic evidence for our reduced-versus-full comparison.
 
 As it turns out, our original ratio was not outright wrong. It was pointing toward the right comparison.
 
-However, $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ cannot be called a calibrated test statistic yet. It tells us the direction and ordering of evidence, but not the reference standard for deciding how large is large enough. 
-
-It seems that we have circled back to the beginning, and what to do now?
+However, $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$ cannot be called a test statistic yet. It tells us the direction and ordering of evidence, but not the reference standard for deciding how large is large enough. 
 
 ### Degrees of Freedom
 
@@ -955,7 +953,7 @@ df_{\mathrm{A\times B}}=(I-1)(J-1),
 df_{\mathrm{E}}=IJ(K-1).
 $$
 
-So the raw ratio is still not the final object. A component with more degrees of freedom is more likely to absorb random fluctuation.
+So the raw ratio is still not the final object. It does not tell us what values should be considered ordinary or unusual under the reduced model yet.
 
 This is where *calibration* enters.
 
@@ -999,7 +997,7 @@ However, this is still just an intuition yet.
 
 To turn it into a statistical test, we need the probability distribution of this calibrated ratio under the reduced model.
 
-## Cochran's Theorem
+### Cochran's Theorem
 
 Now we will use a classical result called **Cochran's theorem**. 
 
@@ -1071,7 +1069,7 @@ F_\mathrm{{A\times B}}
 F_{df_{\mathrm{A\times B}},df_{\mathrm{E}}}.
 $$
 
-### Two-way Analysis of Variance
+## Two-way Analysis of Variance
 
 We can finally name the procedure we have derived.
 
@@ -1133,7 +1131,7 @@ $$
 F_\mathrm{{A\times B}}\sim F_{df_{\mathrm{A\times B}},df_{\mathrm{E}}}.
 $$
 
-### The ANOVA Table as Bookkeeping
+### The ANOVA Table
 
 People often uses a table, called the ANOVA table to organize the quantities we have derived.
 
@@ -1155,5 +1153,260 @@ $$
 
 
 means **mean square**, or squared length per degree of freedom.
+
+### Worked ANOVA Result for the Example
+
+For the feedback-by-difficulty example in the previous section, we have
+
+$$
+I=3,\qquad J=2,\qquad K=10,\qquad N=60.
+$$
+
+The numerical two-way ANOVA table is:
+
+| Source | SS | df | MS | F | p |
+|---|---:|---:|---:|---:|---:|
+| Feedback $A$ | 333.33 | 2 | 166.67 | 89.59 | $7.03\times 10^{-18}$ |
+| Difficulty $B$ | 201.67 | 1 | 201.67 | 108.40 | $1.61\times 10^{-14}$ |
+| Interaction $A\times B$ | 6603.33 | 2 | 3301.67 | 1774.74 | $5.54\times 10^{-50}$ |
+| Error | 100.46 | 54 | 1.86 | | |
+| Total | 7238.79 | 59 | | | |
+
+Thus, for this dataset, feedback type, task difficulty, and especially their interaction all account for much more variation than would be expected from the residual variation alone under the corresponding null hypotheses.
+
+??? info "Click to expand the hand calculation using bracket form"
+
+    The cell totals are:
+
+    | Feedback type | $T_{i,1,.}$ for $B_1$ Easy | $T_{i,2,.}$ for $B_2$ Difficult | $T_{i,.,.}$ |
+    |---|---:|---:|---:|
+    | $A_1$ Encouraging | 50 | 250 | 300 |
+    | $A_2$ Neutral | 100 | 100 | 200 |
+    | $A_3$ Critical | 255 | -55 | 200 |
+    | $T_{.,j,.}$ | 405 | 295 | $T_{.,.,.}=700$ |
+
+    First calculate the correction term:
+
+    $$
+    C
+    =
+    \frac{T_{.,.,.}^2}{IJK}
+    =
+    \frac{700^2}{3\cdot 2\cdot 10}
+    =
+    8166.67.
+    $$
+
+    The sum of squared observations is
+
+    $$
+    \sum_{i,j,k}y_{i,j,k}^2=15405.46.
+    $$
+
+    Therefore,
+
+    $$
+    \mathrm{SS_T}
+    =
+    \sum_{i,j,k}y_{i,j,k}^2-C
+    =
+    15405.46-8166.67
+    =
+    7238.79.
+    $$
+
+    For feedback type $A$,
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_A}
+    &=
+    \sum_i\frac{T_{i,.,.}^2}{JK}-C \\
+    &=
+    \frac{300^2+200^2+200^2}{2\cdot 10}
+    -
+    8166.67 \\
+    &=
+    333.33.
+    \end{aligned}
+    $$
+
+    For task difficulty $B$,
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_B}
+    &=
+    \sum_j\frac{T_{.,j,.}^2}{IK}-C \\
+    &=
+    \frac{405^2+295^2}{3\cdot 10}
+    -
+    8166.67 \\
+    &=
+    201.67.
+    \end{aligned}
+    $$
+
+    The cell sum of squares is
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_{cell}}
+    &=
+    \sum_{i,j}\frac{T_{i,j,.}^2}{K}-C \\
+    &=
+    \frac{
+    50^2+250^2+100^2+100^2+255^2+(-55)^2
+    }{10}
+    -
+    8166.67 \\
+    &=
+    7138.33.
+    \end{aligned}
+    $$
+
+    Hence,
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_{A\times B}}
+    &=
+    \mathrm{SS_{cell}}-\mathrm{SS_A}-\mathrm{SS_B} \\
+    &=
+    7138.33-333.33-201.67 \\
+    &=
+    6603.33.
+    \end{aligned}
+    $$
+
+    Finally,
+
+    $$
+    \begin{aligned}
+    \mathrm{SS_E}
+    &=
+    \mathrm{SS_T}
+    -
+    \mathrm{SS_A}
+    -
+    \mathrm{SS_B}
+    -
+    \mathrm{SS_{A\times B}} \\
+    &=
+    7238.79-333.33-201.67-6603.33 \\
+    &=
+    100.46.
+    \end{aligned}
+    $$
+
+    The degrees of freedom are:
+
+    $$
+    df_A=I-1=2,
+    \qquad
+    df_B=J-1=1,
+    $$
+
+    $$
+    df_{A\times B}=(I-1)(J-1)=2,
+    \qquad
+    df_E=IJ(K-1)=54,
+    $$
+
+    and
+
+    $$
+    df_T=IJK-1=59.
+    $$
+
+    Therefore,
+
+    $$
+    \mathrm{MS_A}=\frac{333.33}{2}=166.67,
+    \qquad
+    \mathrm{MS_B}=\frac{201.67}{1}=201.67,
+    $$
+
+    $$
+    \mathrm{MS_{A\times B}}=\frac{6603.33}{2}=3301.67,
+    \qquad
+    \mathrm{MS_E}=\frac{100.46}{54}=1.86.
+    $$
+
+    The calibrated $F$ statistics are:
+
+    $$
+    F_A=\frac{166.67}{1.86}=89.59,
+    $$
+
+    $$
+    F_B=\frac{201.67}{1.86}=108.40,
+    $$
+
+    and
+
+    $$
+    F_{A\times B}=\frac{3301.67}{1.86}=1774.74.
+    $$
+
+## Section Review
+
+In this section, we asked when a sum of squares should be treated as statistically meaningful.
+
+We first saw that a raw comparison such as
+
+$$
+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
+$$
+
+does not provide a standard for interpretation.
+
+To make the comparison more principled, we reframed the problem as a comparison between a reduced model and a full model. For the interaction term, we showed that
+
+$$
+\mathrm{SS_{A\times B}}
+=
+\mathrm{SSE}_{\mathcal M_{R,A\times B}}
+-
+\mathrm{SSE}_{\mathcal M_F}.
+$$
+
+Thus, the interaction sum of squares can be interpreted as the reduction in residual squared error obtained by allowing the interaction component into the model.
+
+Under the normal-error assumption, likelihood-ratio testing showed that this comparison is connected to profile likelihood:
+
+$$
+-2\ln\Lambda_{A\times B}
+=
+N\ln\left(
+1+
+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
+\right).
+$$
+
+So the original ratio was not completely arbitrary. It is monotone-equivalent to the likelihood-ratio evidence for this reduced-versus-full comparison.
+
+However, likelihood ordering alone was still not enough. We needed a reference distribution. Degrees of freedom told us how many independent directions each component could vary in, and Cochran's theorem gave the finite-sample calibration:
+
+$$
+F_{A\times B}
+=
+\frac{
+\mathrm{SS_{A\times B}}/df_{\mathrm{A\times B}}
+}{
+\mathrm{SS_E}/df_{\mathrm E}
+}
+\sim
+F_{df_{\mathrm{A\times B}},df_{\mathrm E}}
+$$
+
+under the null hypothesis of no interaction.
+
+Applying the same logic to all fitted components gives the classical balanced two-way ANOVA.
+
+In the next section, we will move from constructing the ANOVA table to asking what its results actually mean for the experiment. The omnibus $F$ tests tell us that some fitted component is too large to dismiss as residual fluctuation, but they do not automatically tell us the experimental story. 
+
+We will therefore discuss how to interpret main effects and interactions, and how to use follow-up comparisons such as simple main effects, post hoc comparisons, and interaction contrasts to connect the numerical table back to the design.
+
 
 [^cochran1934]: William G. Cochran, “The Distribution of Quadratic Forms in a Normal System, with Applications to the Analysis of Covariance,” *Mathematical Proceedings of the Cambridge Philosophical Society* 30, no. 2 (1934): 178–191.
