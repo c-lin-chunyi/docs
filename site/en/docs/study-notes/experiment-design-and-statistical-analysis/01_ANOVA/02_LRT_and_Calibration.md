@@ -2,16 +2,11 @@
 
 ## Section Recap
 
-Previously, we want to know what likely causes each participant's score to be different from the grand mean.
+In the previous section, we started from the question:
 
-We proposed four likely possible sources of variation, namely:
+> Where does the variation in performance come from?
 
-1. From the feedback type they received
-2. From the task difficulty they received
-3. From the interaction of feedback type and task difficulty.
-4. Or just from random variations between participants.
-
-We then decomposed an individual participant $(i,j,k)$'s task performance into four parts:
+For the balanced two-way design, least squares gave the fitted decomposition
 
 $$
 y_{i,j,k}-\hat\mu
@@ -25,26 +20,21 @@ y_{i,j,k}-\hat\mu
 \hat{\varepsilon}_{i,j,k}.
 $$
 
-Then we propagated this decomposition from one observation to the whole dataset using vectors and sum of squares.
+After stacking the observations into vectors, the same decomposition became
 
 $$
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2
-=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
+\mathbf y-\hat{\boldsymbol\mu}
+=
+\hat{\boldsymbol\alpha}
++
+\hat{\boldsymbol\beta}
++
+\widehat{\boldsymbol{\alpha\beta}}
++
+\hat{\boldsymbol\varepsilon}.
 $$
 
-Let
-
-$$
-\begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2 \\
-\mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 \\
-\mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 \\
-\mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2  \\
-\mathrm{SS_E} = \|\hat{\boldsymbol{\varepsilon}}\|^2,
-\end{gather*}
-$$
-
-we obtained the classical SS formula:
+Because the design is balanced, these fitted component vectors are mutually orthogonal. Therefore, their squared lengths add:
 
 $$
 \mathrm{SS_T}
@@ -58,23 +48,19 @@ $$
 \mathrm{SS_E}.
 $$
 
+This decomposition tells us how much squared variation is associated with feedback, difficulty, interaction, and residual error in the observed dataset.
+
 Still, decomposition alone seems unable to address our original question.
 
-It is then heuristic to directly compare the value of $\mathrm{SS_A}$, $\mathrm{SS_B}$ or $\mathrm{SS_{A\times B}}$ to $\mathrm{SS_E}$, either by subtraction or division.
-
-However, subtraction or division alone actually tells us very little.
-
-For example, suppose we compute
+A natural first thought is to compare a component sum of squares with the residual sum of squares. For example, for the interaction term, we might look at
 
 $$
 \frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 $$
 
-and a number comes out. But, what does it mean?
+If the interaction component is large relative to the residual component, the ratio will be large.
 
-Is it large? Is it small? Judged by what *standard*?
-
-If the number equals 1 or nearly equals 1, does it mean that the interaction effect is absent, and if the number is larger than 1, does it mean it is not null?
+But, if the number equals 1 or nearly equals 1, does it mean that the interaction effect is absent, and if the number is larger than 1, does it mean it is not null?
 
 Then what does it mean when the number is less than 1, and what even counts as "nearly equals 1"?
 
@@ -86,7 +72,7 @@ Before that, let's take a look at what ${\mathrm{SS_{A\times B}}}$ means:
 
 From a vectorized perspective, $\mathrm{SS_{A\times B}}$ measures how much of the centered observation vector is captured by it.
 
-Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again. We call it the "full model", denoted by $\mathcal{M}_{F}$. In structural form, it is
+Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again.
 
 $$
 \mathcal{M}_{F}:
@@ -101,7 +87,7 @@ Y_{i,j,k}-\mu
 {\varepsilon}_{i,j,k}^{(\mathcal{M}_{F})}.
 $$
 
-One fitting attempt of the model using our observed dataset is
+The fitted full model can be written as
 
 $$
 y_{i,j,k}-\hat\mu
@@ -150,67 +136,21 @@ $$
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
-Now we vectorize the model using the whole dataset, and taking squared Euclidean norms on both sides:
-
-$$
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
-$$
-
-where 
-
-$$
-\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\boldsymbol{\varepsilon}} + \widehat{\boldsymbol{\alpha\beta}}.
-$$ 
-
-Hence
-
-$$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\hat{\boldsymbol{\varepsilon}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \hat{\boldsymbol{\varepsilon}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
-$$
-
-and
-
-$$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\beta}} \rangle = 0,
-$$
-
-which gives
-
-$$
-\begin{align*}
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
-&= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle \\ 
-&=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2.
-\end{align*}
-$$
-
-Since
-
-$$
-\hat{\boldsymbol{\varepsilon}}
-\perp
-\widehat{\boldsymbol{\alpha\beta}},
-$$
-
-we also have
+Because $\hat{\boldsymbol\varepsilon}\perp \widehat{\boldsymbol{\alpha\beta}}$, we have
 
 $$
 \begin{aligned}
-\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2
+\mathrm{SSE}({\mathcal M_{R,A\times B}})
 &=
-\|
-\hat{\boldsymbol{\varepsilon}}
+\left\|
+\hat{\boldsymbol\varepsilon}
 +
 \widehat{\boldsymbol{\alpha\beta}}
-\|^2 \\
+\right\|^2 \\
 &=
-\|
-\hat{\boldsymbol{\varepsilon}}
-\|^2
+\|\hat{\boldsymbol\varepsilon}\|^2
 +
-\|
-\widehat{\boldsymbol{\alpha\beta}}
-\|^2 \\
+\|\widehat{\boldsymbol{\alpha\beta}}\|^2 \\
 &=
 \mathrm{SS_E}
 +
@@ -218,24 +158,27 @@ $$
 \end{aligned}
 $$
 
-Since different models leave different things unexplained in their residual terms, we now introduce a notation for the residual sum of squares of a model: $\mathrm{SSE}$, or sum of squared errors,
-
-where 
+Meanwhile,
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
-\|^2=\mathrm{SS_E},
+\mathrm{SSE}({\mathcal M_F})
+=
+\|\hat{\boldsymbol\varepsilon}\|^2
+=
+\mathrm{SS_E}.
 $$
 
-and
+Therefore,
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
-+
-\mathrm{SS_{A\times B}}.
+\mathrm{SS_{A\times B}}
+=
+\mathrm{SSE}({\mathcal M_{R,A\times B}})
+-
+\mathrm{SSE}({\mathcal M_F}).
 $$
 
-Therefore, $\mathrm{SS_{A\times B}}$ can be viewed as the reduction in SSE by allowing the interaction component into the model.
+Hence, $\mathrm{SS_{A\times B}}$ can be viewed as the reduction in SSE by allowing the interaction component into the model.
 
 From this point of view, instead of merely asking whether
 
@@ -274,7 +217,7 @@ Consider a generic model $\mathcal M$ for our example experiment.
 We write the mean predicted by model $\mathcal M$ for observation $(i,j,k)$ as
 
 $$
-\mu^{(\mathcal M)}_{i,j,k}.
+y^{(\mathcal M)}_{i,j,k}(\theta).
 $$
 
 Under the normal-error assumption,
@@ -282,7 +225,7 @@ Under the normal-error assumption,
 $$
 Y_{i,j,k}
 =
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 +
 \varepsilon_{i,j,k},
 \qquad
@@ -295,7 +238,7 @@ $$
 Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
 \mathcal N\left(
-\mu^{(\mathcal M)}_{i,j,k},
+y^{(\mathcal M)}_{i,j,k}(\theta),
 \sigma^2
 \right).
 $$
@@ -313,7 +256,7 @@ L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 \left(
 y_{i,j,k}
 -
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 \right)^2
 }{
 2\sigma^2
@@ -336,7 +279,7 @@ $$
 \left(
 y_{i,j,k}
 -
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 \right)^2.
 \end{aligned}
 $$
@@ -351,32 +294,11 @@ $$
 
 The first constraint means that the mean vector must have the structure allowed by model $\mathcal M$. For example, the full model allows the interaction component, while the reduced model does not.
 
-Notice that $\boldsymbol{\mu}^{(\mathcal M)}$ enters the log-likelihood only through the squared-error term
+From the least-squares section, we already know how to fit the mean structure of a model by minimizing its squared error. We denote the fitted mean parameters under model $\mathcal M$ by
 
 $$
-\sum_{i,j,k}
-\left(
-y_{i,j,k}
--
-\mu^{(\mathcal M)}_{i,j,k}
-\right)^2.
+\widehat y^{(\mathcal M)}_{i,j,k}.
 $$
-
-For any fixed $\sigma^2>0$, the coefficient of this term is
-
-$$
--\frac{1}{2\sigma^2}<0.
-$$
-
-Therefore, maximizing the likelihood over $\boldsymbol{\mu}^{(\mathcal M)}$ is equivalent to minimizing the squared-error term. In other words, under normal errors, maximum likelihood fitting of the mean structure gives the *least-squares fit*.
-
-We denote the fitted mean parameters under model $\mathcal M$ by
-
-$$
-\widehat\mu^{(\mathcal M)}_{i,j,k},
-$$
-
-The individual fitted mean parameters are not the main object of interest for our purposes in this chapter, but we will return to them later.
 
 After fitting the mean structure of $\mathcal M$, the log-likelihood becomes
 
@@ -391,11 +313,11 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat\mu^{(\mathcal M)}_{i,j,k}
+\widehat y^{(\mathcal M)}_{i,j,k}
 \right)^2}{2\sigma^2}.
 $$
 
-Note that
+Recall that
 
 $$
 \mathrm{SSE}_{\mathcal M}
@@ -404,11 +326,11 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat\mu^{(\mathcal M)}_{i,j,k}
-\right)^2,
+\widehat y^{(\mathcal M)}_{i,j,k}
+\right)^2.
 $$
 
-therefore
+Therefore,
 
 $$
 \ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
@@ -530,7 +452,7 @@ $$
 }{
 \widehat L_{\mathcal M_F}
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}({\mathcal M_F})}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
 \mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}
 }{
@@ -584,7 +506,7 @@ $$
 \frac{
 \mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}({\mathcal M_F})
 }
 \right).
 $$
@@ -599,7 +521,7 @@ N
 \frac{
 \mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}({\mathcal M_F})
 }
 \right).
 $$
@@ -628,7 +550,7 @@ $$
 \frac{
 \mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}({\mathcal M_F})
 }=
 1+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 \geq 1.
@@ -1561,7 +1483,7 @@ $$
 =
 \mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
 -
-\mathrm{SSE}_{\mathcal M_F}.
+\mathrm{SSE}({\mathcal M_F}).
 $$
 
 Thus, the interaction sum of squares can be interpreted as the reduction in residual squared error obtained by allowing the interaction component into the model.
