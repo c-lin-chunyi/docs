@@ -229,6 +229,17 @@ function normalizeLinks(markdown, warnings) {
   });
 }
 
+function normalizeChineseEmphasis(markdown, warnings) {
+  let normalized = markdown.replace(/(?<!\*)\*([^*\n]*[\u3400-\u9fff\uf900-\ufaff][^*\n]*)\*(?!\*)/gu, (_match, content) => content);
+  normalized = normalized.replace(/\\emph\{([^{}]*[\u3400-\u9fff\uf900-\ufaff][^{}]*)\}/gu, (_match, content) => content);
+
+  if (normalized !== markdown) {
+    warnings.push("removed emphasis markup from Chinese text");
+  }
+
+  return normalized;
+}
+
 function normalizeMath(markdown, warnings, options = {}) {
   let normalized = markdown;
 
@@ -265,6 +276,7 @@ function normalizeSource(markdown, sourceDir, warnings, options = {}) {
   normalized = removeHtmlTables(normalized, warnings);
   normalized = normalizeImages(normalized, sourceDir, warnings);
   normalized = normalizeLinks(normalized, warnings);
+  normalized = normalizeChineseEmphasis(normalized, warnings);
   normalized = normalizeMath(normalized, warnings, options);
   normalized = normalizeAdmonitions(normalized, warnings);
   return normalized.trim();
