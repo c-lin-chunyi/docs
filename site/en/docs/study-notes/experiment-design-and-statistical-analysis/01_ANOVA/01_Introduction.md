@@ -69,11 +69,12 @@ The results are as follows.
 !!! note
 
     The values in our example data are computer generated for illustrative purposes only.
+
 ### A Two-Way Linear Model
 
 We want to ask the question: 
 
-*What causes the variation in performance? Or, where does the variation come from? Is the variation meaningful, or is it just caused by some random errors?*
+*What causes the variation in performance? Or, where does the variation come from? Is the variation meaningful, or is it just caused by some random error?*
 
 Now, consider each subject's score.
 
@@ -117,17 +118,43 @@ $$
 \quad\text{for every }i.
 $$
 
-Unfortunately, parameters of $\mathcal{M}_F$ above are not directly observable. We need a way to estimate them from the data we have.
+However, the parameters of $\mathcal{M}_F$ above are not directly observable. We need a way to estimate them from the data we have.
 
 ### Estimating the Parameters by Least Squares
 
-One way of estimating the parameters, is to simply choose parameters ${\theta}^{(\mathcal{M}_F)} =\left({\mu}, {\alpha}_i, {\beta}_j, {(\alpha\beta)}_{i,j}\right)$ that make the model fit the data as closely as possible.
+One way to estimate the parameters is to choose parameter values
 
 $$
-\min_{{\theta}^{(\mathcal{M}_F)}} \sum_{i,j,k} [f(\hat{y}^{(\mathcal{M}_F)}_{i,j,k},y_{i,j,k})]
+\theta^{(\mathcal{M}_F)}
+=
+\left(
+\mu,
+\alpha_i,
+\beta_j,
+(\alpha\beta)_{i,j}
+\right)
 $$
 
-where $\hat{y}^{(\mathcal{M}_F)}_{i,j,k} = \hat{\mu}+\hat{\alpha}_i+\hat{\beta}_j+\widehat{(\alpha\beta)}_{i,j}$ is the fitted values produced by the model $\mathcal{M}_F$, and $f$ is called the loss function. 
+that make the model fit the data as closely as possible.
+
+For a candidate parameter value $\theta^{(\mathcal{M}_F)}$, the model gives the predicted value
+
+$$
+y^{(\mathcal{M}_F)}_{i,j,k}(\theta)
+=
+\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}.
+$$
+
+We choose the parameter values by minimizing the total loss:
+
+$$
+\min_{\theta^{(\mathcal{M}_F)}}
+\sum_{i,j,k}
+f\left(
+y^{(\mathcal{M}_F)}_{i,j,k}(\theta),
+y_{i,j,k}
+\right).
+$$
 
 Notice that we use summation here. The reason is that, (1) one data point cannot pin down all four unknown parameters here, and (2) that we need a model that can at least *reasonably* explain all the data we have.
 
@@ -140,7 +167,7 @@ $$
 and we have 
 
 $$
-\mathrm{SSE}(\mathcal{M}_F) = \sum_{i,j,k} \left(y_{i,j,k} - \hat{y}^{(\mathcal{M}_F)}_{i,j,k}\right)^2,
+\mathrm{SSE}(\theta;\mathcal{M}_F) = \sum_{i,j,k} \left(y_{i,j,k} - y^{(\mathcal{M}_F)}_{i,j,k}(\theta)\right)^2,
 $$
 
 where SSE means "sum of squared errors".
@@ -148,13 +175,8 @@ where SSE means "sum of squared errors".
 Therefore, we want to find
 
 $$
-\begin{align*}
-\hat{{\theta}}^{(\mathcal{M}_F)} &=\left({\hat\mu}, \hat{\alpha}_i, \hat{\beta}_j, \widehat{(\alpha\beta)}_{i,j}\right) =  \operatorname*{arg\,min}_{{{\theta}}^{(\mathcal{M}_F)}} \sum_{i,j,k} \left(y_{i,j,k} - \hat{y}^{(\mathcal{M}_F)}_{i,j,k}
-\right)^2 \\
-&= \operatorname*{arg\,min}_{{{\theta}}^{(\mathcal{M}_F)}} \sum_{i,j,k} \left(y_{i,j,k} - \hat{\mu}-\hat{\alpha}_i-\hat{\beta}_j-\widehat{(\alpha\beta)}_{i,j}
-\right)^2
-.
-\end{align*}
+\hat{{\theta}}^{(\mathcal{M}_F)} =\left({\hat\mu}, \hat{\alpha}_i, \hat{\beta}_j, \widehat{(\alpha\beta)}_{i,j}\right) =  \operatorname*{arg\,min}_{{{\theta}}^{(\mathcal{M}_F)}} \sum_{i,j,k} \left(y_{i,j,k} - y^{(\mathcal{M}_F)}_{i,j,k}(\theta)
+\right)^2.
 $$
 
 Now, before we move on, let 
@@ -170,15 +192,36 @@ $$
 
 ??? info "Click to see the derivation of estimators"
 
-    First, consider $\hat\mu$.
+    In this derivation, $\mu$, $\alpha_i$, $\beta_j$, and $(\alpha\beta)_{i,j}$ denote candidate parameter values. After solving the least-squares equations, the resulting estimators are written with hats.
 
-    Take the partial derivative of $\mathrm{SSE}(\mathcal{M}_F)$ with respect to $\hat{\mu}$:
+    For candidate parameter values under $\mathcal{M}_F$, write
 
-    $$\frac{\partial \mathrm{SSE}(\mathcal{M}_F)}{\partial \hat{\mu}} = -2 \sum_{i,j,k} \left(y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j}\right) = 0.$$
+    $$
+    \mathrm{SSE}(\theta; \mathcal{M}_F)
+    =
+    \sum_{i,j,k}
+    \left(
+    y_{i,j,k}
+    -
+    \mu
+    -
+    \alpha_i
+    -
+    \beta_j
+    -
+    (\alpha\beta)_{i,j}
+    \right)^2.
+    $$
+
+    First, consider $\mu$.
+
+    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to ${\mu}$:
+
+    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\mu}} = -2 \sum_{i,j,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
 
     Divide by -2 and distribute the summations:
 
-    $$\sum_{i,j,k} y_{i,j,k} - IJK\hat{\mu} - JK\sum_{i} \hat{\alpha}_i - IK\sum_{j} \hat{\beta}_j - K\sum_{i,j} \widehat{(\alpha\beta)}_{i,j} = 0.$$
+    $$\sum_{i,j,k} y_{i,j,k} - IJK{\mu} - JK\sum_{i} {\alpha}_i - IK\sum_{j} {\beta}_j - K\sum_{i,j} {(\alpha\beta)}_{i,j} = 0.$$
 
     Recall the sum-to-zero constraints we imposed:
 
@@ -198,71 +241,71 @@ $$
     \quad\text{for every }i.
     $$
 
-    Thus, all terms involving $\hat{\alpha}_i$, $\hat{\beta}_j$, and $\widehat{(\alpha\beta)}_{i,j}$ evaluate to zero:
+    Thus, all terms involving ${\alpha}_i$, ${\beta}_j$, and ${(\alpha\beta)}_{i,j}$ evaluate to zero:
 
-    $$y_{.,.,.} - IJK\hat{\mu} = 0 \implies \hat{\mu} = \frac{y_{.,.,.}}{IJK} = \bar{y}_{.,.,.}.$$
+    $$y_{.,.,.} - IJK{\mu} = 0 \implies {\hat\mu} = \frac{y_{.,.,.}}{IJK} = \bar{y}_{.,.,.}.$$
 
-    Now, consider $\hat{\alpha}_i$.
+    Now, consider ${\alpha}_i$.
 
-    Take the partial derivative of $\mathrm{SSE}(\mathcal{M}_F)$ with respect to a specific $\hat{\alpha}_i$:
+    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${\alpha}_i$:
 
-    $$\frac{\partial \mathrm{SSE}(\mathcal{M}_F)}{\partial \hat{\alpha}_i} = -2 \sum_{j,k} \left(y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j}\right) = 0.$$
+    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\alpha}_i} = -2 \sum_{j,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
 
     Divide by $-2$ and distribute the summations:
 
-    $$\sum_{j,k} y_{i,j,k} - JK\hat{\mu} - JK\hat{\alpha}_i - K\sum_{j} \hat{\beta}_j - K\sum_{j} \widehat{(\alpha\beta)}_{i,j} = 0.$$
+    $$\sum_{j,k} y_{i,j,k} - JK{\mu} - JK{\alpha}_i - K\sum_{j} {\beta}_j - K\sum_{j} {(\alpha\beta)}_{i,j} = 0.$$
 
-    Applying the constraints $\sum_j \hat{\beta}_j = 0$ and $\sum_j \widehat{(\alpha\beta)}_{i,j} = 0$, the equation simplifies to:
+    Applying the constraints $\sum_j {\beta}_j = 0$ and $\sum_j {(\alpha\beta)}_{i,j} = 0$, the equation simplifies to:
 
-    $$y_{i,.,.} - JK\hat{\mu} - JK\hat{\alpha}_i = 0.$$
+    $$y_{i,.,.} - JK{\mu} - JK{\alpha}_i = 0.$$
 
-    Divide by $JK$ and substitute $\hat{\mu}$ with $\bar{y}_{.,.,.}$:
+    Divide by $JK$ and substitute ${\mu}$ with $\bar{y}_{.,.,.}$:
 
-    $$\bar{y}_{i,.,.} - \bar{y}_{.,.,.} - \hat{\alpha}_i = 0 \implies \hat{\alpha}_i = \bar{y}_{i,.,.} - \bar{y}_{.,.,.}.$$
+    $$\bar{y}_{i,.,.} - \bar{y}_{.,.,.} - {\alpha}_i = 0 \implies {\hat\alpha}_i = \bar{y}_{i,.,.} - \bar{y}_{.,.,.}.$$
 
-    Similarly, we take the partial derivative of $\mathrm{SSE}(\mathcal{M}_F)$ with respect to a specific $\hat{\beta}_j$:
+    Similarly, we take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${\beta}_j$:
 
-    $$\frac{\partial \mathrm{SSE}(\mathcal{M}_F)}{\partial \hat{\beta}_j} = -2 \sum_{i,k} \left(y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j}\right) = 0.$$
+    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\beta}_j} = -2 \sum_{i,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
 
     Distributing the sums and dividing by $-2$:
 
-    $$\sum_{i,k} y_{i,j,k} - IK\hat{\mu} - K\sum_{i} \hat{\alpha}_i - IK\hat{\beta}_j - K\sum_{i} \widehat{(\alpha\beta)}_{i,j} = 0.$$
+    $$\sum_{i,k} y_{i,j,k} - IK{\mu} - K\sum_{i} {\alpha}_i - IK{\beta}_j - K\sum_{i} {(\alpha\beta)}_{i,j} = 0.$$
 
-    Applying the constraints $\sum_i \hat{\alpha}_i = 0$ and $\sum_i \widehat{(\alpha\beta)}_{i,j} = 0$:
+    Applying the constraints $\sum_i {\alpha}_i = 0$ and $\sum_i {(\alpha\beta)}_{i,j} = 0$:
 
-    $$y_{.,j,.} - IK\hat{\mu} - IK\hat{\beta}_j = 0.$$
+    $$y_{.,j,.} - IK{\mu} - IK{\beta}_j = 0.$$
 
-    Divide by $IK$ and substitute $\hat{\mu}$ with $\bar{y}_{.,.,.}$:
+    Divide by $IK$ and substitute ${\mu}$ with $\bar{y}_{.,.,.}$:
 
-    $$\bar{y}_{.,j,.} - \bar{y}_{.,.,.} - \hat{\beta}_j = 0 \implies \hat{\beta}_j = \bar{y}_{.,j,.} - \bar{y}_{.,.,.}.$$
+    $$\bar{y}_{.,j,.} - \bar{y}_{.,.,.} - {\beta}_j = 0 \implies {\hat\beta}_j = \bar{y}_{.,j,.} - \bar{y}_{.,.,.}.$$
 
-    Finally, consider $\widehat{(\alpha\beta)}_{i,j}$.
+    Finally, consider ${(\alpha\beta)}_{i,j}$.
 
-    Take the partial derivative of $\mathrm{SSE}(\mathcal{M}_F)$ with respect to a specific $\widehat{(\alpha\beta)}_{i,j}$:
+    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${(\alpha\beta)}_{i,j}$:
 
     $$
-    \frac{\partial \mathrm{SSE}(\mathcal{M}_F)}{\partial \widehat{(\alpha\beta)}_{i,j}} = -2 \sum_{k} \left(y_{i,j,k} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j}\right) = 0.
+    \frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {(\alpha\beta)}_{i,j}} = -2 \sum_{k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.
     $$
 
     Divide by $-2$ and distribute the summation over the $K$ participants in that specific cell:
 
     $$
-    \sum_{k=1}^K y_{i,j,k} - K\hat{\mu} - K\hat{\alpha}_i - K\hat{\beta}_j - K\widehat{(\alpha\beta)}_{i,j} = 0.
+    \sum_{k=1}^K y_{i,j,k} - K{\mu} - K{\alpha}_i - K{\beta}_j - K{(\alpha\beta)}_{i,j} = 0.
     $$
 
     This simplifies to:
 
     $$
-    y_{i,j,.} - K\hat{\mu} - K\hat{\alpha}_i - K\hat{\beta}_j - K\widehat{(\alpha\beta)}_{i,j} = 0.
+    y_{i,j,.} - K{\mu} - K{\alpha}_i - K{\beta}_j - K{(\alpha\beta)}_{i,j} = 0.
     $$
 
     Divide by $K$ to convert the cell total to a cell mean:
 
     $$
-    \bar{y}_{i,j,.} - \hat{\mu} - \hat{\alpha}_i - \hat{\beta}_j - \widehat{(\alpha\beta)}_{i,j} = 0.
+    \bar{y}_{i,j,.} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j} = 0.
     $$
 
-    Now, substitute the previously found estimators for $\hat{\mu}$, $\hat{\alpha}_i$, and $\hat{\beta}_j$:
+    Now, substitute the previously found estimators for ${\mu}$, ${\alpha}_i$, and ${\beta}_j$:
 
     $$
     \begin{align*}
@@ -270,7 +313,6 @@ $$
     &= \bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \bar{y}_{.,.,.}.
     \end{align*}
     $$
-
 
 In short:
 
@@ -302,6 +344,71 @@ y_{i,j,k} &= \bar{y}_{.,.,.} + (\bar{y}_{i,.,.} - \bar{y}_{.,.,.}) + (\bar{y}_{.
 y_{i,j,k} - \bar{y}_{.,.,.} &= \underbrace{(\bar{y}_{i,.,.} - \bar{y}_{.,.,.})}_{\hat{\alpha}_i} + \underbrace{(\bar{y}_{.,j,.} - \bar{y}_{.,.,.})}_{\hat{\beta}_j} + \underbrace{(\bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \bar{y}_{.,.,.})}_{\widehat{(\alpha\beta)}_{i,j}} + \underbrace{(y_{i,j,k} - \bar{y}_{i,j,.})}_{\hat{\varepsilon}_{i,j,k}}
 \end{align*}
 $$
+
+### Interpreting the Fitted Components
+
+The grand mean,
+
+$$
+\hat{\mu}
+=
+\bar{y}_{.,.,.},
+$$
+
+is the overall fitted level of the dataset.
+
+The feedback effect,
+
+$$
+\hat{\alpha}_i
+=
+\bar{y}_{i,.,.}
+-
+\bar{y}_{.,.,.},
+$$
+
+is the deviation of feedback level $i$ from the grand mean. It captures far that feedback level is above or below the overall average.
+
+Similarly,
+
+$$
+\hat{\beta}_j
+=
+\bar{y}_{.,j,.}
+-
+\bar{y}_{.,.,.},
+$$
+
+is the deviation of difficulty level $j$ from the grand mean.
+
+The interaction term,
+
+$$
+\widehat{(\alpha\beta)}_{i,j}
+=
+\bar{y}_{i,j,.}
+-
+\bar{y}_{i,.,.}
+-
+\bar{y}_{.,j,.}
++
+\bar{y}_{.,.,.},
+$$
+
+is the cell-specific leftover after the grand mean, the feedback main effect, and the difficulty main effect have already been accounted for.
+
+Finally,
+
+$$
+\hat{\varepsilon}_{i,j,k}
+=
+y_{i,j,k}
+-
+\bar{y}_{i,j,.},
+$$
+
+is the participant-specific leftover within cell $(i,j)$.
+
 
 ## Vectorizing Our Decomposition
 
@@ -369,33 +476,44 @@ $$
 \mathbf{m}\in\mathbb{R}^N:
 m_{n(i,j,k)}
 =
-\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j},
+\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}
+\text{ for all } i,j,k,
 \;
 \sum_i\alpha_i=0,
 \;
 \sum_j\beta_j=0,
 \;
-\sum_i(\alpha\beta)_{i,j}=0,
+\sum_i(\alpha\beta)_{i,j}=0
+\text{ for every }j,
 \;
 \sum_j(\alpha\beta)_{i,j}=0
+\text{ for every }i
 \right\}.
 $$
 
-The scalar SSE can now be written as a squared vector length:
+For any candidate fitted vector $\mathbf{m}\in\mathcal{S}_F$, the squared-error loss is
+
+$$
+L(\mathbf{m})
+=
+\|\mathbf{y}-\mathbf{m}\|^2.
+$$
+
+Least squares chooses
+
+$$
+\hat{\mathbf{y}}
+=
+\operatorname*{arg\,min}_{\mathbf{m}\in\mathcal{S}_F}
+\|\mathbf{y}-\mathbf{m}\|^2.
+$$
+
+After fitting, the residual sum of squares of the full model is
 
 $$
 \mathrm{SSE}(\mathcal{M}_F)
 =
 \|\mathbf{y}-\hat{\mathbf{y}}\|^2.
-$$
-
-where
-
-$$
-\hat{\mathbf{y}}
-=
-\operatorname*{arg\,min}_{{\mathbf{m}}\in\mathcal{S}_F}
-\|\mathbf{y}-{\mathbf{m}}\|^2.
 $$
 
 In words, among all fitted vectors allowed by the model, least squares chooses the one closest to the observed data vector.
@@ -422,8 +540,7 @@ $$
 \mathcal{S}_F.
 $$
 
-
-Since $\hat{\boldsymbol{\mu}}$, $\hat{\boldsymbol{\alpha}}$, $\hat{\boldsymbol{\beta}}$, and $\widehat{\boldsymbol{\alpha\beta}}$ are all fitted vectors inside $\mathcal{S}_F$, the residual is orthogonal to each of them:
+Since $\hat{\boldsymbol{\mu}}$, $\hat{\boldsymbol{\alpha}}$, $\hat{\boldsymbol{\beta}}$, and $\widehat{\boldsymbol{\alpha\beta}}$ are all vectors in $\mathcal{S}_F$, the residual is orthogonal to each of them:
 
 $$
 \hat{\boldsymbol{\varepsilon}}
@@ -447,7 +564,7 @@ This argument is only a geometric intuition for now. A formal proof will be give
 
 Now, it turns out that $\hat{\boldsymbol{\mu}}$, $\hat{\boldsymbol{\alpha}}$, $\hat{\boldsymbol{\beta}}$, and $\widehat{\boldsymbol{\alpha\beta}}$ are also orthogonal to each other.
 
-This is due to the *balanced* factorial structure of the design, and the way we defined the effects. We will have more details on what this means, and what to do when a design is not balanced in the next chapter. 
+This is due to the *balanced* factorial structure of the design and the way we defined the effects. We will have more details on what this means, and what to do when a design is not balanced in the next chapter. 
 
 | Orthogonality | Reason |
 |---|---|
@@ -511,12 +628,13 @@ $$
 \|\mathbf{u}\|^2+\|\mathbf{v}\|^2.
 $$
 
-Similarly, for $T$ mutually orthogonal vectors,
+Similarly, for $q$ mutually orthogonal vectors,
 
 $$
-\left\|\sum_{i=1}^T \mathbf{v}_i \right\|^2 = \sum_{i=1}^T \|\mathbf{v}_i\|^2
+\left\|\sum_{\ell=1}^q \mathbf{v}_\ell \right\|^2
+=
+\sum_{\ell=1}^q \|\mathbf{v}_\ell\|^2.
 $$
-
 
 Thus, the same $L^2$ geometry that defined least-squares fitting also allows the fitted decomposition to become an additive decomposition of squared lengths.
 
@@ -1068,6 +1186,8 @@ $$
 +
 \hat{\boldsymbol{\varepsilon}}.
 $$
+
+In vector notation, the full model corresponds to a fitted-value space $\mathcal{S}_F$, and least squares chooses the fitted vector in this space closest to $\mathbf{y}$.
 
 Least squares makes the residual vector orthogonal to the fitted-value space. The balanced factorial structure, together with the sum-to-zero constraints, makes the fitted component vectors mutually orthogonal.
 
