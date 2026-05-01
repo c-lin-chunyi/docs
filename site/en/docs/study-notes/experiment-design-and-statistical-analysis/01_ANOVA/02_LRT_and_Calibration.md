@@ -31,7 +31,7 @@ $$
 +
 \widehat{\boldsymbol{\alpha\beta}}
 +
-\hat{\boldsymbol\varepsilon}.
+\hat{\boldsymbol{\varepsilon}}.
 $$
 
 Because the design is balanced, these fitted component vectors are mutually orthogonal. Therefore, their squared lengths add:
@@ -68,30 +68,34 @@ Therefore, we need a principled way to define a standard which our comparison sh
 
 ## Comparing Different Models
 
-Before that, let's take a look at what ${\mathrm{SS_{A\times B}}}$ means:
+Before that, let's take a look at what $\mathrm{SS_{A\times B}}$ means:
 
 From a vectorized perspective, $\mathrm{SS_{A\times B}}$ measures how much of the centered observation vector is captured by it.
 
-Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our proposed model again.
+Our previous attempt of directly comparing $\mathrm{SS_{A\times B}}$ with $\mathrm{SS_E}$, i.e. by comparing the magnitude of $\widehat{\boldsymbol{\alpha\beta}}$ with $\hat{\boldsymbol{\varepsilon}}$ seems futile, and we have to approach the same concern differently. This time let's look at our full model again.
 
 $$
 \mathcal{M}_{F}:
-Y_{i,j,k}-\mu
+Y_{i,j,k}
 =
+\mu
++
 {\alpha}_i
 +
 {\beta}_j
 +
 {(\alpha\beta)}_{i,j}
 +
-{\varepsilon}_{i,j,k}^{(\mathcal{M}_{F})}.
+{\varepsilon}_{i,j,k}.
 $$
 
 The fitted full model can be written as
 
 $$
-y_{i,j,k}-\hat\mu
+y_{i,j,k}
 =
+\hat\mu
++
 \hat{\alpha}_i
 +
 \hat{\beta}_j
@@ -109,23 +113,23 @@ We call our new model with the interaction term removed a "reduced model", denot
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
-Y_{i,j,k}-\mu
+Y_{i,j,k}
 =
+\mu
++
 {\alpha}_i
 +
 {\beta}_j
 +
-{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})}.
+{\varepsilon}_{i,j,k}.
 $$
 
-and one fitting attempt of the model using our observed dataset:
+After fitting this reduced model to the observed dataset, we can write
 
 $$
-y_{i,j,k}-\hat\mu
+y_{i,j,k}
 =
-\hat{\alpha}_i
-+
-\hat{\beta}_j
+\hat{y}^{(\mathcal{M}_{R,\mathrm{A\times B}})}_{i,j,k}
 +
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})},
 $$
@@ -136,19 +140,29 @@ $$
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
-Because $\hat{\boldsymbol\varepsilon}\perp \widehat{\boldsymbol{\alpha\beta}}$, we have
+For compact notation, let
+
+$$
+\hat{\theta}_R=\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})},
+\qquad
+\hat{\theta}_F=\hat{\theta}^{(\mathcal M_F)}
+$$
+
+denote the least-squares estimates under the reduced and full models, respectively.
+
+Because $\hat{\boldsymbol{\varepsilon}}\perp \widehat{\boldsymbol{\alpha\beta}}$, we have
 
 $$
 \begin{aligned}
-\mathrm{SSE}({\mathcal M_{R,A\times B}})
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 &=
 \left\|
-\hat{\boldsymbol\varepsilon}
+\hat{\boldsymbol{\varepsilon}}
 +
 \widehat{\boldsymbol{\alpha\beta}}
 \right\|^2 \\
 &=
-\|\hat{\boldsymbol\varepsilon}\|^2
+\|\hat{\boldsymbol{\varepsilon}}\|^2
 +
 \|\widehat{\boldsymbol{\alpha\beta}}\|^2 \\
 &=
@@ -161,9 +175,9 @@ $$
 Meanwhile,
 
 $$
-\mathrm{SSE}({\mathcal M_F})
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
 =
-\|\hat{\boldsymbol\varepsilon}\|^2
+\|\hat{\boldsymbol{\varepsilon}}\|^2
 =
 \mathrm{SS_E}.
 $$
@@ -173,9 +187,9 @@ Therefore,
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}({\mathcal M_{R,A\times B}})
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 -
-\mathrm{SSE}({\mathcal M_F}).
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F).
 $$
 
 Hence, $\mathrm{SS_{A\times B}}$ can be viewed as the reduction in SSE by allowing the interaction component into the model.
@@ -246,7 +260,7 @@ $$
 Hence, the likelihood of the observed dataset is
 
 $$
-L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+L(\theta^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -268,7 +282,7 @@ Taking logs,
 
 $$
 \begin{aligned}
-\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+\ell(\theta^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 &=
 -\frac{N}{2}\ln(2\pi)
 -
@@ -287,23 +301,23 @@ $$
 We now want the parameter values that maximize this likelihood, subject to two constraints:
 
 $$
-\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M,
+\theta^{(\mathcal M)}\in\Theta_{\mathcal M},
 \qquad
 \sigma^2>0.
 $$
 
-The first constraint means that the mean vector must have the structure allowed by model $\mathcal M$. For example, the full model allows the interaction component, while the reduced model does not.
+The first constraint means that the parameter vector must belong to the parameter space allowed by model $\mathcal M$. For example, the full model allows the interaction component, while the reduced model does not.
 
-From the least-squares section, we already know how to fit the mean structure of a model by minimizing its squared error. We denote the fitted mean parameters under model $\mathcal M$ by
+From the least-squares section, we already know how to fit the mean structure of a model by minimizing its squared error. We denote the least-squares estimate under model $\mathcal M$ by
 
 $$
-\widehat y^{(\mathcal M)}_{i,j,k}.
+\hat{\theta}^{(\mathcal M)}.
 $$
 
 After fitting the mean structure of $\mathcal M$, the log-likelihood becomes
 
 $$
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+\ell(\hat{\theta}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -313,33 +327,33 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\hat{\theta}^{(\mathcal M)})
 \right)^2}{2\sigma^2}.
 $$
 
 Recall that
 
 $$
-\mathrm{SSE}_{\mathcal M}
+\mathrm{SSE}(\theta;\mathcal M)
 =
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\widehat y^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 \right)^2.
 $$
 
 Therefore,
 
 $$
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+\ell(\hat{\theta}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
 \frac{N}{2}\ln(\sigma^2)
 -
-\frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2\sigma^2}.
 $$
 
 Now maximize this expression over $\sigma^2$. Differentiating with respect to $\sigma^2$,
@@ -349,7 +363,7 @@ $$
 =
 -\frac{N}{2\sigma^2}
 +
-\frac{\mathrm{SSE}_{\mathcal M}}{2(\sigma^2)^2}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2(\sigma^2)^2}.
 $$
 
 Setting this derivative to zero gives
@@ -357,7 +371,7 @@ Setting this derivative to zero gives
 $$
 -\frac{N}{2\sigma^2}
 +
-\frac{\mathrm{SSE}_{\mathcal M}}{2(\sigma^2)^2}
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2(\sigma^2)^2}
 =
 0.
 $$
@@ -365,7 +379,7 @@ $$
 Multiplying both sides by $2(\sigma^2)^2$,
 
 $$
--N\sigma^2+\mathrm{SSE}_{\mathcal M}=0.
+-N\sigma^2+\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)=0.
 $$
 
 Therefore,
@@ -373,7 +387,7 @@ Therefore,
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\frac{\mathrm{SSE}_{\mathcal M}}{N}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{N}.
 $$
 
 Substituting both maximum-likelihood estimates back into the likelihood gives the maximized likelihood of model $\mathcal M$:
@@ -381,7 +395,7 @@ Substituting both maximum-likelihood estimates back into the likelihood gives th
 $$
 \widehat L_{\mathcal M}
 =
-L(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
+L(\hat{\theta}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
 $$
 
 Using the previous expression,
@@ -392,7 +406,7 @@ $$
 &=
 (2\pi e)^{-N/2}
 \left(
-\frac{\mathrm{SSE}_{\mathcal M}}{N}
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{N}
 \right)^{-N/2}.
 \end{aligned}
 $$
@@ -413,7 +427,7 @@ But decomposition by itself is still not enough, we want to know whether one lik
 
 Intuitively, we turned to $\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}$, which is reasonable, but the ratio had no standard of interpretation.
 
-Then after some pondering, we reframed the problem as a model comparison problem and introduced $\mathrm{SSE}_{\mathcal M}$.
+Then after some pondering, we reframed the problem as a model comparison problem and introduced $\mathrm{SSE}(\theta;\mathcal M)$.
 
 And now under the normal-error assumption, we have the maximized likelihood $\widehat L_{\mathcal M}$.
 
@@ -452,11 +466,11 @@ $$
 }{
 \widehat L_{\mathcal M_F}
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}({\mathcal M_F})}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R,\mathrm{A\times B}})}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
-\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}_{\mathcal{M}_F}
+\mathrm{SSE}(\hat{\theta}_F;\mathcal{M}_F)
 }\right)^{-\frac{N}{2}}
 .
 \end{align*}
@@ -504,9 +518,9 @@ $$
 -\frac{N}{2}
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}({\mathcal M_F})
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
 }
 \right).
 $$
@@ -519,9 +533,9 @@ $$
 N
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}({\mathcal M_F})
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
 }
 \right).
 $$
@@ -532,14 +546,14 @@ Since the sign has been flipped by multiplying by $-2$, stronger evidence agains
 Recall that 
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}(\hat{\theta}_F;\mathcal{M}_{F})=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 and
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R, \mathrm{A\times B}})=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -548,9 +562,9 @@ Thus,
 
 $$
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}({\mathcal M_F})
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
 }=
 1+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 \geq 1.
@@ -736,7 +750,7 @@ $$
 In the full model, the fitted value for observation $k$ in cell $(i,j)$ is
 
 $$
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 =
 \hat\mu
 +
@@ -779,7 +793,7 @@ Substituting these into the fitted value gives
 
 $$
 \begin{aligned}
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 &=
 \hat\mu
 +
@@ -796,7 +810,7 @@ $$
 So in the full model, every observation in cell $(i,j)$ receives the same fitted value:
 
 $$
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 =
 \bar y_{i,j,.}.
 $$
@@ -804,7 +818,7 @@ $$
 Therefore, the residual for observation $k$ in cell $(i,j)$ is
 
 $$
-\widehat{\varepsilon}_{i,j,k}
+\hat{\varepsilon}_{i,j,k}
 =
 y_{i,j,k}
 -
@@ -815,7 +829,7 @@ Now sum these residuals within the same cell:
 
 $$
 \begin{aligned}
-\sum_k \widehat{\varepsilon}_{i,j,k}
+\sum_k \hat{\varepsilon}_{i,j,k}
 &=
 \sum_k
 \left(
@@ -854,7 +868,7 @@ $$
 Therefore,
 
 $$
-\sum_k \widehat{\varepsilon}_{i,j,k}
+\sum_k \hat{\varepsilon}_{i,j,k}
 =
 0.
 $$
@@ -870,7 +884,7 @@ $$
 Finally, for the total centered data vector,
 
 $$
-\mathbf y-\widehat{\boldsymbol\mu},
+\mathbf y-\hat{\boldsymbol{\mu}},
 $$
 
 there are $N=IJK$ observations, but centering by the grand mean imposes one constraint:
@@ -1481,9 +1495,9 @@ To make the comparison more principled, we reframed the problem as a comparison 
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
 -
-\mathrm{SSE}({\mathcal M_F}).
+\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F).
 $$
 
 Thus, the interaction sum of squares can be interpreted as the reduction in residual squared error obtained by allowing the interaction component into the model.

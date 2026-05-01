@@ -511,7 +511,7 @@ $$
 After fitting, the residual sum of squares of the full model is
 
 $$
-\mathrm{SSE}(\mathcal{M}_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal{M}_F)};\mathcal{M}_F)
 =
 \|\mathbf{y}-\hat{\mathbf{y}}\|^2.
 $$
