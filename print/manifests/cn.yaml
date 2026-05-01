@@ -1,0 +1,8 @@
+title: 实验设计与统计分析
+#subtitle: ANOVA from a GLM perspective
+author: Chunyi Lin
+language: cn
+source_root: site/cn/docs
+chapters:
+  - path: study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction.md
+  - path: study-notes/experiment-design-and-statistical-analysis/01_ANOVA/02_LRT_and_Calibration.md

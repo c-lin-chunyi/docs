@@ -88,9 +88,8 @@ $endif$
 % heading color
 %
 \definecolor{heading-color}{RGB}{40,40,40}
-% By default, the KOMA-Script classes will typeset sectioning headings in
-% sans-serif. Use the normal body font for headings.
-\addtokomafont{disposition}{\normalfont\color{heading-color}\bfseries}
+% Keep Markdown headings (#, ##, ...) in the document's sans-serif face.
+\addtokomafont{disposition}{\sffamily\color{heading-color}\bfseries}
 
 %
 % variables for title, author and date
@@ -274,11 +273,11 @@ $else$
   \clearpairofpagestyles
   \ihead*{$if(header-left)$$header-left$$else$$title$$endif$}
   \chead*{$if(header-center)$$header-center$$else$$endif$}
-  \ohead*{$if(header-right)$$header-right$$else$$date$$endif$}
+  \ohead*{$if(header-right)$$header-right$$else$\thepage$endif$}
   \ifoot*{$if(footer-left)$$footer-left$$else$$for(author)$$author$$sep$, $endfor$$endif$}
-  \cfoot*{$if(footer-center)$$footer-center$$else$$endif$}
-  \ofoot*{$if(footer-right)$$footer-right$$else$\thepage$endif$}
-  \addtokomafont{pageheadfoot}{\upshape}
+  \cfoot*{$if(footer-center)$$footer-center$$else$$if(author-orcid)$ORCID \href{https://orcid.org/$author-orcid$}{$author-orcid$}$endif$$endif$}
+  \ofoot*{$if(footer-right)$$footer-right$$else$$if(license-statement)$$license-statement$$else$Content licensed under $if(license-name)$$license-name$$else$CC BY 4.0$endif$$endif$$endif$}
+  \addtokomafont{pageheadfoot}{\upshape\footnotesize}
 }
 \pagestyle{eisvogel-header-footer}
 

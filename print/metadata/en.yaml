@@ -1,0 +1,12 @@
+papersize: a4
+fontsize: 11pt
+toc-depth: 2
+colorlinks: true
+linkcolor: default-linkcolor
+filecolor: default-filecolor
+citecolor: default-citecolor
+urlcolor: default-urlcolor
+author-orcid: 0009-0008-9762-8705
+license-name: CC BY 4.0
+license-statement: Content licensed under CC BY 4.0
+license-url: https://creativecommons.org/licenses/by/4.0/

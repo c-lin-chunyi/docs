@@ -1,7 +1,7 @@
-\definecolor{default-linkcolor}{HTML}{A50000}
-\definecolor{default-filecolor}{HTML}{A50000}
-\definecolor{default-citecolor}{HTML}{4077C0}
-\definecolor{default-urlcolor}{HTML}{4077C0}
+\definecolor{default-linkcolor}{HTML}{111111}
+\definecolor{default-filecolor}{HTML}{111111}
+\definecolor{default-citecolor}{HTML}{3F6278}
+\definecolor{default-urlcolor}{HTML}{3F6278}
 
 \hypersetup{
 $if(title-meta)$

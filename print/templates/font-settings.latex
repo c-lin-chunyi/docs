@@ -73,8 +73,8 @@ $endif$
 $else$
   \ifXeTeX
     \usepackage{xeCJK}
-    \setCJKmainfont{Noto Serif CJK SC}
-    \setCJKsansfont{Noto Sans CJK SC}
+    \setCJKmainfont[BoldFont={Noto Serif CJK SC Bold}]{Noto Serif CJK SC}
+    \setCJKsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}
   \fi
 $endif$
 $if(luatexjapresetoptions)$
@@ -93,8 +93,8 @@ $endif$
 $else$
   \ifLuaTeX
     \usepackage{luatexja-fontspec}
-    \setmainjfont{Noto Serif CJK SC}
-    \setsansjfont{Noto Sans CJK SC}
+    \setmainjfont[BoldFont={Noto Serif CJK SC Bold}]{Noto Serif CJK SC}
+    \setsansjfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}
   \fi
 $endif$
 \fi

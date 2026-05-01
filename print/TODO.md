@@ -13,17 +13,17 @@
 
 ## Phase 1: Core Document Style
 
-- [ ] **T10** Define page geometry.
+- [x] **T10** Define page geometry.
   - Margins, text width, line length. Avoid too-wide math pages unless needed.
-- [ ] **T11** Define paragraph spacing.
+- [x] **T11** Define paragraph spacing.
   - Decide between indented paragraphs and block spacing. For notes, slight paragraph spacing may be friendlier.
-- [ ] **T12** Define heading style.
+- [x] **T12** Define heading style.
   - Chapter, section, subsection. Keep quiet and monograph-like.
-- [ ] **T13** Define header/footer style.
+- [x] **T13** Define header/footer style.
   - Page number, chapter/section marks, maybe no decorative rule.
-- [ ] **T14** Define TOC style.
+- [x] **T14** Define TOC style.
   - Check spacing, depth, page breaks.
-- [ ] **T15** Define hyperlink style.
+- [x] **T15** Define hyperlink style.
   - Probably restrained: black internal links, muted URL color.
 
 ## Phase 2: Table and Figure Infrastructure
@@ -116,27 +116,27 @@ Package scripts from `print/`:
 {
   "scripts": {
     "print:test": "node scripts/build-print.mjs en test/test1.md",
-    "print:en": "node scripts/build-print.mjs en test/test1.md --out linear-model-notes-en",
-    "print:cn": "node scripts/build-print.mjs cn test/test0.md --out linear-model-notes-cn"
+    "print:en": "node scripts/build-print.mjs en manifests/en.yaml --out linear-model-notes-en",
+    "print:cn": "node scripts/build-print.mjs cn manifests/cn.yaml --out linear-model-notes-cn"
   }
 }
 ```
 
 ## Phase 6: Source Normalization Before Lua Filters
 
-- [ ] **T60** Decide how to combine pages.
-  - Read nav order from Zensical/MkDocs config or maintain a print manifest.
-- [ ] **T61** Create print manifest.
-  - Recommended. More controllable than blindly using all web pages.
-- [ ] **T62** Normalize internal links.
+- [x] **T60** Decide how to combine pages.
+  -  Maintain a print manifest. Two types of build artifacts: whole book and per section(per md file).
+- [x] **T61** Create print manifest.
+  -  More controllable than blindly using all web pages.
+- [x] **T62** Normalize internal links.
   - Web links like `/method/anova/...` may need PDF-safe handling.
-- [ ] **T63** Normalize image paths.
+- [x] **T63** Normalize image paths.
   - Relative paths often break after combining.
-- [ ] **T64** Normalize admonition syntax.
+- [x] **T64** Normalize admonition syntax.
   - `!!!` and `???` should become fenced divs or be handled before Pandoc.
-- [ ] **T65** Detect raw HTML tables.
-  - Either reject, warn, or replace with print-friendly alternatives.
-- [ ] **T66** Handle web-only / print-only blocks.
+- [x] **T65** Detect raw HTML tables.
+  - Ignore raw HTML tables with a file/line warning; replace them with print-friendly Markdown or LaTeX tables before release.
+- [x] **T66** Handle web-only / print-only blocks.
   - Needed for complex tables or interactive web content.
 
 A print manifest is probably cleaner than nav scraping:

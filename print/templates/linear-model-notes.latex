@@ -50,6 +50,8 @@ $if(babel-lang)$
 $endif$
 $if(fontsize)$
   $fontsize$,
+$else$
+  11pt,
 $endif$
 $if(papersize)$
   $papersize$paper,
@@ -178,9 +180,7 @@ $endif$
 $endif$
 \setcounter{tocdepth}{$toc-depth$}
 \tableofcontents
-$if(toc-own-page)$
-\newpage
-$endif$
+\clearpage
 }
 $endif$
 $if(lof)$
