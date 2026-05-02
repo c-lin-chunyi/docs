@@ -6,16 +6,11 @@
 
 ## 上节回顾
 
-上一节中，我们想了解是什么让每名被试的分数偏离总均值。
+上一节中，我们从这样一个问题出发：
 
-我们提出了变异的四种可能来源，分别是：
+> 任务表现的变异从何而来？
 
-1. 来自所接受的反馈类型；
-2. 来自所做的任务难度；
-3. 来自反馈类型与任务难度的交互作用；
-4. 又或者只是被试间的随机变异。
-
-随后，我们把单个被试 $(i,j,k)$ 的任务表现分解为四个部分：
+对于平衡的双因素设计，最小二乘给出了如下拟合分解：
 
 $$
 y_{i,j,k}-\hat\mu
@@ -29,26 +24,21 @@ y_{i,j,k}-\hat\mu
 \hat{\varepsilon}_{i,j,k}.
 $$
 
-接着，我们用平方和把这一分解从单个观测推广到了整个数据集：
+把所有观测堆叠成向量后，同样的分解就变为
 
 $$
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2
-=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\widehat{\boldsymbol{\alpha\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}\|^2.
+\mathbf y-\hat{\boldsymbol\mu}
+=
+\hat{\boldsymbol\alpha}
++
+\hat{\boldsymbol\beta}
++
+\widehat{\boldsymbol{\alpha\beta}}
++
+\hat{\boldsymbol{\varepsilon}}.
 $$
 
-记
-
-$$
-\begin{gather*}
-\mathrm{SS_T} = \|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2 \\
-\mathrm{SS_A} = \|\hat{\boldsymbol{\alpha}}\|^2 \\
-\mathrm{SS_B} = \|\hat{\boldsymbol{\beta}}\|^2 \\
-\mathrm{SS_{A\times B}} = \|\widehat{\boldsymbol{\alpha\beta}}\|^2  \\
-\mathrm{SS_E} = \|\hat{\boldsymbol{\varepsilon}}\|^2,
-\end{gather*}
-$$
-
-我们就得到了经典的平方和分解公式：
+由于设计是平衡的，这些拟合成分向量是相互正交的。因此，它们的平方长度可以相加：
 
 $$
 \mathrm{SS_T}
@@ -62,23 +52,19 @@ $$
 \mathrm{SS_E}.
 $$
 
+这一分解告诉我们，在我们所观测到的数据集中，反馈、难度、交互以及残差误差各自关联了多少平方变异。
+
 但仅有分解似乎还回答不了我们最初的问题。
 
-一个直觉的做法，是直接把 $\mathrm{SS_A}$、$\mathrm{SS_B}$ 或 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$ 通过相减或相除进行比较。
-
-然而，光靠相减或相除其实告诉不了我们太多。
-
-例如，假设我们计算
+一个直觉的做法，是把某个成分平方和与残差平方和进行比较。例如，对交互项，我们可以看
 
 $$
-\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}.
 $$
 
-并得到一个数值。那么，这个数值意味着什么？
+如果交互成分相对于残差成分较大，那么这个比值就会较大。
 
-它算大还是算小？以什么*标准*来判断？
-
-如果这个数等于或接近 1，是不是意味着交互效应不存在？而当它大于 1 时，是不是就意味着交互效应非零？
+但是，如果这个数等于或接近 1，是不是意味着交互效应不存在？而当它大于 1 时，是不是就意味着交互效应非零？
 
 那么这个数小于 1 时又意味着什么？所谓“接近 1”又是接近到什么程度？
 
@@ -90,26 +76,30 @@ $$
 
 从向量化的视角看，$\mathrm{SS_{A\times B}}$ 衡量的是中心化观测向量中有多少被它捕获。
 
-我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\hat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。我们把它称为完整模型，记作 $\mathcal{M}_{F}$。在结构形式下，它是
+我们之前直接比较 $\mathrm{SS_{A\times B}}$ 与 $\mathrm{SS_E}$（也即比较 $\widehat{\boldsymbol{\alpha\beta}}$ 与 $\hat{\boldsymbol{\varepsilon}}$ 的大小）的尝试似乎徒劳无功，所以我们必须换一种方式来处理同一个问题。这次让我们再看一遍最初提出的模型。我们把它称为完整模型，记作 $\mathcal{M}_{F}$：
 
 $$
 \mathcal{M}_{F}:
-Y_{i,j,k}-\mu
+Y_{i,j,k}
 =
+\mu
++
 {\alpha}_i
 +
 {\beta}_j
 +
 {(\alpha\beta)}_{i,j}
 +
-{\varepsilon}_{i,j,k}^{(\mathcal{M}_{F})}.
+{\varepsilon}_{i,j,k}.
 $$
 
-而使用我们的观测数据对该模型进行的一次拟合为
+拟合后的完整模型可以写作
 
 $$
-y_{i,j,k}-\hat\mu
+y_{i,j,k}
 =
+\hat\mu
++
 \hat{\alpha}_i
 +
 \hat{\beta}_j
@@ -127,23 +117,23 @@ $$
 
 $$
 \mathcal{M}_{R, \mathrm{A\times B}}:
-Y_{i,j,k}-\mu
+Y_{i,j,k}
 =
+\mu
++
 {\alpha}_i
 +
 {\beta}_j
 +
-{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})}.
+{\varepsilon}_{i,j,k}.
 $$
 
-以及使用我们的观测数据对该模型进行的一次拟合：
+把这个缩减模型拟合到观测数据集后，我们可以写
 
 $$
-y_{i,j,k}-\hat\mu
+y_{i,j,k}
 =
-\hat{\alpha}_i
-+
-\hat{\beta}_j
+\hat{y}^{(\mathcal{M}_{R,\mathrm{A\times B}})}_{i,j,k}
 +
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})},
 $$
@@ -154,67 +144,23 @@ $$
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
-现在用整个数据集把模型向量化，并对两边取平方范数：
+记 $\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})}$ 与 $\hat{\theta}^{(\mathcal M_F)}$ 分别为缩减模型与完整模型下的最小二乘估计。
 
-$$
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
-$$
-
-其中
-
-$$
-\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\boldsymbol{\varepsilon}} + \widehat{\boldsymbol{\alpha\beta}}.
-$$
-
-因此
-
-$$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\alpha}} \rangle = \langle\hat{\boldsymbol{\varepsilon}}+\widehat{\boldsymbol{\alpha\beta}}, \hat{\boldsymbol{\alpha}} \rangle = \langle \hat{\boldsymbol{\varepsilon}},\hat{\boldsymbol{\alpha}} \rangle + \langle \widehat{\boldsymbol{\alpha\beta}},\hat{\boldsymbol{\alpha}}\rangle = 0,
-$$
-
-以及
-
-$$
-\langle\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}, \hat{\boldsymbol{\beta}} \rangle = 0,
-$$
-
-由此得到
-
-$$
-\begin{align*}
-\|\mathbf{y}-\hat{\boldsymbol{\mu}}\|^2&=\|\hat{\boldsymbol{\alpha}}+\hat{\boldsymbol{\beta}}+\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 \ \\
-&= \|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\beta}}\rangle + 2\langle\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle +2\langle\hat{\boldsymbol{\beta}},\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\rangle \\
-&=\|\hat{\boldsymbol{\alpha}}\|^2+\|\hat{\boldsymbol{\beta}}\|^2+\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2.
-\end{align*}
-$$
-
-由于
-
-$$
-\hat{\boldsymbol{\varepsilon}}
-\perp
-\widehat{\boldsymbol{\alpha\beta}},
-$$
-
-我们也有
+由于 $\hat{\boldsymbol{\varepsilon}}\perp \widehat{\boldsymbol{\alpha\beta}}$，我们有
 
 $$
 \begin{aligned}
-\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 &=
-\|
+\left\|
 \hat{\boldsymbol{\varepsilon}}
 +
 \widehat{\boldsymbol{\alpha\beta}}
-\|^2 \\
+\right\|^2 \\
 &=
-\|
-\hat{\boldsymbol{\varepsilon}}
-\|^2
+\|\hat{\boldsymbol{\varepsilon}}\|^2
 +
-\|
-\widehat{\boldsymbol{\alpha\beta}}
-\|^2 \\
+\|\widehat{\boldsymbol{\alpha\beta}}\|^2 \\
 &=
 \mathrm{SS_E}
 +
@@ -222,22 +168,27 @@ $$
 \end{aligned}
 $$
 
-因为不同的模型在残差项里留下的内容不同，我们引入一个表示模型残差平方和的记号 $\mathrm{SSE}$（sum of squared errors，误差平方和）：
+与此同时，
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
-\|^2=\mathrm{SS_E},
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
+=
+\|\hat{\boldsymbol{\varepsilon}}\|^2
+=
+\mathrm{SS_E}.
 $$
 
-以及
+因此，
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
-+
-\mathrm{SS_{A\times B}}.
+\mathrm{SS_{A\times B}}
+=
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
+-
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F).
 $$
 
-因此，$\mathrm{SS_{A\times B}}$ 可以被视为：把交互成分纳入模型后所带来的 SSE 减少量。
+由此可见，$\mathrm{SS_{A\times B}}$ 可以被视为：把交互成分纳入模型后所带来的 SSE 减少量。
 
 从这个角度看，与其只是问
 
@@ -278,7 +229,7 @@ $$
 将模型 $\mathcal M$ 对观测位置 $(i,j,k)$ 预测的均值写作
 
 $$
-\mu^{(\mathcal M)}_{i,j,k}.
+y^{(\mathcal M)}_{i,j,k}(\theta).
 $$
 
 在正态误差假设下，
@@ -286,11 +237,11 @@ $$
 $$
 Y_{i,j,k}
 =
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 +
 \varepsilon_{i,j,k},
 \qquad
-\varepsilon_{i,j,k}\overset{\mathrm{i.i.d}}{\sim}\mathcal{N}(0,\sigma^2).
+\varepsilon_{i,j,k}\overset{\mathrm{i.i.d.}}{\sim}\mathcal N(0,\sigma^2).
 $$
 
 因此，
@@ -298,8 +249,8 @@ $$
 $$
 Y_{i,j,k}\mid \mathcal M,\sigma^2
 \sim
-\mathcal{N}\left(
-\mu^{(\mathcal M)}_{i,j,k},
+\mathcal N\left(
+y^{(\mathcal M)}_{i,j,k}(\theta),
 \sigma^2
 \right).
 $$
@@ -307,7 +258,7 @@ $$
 于是，整个数据集的似然为：
 
 $$
-L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 \mid \mathbf{y}, \mathcal M)
+L(\theta^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 \prod_{i,j,k}
 \frac{1}{\sqrt{2\pi\sigma^2}}
@@ -317,7 +268,7 @@ L(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 \mid \mathbf{y}, \mathcal M)
 \left(
 y_{i,j,k}
 -
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 \right)^2
 }{
 2\sigma^2
@@ -329,22 +280,7 @@ $$
 
 $$
 \begin{aligned}
-\ell(\boldsymbol{\mu}^{(\mathcal M)},\sigma^2 \mid \mathbf{y}, \mathcal M)
-&=
-\sum_{i,j,k}
-\left[
--\frac{1}{2}\ln(2\pi\sigma^2)
--
-\frac{
-\left(
-y_{i,j,k}
--
-\mu^{(\mathcal M)}_{i,j,k}
-\right)^2
-}{
-2\sigma^2
-}
-\right] \\
+\ell(\theta^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 &=
 -\frac{N}{2}\ln(2\pi)
 -
@@ -355,7 +291,7 @@ y_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\theta)
 \right)^2.
 \end{aligned}
 $$
@@ -363,44 +299,23 @@ $$
 现在我们想找到使这个似然最大的参数值，并且要求满足两个约束：
 
 $$
-\boldsymbol{\mu}^{(\mathcal M)}\in\mathcal M,
+\theta^{(\mathcal M)}\in\Theta_{\mathcal M},
 \qquad
 \sigma^2>0.
 $$
 
-第一个约束的意思是，均值向量必须具有模型 $\mathcal M$ 所允许的结构。例如，完整模型允许交互成分，而缩减模型不允许。
+第一个约束的意思是，参数向量必须落在模型 $\mathcal M$ 所允许的参数空间中。例如，完整模型允许交互成分，而缩减模型不允许。
 
-注意，$\boldsymbol{\mu}^{(\mathcal M)}$ 只通过平方误差项进入对数似然：
-
-$$
-\sum_{i,j,k}
-\left(
-y_{i,j,k}
--
-\mu^{(\mathcal M)}_{i,j,k}
-\right)^2.
-$$
-
-对任意固定的 $\sigma^2>0$，这一项前面的系数是
+由前一节我们已经知道，如何通过最小化平方误差来拟合一个模型的均值结构。我们把模型 $\mathcal M$ 下的最小二乘估计记作
 
 $$
--\frac{1}{2\sigma^2}<0.
+\hat{\theta}^{(\mathcal M)}.
 $$
-
-因此，在 $\boldsymbol{\mu}^{(\mathcal M)}$ 上最大化似然，等价于最小化平方误差项。换言之，在正态误差下，对均值结构进行极大似然拟合会给出*最小二乘拟合*。
-
-我们把模型 $\mathcal M$ 下的拟合均值参数记作
-
-$$
-\widehat\mu^{(\mathcal M)}_{i,j,k},
-$$
-
-在本章的讨论中，单个拟合均值参数并不是我们最关心的对象，不过后面我们还会回到它们。
 
 拟合完模型 $\mathcal M$ 的均值结构后，对数似然变为
 
 $$
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+\ell(\hat{\theta}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
@@ -410,33 +325,33 @@ $$
 \left(
 y_{i,j,k}
 -
-\widehat\mu^{(\mathcal M)}_{i,j,k}
+y^{(\mathcal M)}_{i,j,k}(\hat{\theta}^{(\mathcal M)})
 \right)^2}{2\sigma^2}.
 $$
 
 注意
 
 $$
-\mathrm{SSE}_{\mathcal M}
+\mathrm{SSE}(\theta;\mathcal M)
 =
 \sum_{i,j,k}
 \left(
 y_{i,j,k}
 -
-\widehat\mu^{(\mathcal M)}_{i,j,k}
-\right)^2,
+y^{(\mathcal M)}_{i,j,k}(\theta)
+\right)^2.
 $$
 
-因此
+因此，
 
 $$
-\ell(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
+\ell(\hat{\theta}^{(\mathcal M)},\sigma^2;\mathbf y,\mathcal M)
 =
 -\frac{N}{2}\ln(2\pi)
 -
 \frac{N}{2}\ln(\sigma^2)
 -
-\frac{\mathrm{SSE}_{\mathcal M}}{2\sigma^2}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2\sigma^2}.
 $$
 
 现在对 $\sigma^2$ 最大化这个表达式。对 $\sigma^2$ 求导：
@@ -446,7 +361,7 @@ $$
 =
 -\frac{N}{2\sigma^2}
 +
-\frac{\mathrm{SSE}_{\mathcal M}}{2(\sigma^2)^2}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2(\sigma^2)^2}.
 $$
 
 令导数等于零：
@@ -454,7 +369,7 @@ $$
 $$
 -\frac{N}{2\sigma^2}
 +
-\frac{\mathrm{SSE}_{\mathcal M}}{2(\sigma^2)^2}
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{2(\sigma^2)^2}
 =
 0.
 $$
@@ -462,7 +377,7 @@ $$
 两边乘以 $2(\sigma^2)^2$：
 
 $$
--N\sigma^2+\mathrm{SSE}_{\mathcal M}=0.
+-N\sigma^2+\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)=0.
 $$
 
 因此，
@@ -470,7 +385,7 @@ $$
 $$
 \widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}}
 =
-\frac{\mathrm{SSE}_{\mathcal M}}{N}.
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{N}.
 $$
 
 把两个极大似然估计都代回似然，就得到模型 $\mathcal M$ 的最大化似然：
@@ -478,7 +393,7 @@ $$
 $$
 \widehat L_{\mathcal M}
 =
-L(\widehat{\boldsymbol{\mu}}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
+L(\hat{\theta}^{(\mathcal M)},\widehat{\sigma^2}_{\mathcal M,\mathrm{MLE}};\mathbf y,\mathcal M).
 $$
 
 利用前面的表达式，
@@ -489,7 +404,7 @@ $$
 &=
 (2\pi e)^{-N/2}
 \left(
-\frac{\mathrm{SSE}_{\mathcal M}}{N}
+\frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M)};\mathcal M)}{N}
 \right)^{-N/2}.
 \end{aligned}
 $$
@@ -511,11 +426,11 @@ $$
 }{
 \widehat L_{\mathcal M_F}
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}_{\mathcal M_F}}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R,\mathrm{A\times B}})}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
-\mathrm{SSE}_{\mathcal{M}_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}_{\mathcal{M}_F}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal{M}_F)
 }\right)^{-\frac{N}{2}}
 .
 \end{align*}
@@ -563,9 +478,9 @@ $$
 -\frac{N}{2}
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }
 \right).
 $$
@@ -578,9 +493,9 @@ $$
 N
 \ln\left(
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }
 \right).
 $$
@@ -590,14 +505,14 @@ $$
 回忆
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{F}}=\|\hat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal{M}_{F})=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 以及
 
 $$
-\mathrm{SSE}_{\mathcal{M}_{R, \mathrm{A\times B}}}=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R, \mathrm{A\times B}})=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -606,9 +521,9 @@ $$
 
 $$
 \frac{
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}_{\mathcal M_F}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }=
 1+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 \geq 1.
@@ -796,7 +711,7 @@ $$
 在完整模型中，单元 $(i,j)$ 中第 $k$ 个观测的拟合值为
 
 $$
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 =
 \hat\mu
 +
@@ -839,7 +754,7 @@ $$
 
 $$
 \begin{aligned}
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 &=
 \hat\mu
 +
@@ -856,7 +771,7 @@ $$
 所以在完整模型中，单元 $(i,j)$ 内每一个观测都得到相同的拟合值：
 
 $$
-\widehat y_{i,j,k}
+\hat y^{(\mathcal M_F)}_{i,j,k}
 =
 \bar y_{i,j,.}.
 $$
@@ -864,7 +779,7 @@ $$
 因此，单元 $(i,j)$ 中第 $k$ 个观测的残差为
 
 $$
-\widehat{\varepsilon}_{i,j,k}
+\hat{\varepsilon}_{i,j,k}
 =
 y_{i,j,k}
 -
@@ -875,7 +790,7 @@ $$
 
 $$
 \begin{aligned}
-\sum_k \widehat{\varepsilon}_{i,j,k}
+\sum_k \hat{\varepsilon}_{i,j,k}
 &=
 \sum_k
 \left(
@@ -914,7 +829,7 @@ $$
 因此，
 
 $$
-\sum_k \widehat{\varepsilon}_{i,j,k}
+\sum_k \hat{\varepsilon}_{i,j,k}
 =
 0.
 $$
@@ -930,7 +845,7 @@ $$
 最后，对于总的中心化数据向量
 
 $$
-\mathbf y-\widehat{\boldsymbol\mu},
+\mathbf y-\hat{\boldsymbol\mu},
 $$
 
 共有 $N=IJK$ 个观测，但用总均值进行中心化施加了一个约束：
@@ -1541,9 +1456,9 @@ $$
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}_{\mathcal M_{R,\mathrm{A\times B}}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 -
-\mathrm{SSE}_{\mathcal M_F}.
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F).
 $$
 
 因此，交互平方和可以被解释为：把交互成分纳入模型后，残差平方误差所减少的量。
@@ -1584,4 +1499,4 @@ $$
 因此我们将讨论如何解释主效应与交互作用，以及如何借助后续比较，比如简单主效应、事后比较和交互对比等，把数值表与实验设计重新连接起来。
 
 
-[^cochran1934]: William G. Cochran, “The Distribution of Quadratic Forms in a Normal System, with Applications to the Analysis of Covariance,” *Mathematical Proceedings of the Cambridge Philosophical Society* 30, no. 2 (1934): 178–191.
+[^cochran1934]: William G. Cochran, "The Distribution of Quadratic Forms in a Normal System, with Applications to the Analysis of Covariance", *Mathematical Proceedings of the Cambridge Philosophical Society* 30, no. 2 (1934): 178–191.
