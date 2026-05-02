@@ -178,7 +178,7 @@ It says that, after the systematic structure $h(t_1,t_2,\ldots)$ has been remove
 
 In this section however, we will not touch this stronger claim yet. We will start with the additive representation because it gives us a clear way to measure model failure. Once residuals are written as differences, we can ask how large those differences are across the whole dataset.
 
-### A Two-way Linear Model
+### A Two-Way Linear Model
 
 Once we have decided to represent residuals as differences on the current scale, we need to think about the systematic structure $h(t_1,t_2,\ldots)$ itself.
 
