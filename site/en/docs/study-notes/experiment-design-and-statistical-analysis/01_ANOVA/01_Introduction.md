@@ -1,10 +1,19 @@
 # Introduction: Decomposing an Observation
 
+R. A. Fisher (1926):
+> No aphorism is more frequently repeated in connection with field trials, than that we must ask Nature few questions, or, ideally, one question, at a time. The writer is convinced that this view is wholly mistaken. Nature, he suggests, will best respond to a logical and carefully thought out questionnaire; indeed, if we ask her a single question, she will often refuse to answer until some other topic has been discussed.[^fisher1926]
+
+This section follows Fisher's idea through a small two-factor example. 
+
+We ask several related questions within the same design. We ask how each factor contributes to the observed outcome, and we also ask whether the contribution of one factor changes across the levels of the other.
+
+Mathematically, this means that one observation will be decomposed into several fitted components: a grand level, two main-effect components, an interaction component, and a residual.
+
 ## An Example
 
 ### Design and Raw Data
 
-We want to study how feedback type ($A_1$ encouraging, $A_2$ neutral, $A_3$ critical) and task difficulty ($B_1$ easy and $B_2$ difficult) influence participants' task performance.
+Suppose we want to study how feedback type ($A_1$ encouraging, $A_2$ neutral, $A_3$ critical) and task difficulty ($B_1$ easy and $B_2$ difficult) influence participants' task performance in a psychological experiment.
 
 Participants first complete a baseline task, then receive one of three feedback types $A_i \;(i\in\{1,2,3\})$. After that they perform a task of difficulty $B_j \; (j\in\{1,2\})$
 
@@ -20,7 +29,7 @@ Each feedback $\times$ difficulty condition contains 10 participants.
 
 The results are as follows.
 
-??? info "Click to expand the result table"
+??? info "The result table"
     <table>
         <thead>
         <tr>
@@ -51,7 +60,7 @@ The results are as follows.
     </tbody>
     </table>
 
-??? info "Click to see grand mean, marginal means, and cell means"
+??? info "Grand mean, marginal means, and cell means"
 
     For this dataset, the cell means, marginal means, and grand mean are:
 
@@ -62,45 +71,236 @@ The results are as follows.
     | $A_3$ Critical | $25.50$ | $-5.50$ | $10.00$ |
     | Difficulty marginal mean<br>$\bar{y}_{.,j,.}$ | $13.50$ | $9.83$ | $\hat{\mu}=11.67$ |
 
-??? info "Click to view the interaction plot"
+??? info "The interaction plot"
     ![Interaction plot of cell means.](https://r2.chunyi-lin.com/docs/study-notes/experiment-design-and-statistical-analysis/01_ANOVA/01_Introduction/plot1_en.svg)
-    The non-parallel lines suggest that the effect of feedback type depends on task difficulty, suggesting the interaction term $(\alpha\beta)_{i,j}$ in the model.
 
 !!! note
 
     The values in our example data are computer generated for illustrative purposes only.
 
-### A Two-Way Linear Model
+### From Data to a Model
 
-We want to ask the question: 
+Up to this point, $y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leqslant10\})$
+ is just a number, and we have 60 of them in a table. 
+
+If we want to claim anything beyond the number itself, we need to propose some structure that we believe the data conforms to. That is, we need a model to explain our data.
+
+The strongest possible "model" would simply reproduce every observed value exactly.
+
+$$
+y_{i,j,k} = y_{i,j,k}.
+$$
+
+But that would explain nothing beyond the table itself. 
+
+Therefore, a more usable model could be more restrictive.  
+
+Suppose we believe that some variables $t_1,t_2,\ldots$ matter for the observation. Then a model gives a predicted value
+
+$$
+h(t_1,t_2,\ldots).
+$$
+
+If the model were perfect, we would have
+
+$$
+y_{i,j,k}=h(t_1,t_2,\ldots).
+$$
+
+But in reality, that is almost always impossible. In our example, two participants in the same experimental condition $(i,j)$ may still obtain different scores.
+
+The same participant might also perform slightly differently if the experiment were repeated. 
+ 
+Some of this variation may come from measurement noise, individual differences, uncontrolled conditions, etc. There are variables we have not included in the model.
+
+Someone might say, why don't we just include more variables? In theory, we can. We can include in the model the gender of the participants, their favorite food, their preferred colors, the temperature of the experiment site, ... and the list goes on forever.
+
+Therefore, a useful model needs to be more selective. It keeps only the part of the observation that we believe is systematic, and leaves the remaining part unexplained.
+
+Such a model expresses each observation as a structured part plus a leftover:
+
+$$
+y_{i,j,k} = h(t_1, t_2, \ldots) + \varepsilon_{i,j,k}.
+$$
+
+Here $h$ is a function of whatever variables we suspect matter, and $\varepsilon_{i,j,k}$, called the residual, is the leftover $h$ does not explain.
+
+Therefore, choosing $h$ is choosing a story about the systematic part of the data-generating processes.
+
+Someone might again ask: why additive errors, not multiplicative, or some other more complex combinations of $h$ and $\varepsilon_{i,j,k}$?
+
+The thing is, we don't know. This is just a modeling convention. No physical laws in this world require all errors to be additive.
+
+It turns out that other error forms are indeed possible. If the deviation is proportional to the predicted value, a multiplicative model may be more appropriate:
+
+$$
+y_{i,j,k}=h(t_1,t_2,\ldots)\varepsilon_{i,j,k}.
+$$
+
+However, if we take logs on both sides:
+
+$$
+\begin{align*}
+\ln y_{i,j,k}&=\ln[h(t_1,t_2,\ldots)\varepsilon_{i,j,k}]\\
+&=\ln h(t_1,t_2,\ldots) + \ln \varepsilon_{i,j,k}
+\end{align*},
+$$
+
+the error again becomes additive. This shows that the apparent form of the error depends partly on the scale we choose to use. A model that looks multiplicative on the original scale may look additive on the logarithmic scale.
+
+Therefore, writing
+
+$$
+y_{i,j,k} = h(t_1,t_2,\ldots)+\varepsilon_{i,j,k}
+$$
+
+is not really claiming that the world must literally add error to signal. 
+
+But more like: on the current scale, once the model gives a predicted value $h(t_1,t_2,\ldots)$, we describe the model's *failure* by the difference
+
+$$
+\varepsilon_{i,j,k}
+=
+y_{i,j,k}-h(t_1,t_2,\ldots).
+$$
+
+The additive form is therefore a way of representing residuals on our chosen scale.
+
+However, later when we treat $\varepsilon_{i,j,k}$ as a random variable, we are making a stronger claim that this leftover behaves in a simple and stable way on this scale. 
+
+For example, in the usual normal-error model, we assume
+
+$$
+\varepsilon_{i,j,k}\overset{\mathrm{i.i.d.}}{\sim}\mathcal{N}(0,\sigma^2).
+$$
+
+It says that, after the systematic structure $h(t_1,t_2,\ldots)$ has been removed, the residual errors are assumed to be independent, normally distributed, centered at zero, and to have the same variance in every condition.
+
+In this section however, we will not touch this stronger claim yet. We will start with the additive representation because it gives us a clear way to measure model failure. Once residuals are written as differences, we can ask how large those differences are across the whole dataset.
+
+### A Two-way Linear Model
+
+Once we have decided to represent residuals as differences on the current scale, we need to think about the systematic structure $h(t_1,t_2,\ldots)$ itself.
+
+The simplest story is that nothing matters:
+
+$$
+y_{i,j,k} = \mu + \varepsilon_{i,j,k}.
+$$
+
+Every observation comes from a single underlying value $\mu$, and any deviation is noise. 
+
+This is almost certainly wrong here. We manipulated feedback and difficulty precisely because we expected them to shift performance, but it is still useful as a baseline against which richer or *fuller* models can be compared.
+
+Then, if feedback matters,
+
+$$
+y_{i,j,k} = \mu + \alpha_i + \varepsilon_{i,j,k}.
+$$
+
+If difficulty matters too,
+
+$$
+y_{i,j,k} = \mu + \alpha_i + \beta_j + \varepsilon_{i,j,k}.
+$$
+
+If the effect of feedback depends on difficulty (or vice versa),
+
+$$
+y_{i,j,k}
+=
+\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
+$$
+
+This last form is the model we will work with in this section. We could keep going by adding subject-specific intercepts, or by letting the interaction take a non-additive shape, but for now we stop here. 
+
+Each additional component tells a more elaborate story at the cost of more parameters fitted from the same data.
+
+??? info "Interaction terms with more factors"
+
+    The two-way model contains one interaction term:
+
+    $$
+    (\alpha\beta)_{i,j}.
+    $$
+
+    This term represents the part of the cell mean that cannot be explained by simply adding the feedback contribution $\alpha_i$ and the difficulty contribution $\beta_j$.
+
+    If we had three factors, say $A_i$, $B_j$, and $C_\ell$, the full factorial linear model would become
+
+    $$
+    Y_{i,j,\ell,k}
+    =
+    \mu
+    +\alpha_i+\beta_j+\gamma_\ell
+    +(\alpha\beta)_{i,j}
+    +(\alpha\gamma)_{i,\ell}
+    +(\beta\gamma)_{j,\ell}
+    +(\alpha\beta\gamma)_{i,j,\ell}
+    +\varepsilon_{i,j,\ell,k}.
+    $$
+
+    The terms have different roles:
+
+    $$
+    \begin{aligned}
+    \alpha_i,\beta_j,\gamma_\ell
+    &\quad \text{main effects},\\
+    (\alpha\beta)_{i,j},(\alpha\gamma)_{i,\ell},(\beta\gamma)_{j,\ell}
+    &\quad \text{two-way interactions},\\
+    (\alpha\beta\gamma)_{i,j,\ell}
+    &\quad \text{three-way interaction}.
+    \end{aligned}
+    $$
+
+    A two-way interaction means that the effect of one factor depends on the level of another factor.
+
+    A three-way interaction means that a two-way interaction itself depends on the level of a third factor.
+
+    In general, with $N$ factors, a full factorial model contains every possible non-empty combination of factors: all main effects, all two-way interactions, all three-way interactions, and so on, up to the $N$-way interaction.
+
+    For example, with $N$ factors, the number of possible non-empty terms is
+
+    $$
+    {N \choose 1}+{N \choose 2}+\cdots+{N \choose N}
+    =
+    2^N-1.
+    $$
+
+    This is why factorial models can grow quickly. A full model is expressive, but it also becomes harder to estimate, harder to interpret, and most importantly, easier to overfit.
+
+Now, every component in the model above enters additively. No parameter multiplies, divides, or transforms another. Therefore, the model is *linear* in its parameters.
+
+Again, linearity is a choice we are making, i.e., a modeling assumption.
+
+The universe does not privilege linear models. There is no a priori reason that the change in performance should equal a sum of a feedback term, a difficulty term, and an interaction term, rather than a product, a ratio, a piecewise function, or something stranger.
+
+We use linear models here for two practical reasons. First, they are simple. Second, despite their simplicity, linear models often work well enough. Many quantities studied in psychology and the social sciences are reasonably well approximated by additive combinations of effects within the range of conditions actually tested.
+
+When the linear approximation breaks however, different tools become necessary. Transformations, generalized linear models, nonlinear regression, mixed models, ..., some of which will appear in later chapters. 
+
+For now, linearity is our working assumption.
+
+Now, with our model in place, we can now finally ask the questions that motivated the experiment:
 
 *What causes the variation in performance? Or, where does the variation come from? Is the variation meaningful, or is it just caused by some random error?*
 
-Now, consider each subject's score.
-
-$$y_{i,j,k} \; (i\in\{1,2,3\},j\in\{1,2\}, k\in\{x\in\mathbb{Z}:1\leqslant x\leqslant10\})$$
-
-What likely causes each participant's score to be different from the grand mean? 
-
-1. Maybe the feedback type they received causes it;
-2. Maybe it is due to the task difficulty they received;
-3. Maybe, some specific combination of feedback type and task difficulty does something;
-4. Or, the difference may simply reflect random variation between participants.
-
-So, we can construct a $\mathcal{M}_F$ model that accounts for the above four possible sources of variation. The subscript $F$ here means this model is the full model.
+We formally write our model as 
 
 $$
 \mathcal{M}_F:
 Y_{i,j,k}
 =
-\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}
+\mu+\alpha_i+\beta_j+(\alpha\beta)_{i,j}+\varepsilon_{i,j,k}.
 $$
 
-Here, random variable $Y_{i,j,k}$ denotes the random score that would be generated by the model. Once data are observed, we write the observed value as $y_{i,j,k}$. 
+Here, random variable $Y_{i,j,k}$ denotes the random score that would be generated by the model. Once data are observed, we write the observed value as $y_{i,j,k}$. The subscript $F$ means this model is the full model.
 
-However, this model needs one more technical condition. As written, the parameters are not uniquely determined. For example, we could add a constant to $\mu$ and subtract the same constant from every $\alpha_i$, while leaving the predicted value unchanged.
+However, this model needs one more technical condition. As written, the parameters are not uniquely determined.
 
-To make the parameters identifiable, we impose the usual sum-to-zero constraints:
+For example, the same predicted value can be obtained by adding a constant to $\mu$ and subtracting the same constant from every $\alpha_i$. Therefore, the numerical values of $\mu$ and $\alpha_i$ are not uniquely defined unless we impose a convention.
+
+A common convention is to use sum-to-zero constraints:
 
 $$
 \sum_i \alpha_i = 0,
@@ -118,14 +318,20 @@ $$
 \quad\text{for every }i.
 $$
 
-However, the parameters of $\mathcal{M}_F$ above are not directly observable. We need a way to estimate them from the data we have.
+Under these constraints, $\mu$ becomes the grand mean, the main-effect parameters describe deviations from the grand mean, and the interaction parameters describe deviations from additivity.
+
+However, the parameters of $\mathcal{M}_F$ above are not directly observable. The table gives us only the observed values $y_{i,j,k}$, rather than $\mu$, $\alpha_i$, $\beta_j$, $(\alpha\beta)_{i,j}$, or $\varepsilon_{i,j,k}$. 
+
+Among all possible parameter values, which ones should we choose?
+
+We need a way to *estimate* these parameters. 
 
 ### Estimating the Parameters by Least Squares
 
 One way to estimate the parameters is to choose parameter values
 
 $$
-\theta^{(\mathcal{M}_F)}
+\theta
 =
 \left(
 \mu,
@@ -137,7 +343,7 @@ $$
 
 that make the model fit the data as closely as possible.
 
-For a candidate parameter value $\theta^{(\mathcal{M}_F)}$, the model gives the predicted value
+For a candidate parameter value $\theta$, the model gives the predicted value
 
 $$
 y^{(\mathcal{M}_F)}_{i,j,k}(\theta)
@@ -148,7 +354,7 @@ $$
 We choose the parameter values by minimizing the total loss:
 
 $$
-\min_{\theta^{(\mathcal{M}_F)}}
+\min_{\theta}
 \sum_{i,j,k}
 f\left(
 y^{(\mathcal{M}_F)}_{i,j,k}(\theta),
@@ -175,7 +381,7 @@ where SSE means "sum of squared errors".
 Therefore, we want to find
 
 $$
-\hat{{\theta}}^{(\mathcal{M}_F)} =\left({\hat\mu}, \hat{\alpha}_i, \hat{\beta}_j, \widehat{(\alpha\beta)}_{i,j}\right) =  \operatorname*{arg\,min}_{{{\theta}}^{(\mathcal{M}_F)}} \sum_{i,j,k} \left(y_{i,j,k} - y^{(\mathcal{M}_F)}_{i,j,k}(\theta)
+\hat{{\theta}} =\left({\hat\mu}, \hat{\alpha}_i, \hat{\beta}_j, \widehat{(\alpha\beta)}_{i,j}\right) =  \operatorname*{arg\,min}_{{{\theta}}} \sum_{i,j,k} \left(y_{i,j,k} - y^{(\mathcal{M}_F)}_{i,j,k}(\theta)
 \right)^2.
 $$
 
@@ -190,14 +396,13 @@ $$
 \end{gather*}
 $$
 
-??? info "Click to see the derivation of estimators"
+??? info "The derivation of estimators"
 
-    In this derivation, $\mu$, $\alpha_i$, $\beta_j$, and $(\alpha\beta)_{i,j}$ denote candidate parameter values. After solving the least-squares equations, the resulting estimators are written with hats.
+    In this derivation, $\mu$, $\alpha_i$, $\beta_j$, and $(\alpha\beta)_{i,j}$ denote candidate parameter values. After solving the equations, the resulting estimators are written with hats.
 
-    For candidate parameter values under $\mathcal{M}_F$, write
+    To find the estimators under the full model $\mathcal{M}_F$, we want to minimize the Sum of Squared Errors
 
-    $$
-    \mathrm{SSE}(\theta; \mathcal{M}_F)
+    $$\mathrm{SSE}(\theta; \mathcal{M}_F)
     =
     \sum_{i,j,k}
     \left(
@@ -210,107 +415,175 @@ $$
     \beta_j
     -
     (\alpha\beta)_{i,j}
-    \right)^2.
+    \right)^2
     $$
 
-    First, consider $\mu$.
-
-    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to ${\mu}$:
-
-    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\mu}} = -2 \sum_{i,j,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
-
-    Divide by -2 and distribute the summations:
-
-    $$\sum_{i,j,k} y_{i,j,k} - IJK{\mu} - JK\sum_{i} {\alpha}_i - IK\sum_{j} {\beta}_j - K\sum_{i,j} {(\alpha\beta)}_{i,j} = 0.$$
-
-    Recall the sum-to-zero constraints we imposed:
+    Subject to the standard sum-to-zero constraints:
 
     $$
-    \sum_i \alpha_i = 0,
-    \qquad
-    \sum_j \beta_j = 0,
+    \sum_i \alpha_i = 0 \,\quad
+    \sum_j \beta_j = 0 \,\quad
+    \sum_i (\alpha\beta)_{i,j} = 0 \text{ for every }j \,\quad
+    \sum_j (\alpha\beta)_{i,j} = 0 \text{ for every }i.
     $$
 
-    and
+    To enforce these constraints during minimization, we use Lagrange multipliers. We construct a new function, the Lagrangian $\mathcal{L}$, by adding our constraints to the objective function. We assign a unique multiplier to each constraint.
+
+    Let $\lambda^{(\alpha)}$ and $\lambda^{(\beta)}$ be the multipliers for the main effect constraints. Let $\gamma_j$ and $\tau_i$ be the multipliers for the interaction constraints. The Lagrangian is:
 
     $$
-    \sum_i(\alpha\beta)_{i,j}=0
-    \quad\text{for every }j,
-    \qquad
-    \sum_j(\alpha\beta)_{i,j}=0
-    \quad\text{for every }i.
+    \mathcal{L} = \sum_{i,j,k} \left( y_{i,j,k} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j} \right)^2 + 2\lambda^{(\alpha)} \sum_i \alpha_i + 2\lambda^{(\beta)} \sum_j \beta_j + 2\sum_j \gamma_j \left( \sum_i (\alpha\beta)_{i,j} \right) + 2\sum_i \tau_i \left( \sum_j (\alpha\beta)_{i,j} \right)
     $$
 
-    Thus, all terms involving ${\alpha}_i$, ${\beta}_j$, and ${(\alpha\beta)}_{i,j}$ evaluate to zero:
+    To find the minimum, we take the partial derivative of $\mathcal{L}$ with respect to each parameter, set it to zero, and solve.
 
-    $$y_{.,.,.} - IJK{\mu} = 0 \implies {\hat\mu} = \frac{y_{.,.,.}}{IJK} = \bar{y}_{.,.,.}.$$
+    First, let's estimate $\mu$.
 
-    Now, consider ${\alpha}_i$.
+    Take the partial derivative of $\mathcal{L}$with respect to $\mu$. Notice that $\mu$ does not appear in any of the constraint terms, so the multipliers drop out immediately:
 
-    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${\alpha}_i$:
-
-    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\alpha}_i} = -2 \sum_{j,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
+    $$
+    \frac{\partial \mathcal{L}}{\partial \mu} = -2 \sum_{i,j,k} \left(y_{i,j,k} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j}\right) = 0
+    $$
 
     Divide by $-2$ and distribute the summations:
 
-    $$\sum_{j,k} y_{i,j,k} - JK{\mu} - JK{\alpha}_i - K\sum_{j} {\beta}_j - K\sum_{j} {(\alpha\beta)}_{i,j} = 0.$$
+    $$
+    \sum_{i,j,k} y_{i,j,k} - IJK\mu - JK\sum_{i} \alpha_i - IK\sum_{j} \beta_j - K\sum_{i,j} (\alpha\beta)_{i,j} = 0
+    $$
 
-    Applying the constraints $\sum_j {\beta}_j = 0$ and $\sum_j {(\alpha\beta)}_{i,j} = 0$, the equation simplifies to:
-
-    $$y_{i,.,.} - JK{\mu} - JK{\alpha}_i = 0.$$
-
-    Divide by $JK$ and substitute ${\mu}$ with $\bar{y}_{.,.,.}$:
-
-    $$\bar{y}_{i,.,.} - \bar{y}_{.,.,.} - {\alpha}_i = 0 \implies {\hat\alpha}_i = \bar{y}_{i,.,.} - \bar{y}_{.,.,.}.$$
-
-    Similarly, we take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${\beta}_j$:
-
-    $$\frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {\beta}_j} = -2 \sum_{i,k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.$$
-
-    Distributing the sums and dividing by $-2$:
-
-    $$\sum_{i,k} y_{i,j,k} - IK{\mu} - K\sum_{i} {\alpha}_i - IK{\beta}_j - K\sum_{i} {(\alpha\beta)}_{i,j} = 0.$$
-
-    Applying the constraints $\sum_i {\alpha}_i = 0$ and $\sum_i {(\alpha\beta)}_{i,j} = 0$:
-
-    $$y_{.,j,.} - IK{\mu} - IK{\beta}_j = 0.$$
-
-    Divide by $IK$ and substitute ${\mu}$ with $\bar{y}_{.,.,.}$:
-
-    $$\bar{y}_{.,j,.} - \bar{y}_{.,.,.} - {\beta}_j = 0 \implies {\hat\beta}_j = \bar{y}_{.,j,.} - \bar{y}_{.,.,.}.$$
-
-    Finally, consider ${(\alpha\beta)}_{i,j}$.
-
-    Take the partial derivative of $\mathrm{SSE}(\theta; \mathcal{M}_F)$ with respect to a specific ${(\alpha\beta)}_{i,j}$:
+    Because our constraints strictly dictate that $\sum_i \alpha_i$ = 0, $\sum_j \beta_j = 0$, and $\sum_{i,j} (\alpha\beta)_{i,j}$ = 0, all those terms evaluate to zero:
 
     $$
-    \frac{\partial \mathrm{SSE}(\theta; \mathcal{M}_F)}{\partial {(\alpha\beta)}_{i,j}} = -2 \sum_{k} \left(y_{i,j,k} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j}\right) = 0.
+    \sum_{i,j,k} y_{i,j,k} - IJK\mu = 0 \implies \hat{\mu} = \frac{\sum_{i,j,k} y_{i,j,k}}{IJK} = \bar{y}_{.,.,.}
+    $$
+
+    Now, we estimate $\alpha_i$.
+
+    Take the partial derivative of $\mathcal{L}$ with respect to a specific $\alpha_i$. This time, $\alpha_i$ appears in the penalty term $2\lambda^{(\alpha)} \sum_i \alpha_i$, so the multiplier remains:
+
+    $$
+    \frac{\partial \mathcal{L}}{\partial \alpha_i} = -2 \sum_{j,k} \left(y_{i,j,k} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j}\right) + 2\lambda^{(\alpha)} = 0
+    $$
+
+    Divide by $-2$ and distribute the summations:
+
+    $$
+    \sum_{j,k} y_{i,j,k} - JK\mu - JK\alpha_i - K\sum_{j} \beta_j - K\sum_{j} (\alpha\beta)_{i,j} - \lambda^{(\alpha)} = 0
+    $$
+
+    Applying the constraints $\sum_j \beta_j = 0$ and $\sum_j (\alpha\beta)_{i,j} = 0$, the equation simplifies to:
+
+    $$
+    \sum_{j,k} y_{i,j,k} - JK\mu - JK\alpha_i - \lambda^{(\alpha)} = 0
+    $$
+
+    How do we find $\lambda^{(\alpha)}$? We can solve for it by summing the entire equation over all $I$ levels of $i$:
+
+    $$
+    \sum_{i} \left(\sum_{j,k} y_{i,j,k} - JK\mu - JK\alpha_i - \lambda^{(\alpha)} \right) = 0
+    $$
+
+    $$
+    \sum_{i,j,k} y_{i,j,k} - IJK\mu - JK\sum_i \alpha_i - I\lambda^{(\alpha)} = 0
+    $$
+
+    We already know $\sum_i \alpha_i = 0$. Furthermore, we know $\sum_{i,j,k} y_{i,j,k} - IJK\mu = 0$. Therefore, those terms cancel out, leaving us with:
+
+    $$
+    - I\lambda^{(\alpha)} = 0 \implies \lambda^{(\alpha)} = 0
+    $$
+
+    Because the multiplier is zero, we can remove it from our earlier equation:
+
+    $$
+    \sum_{i,j} y_{i,j,k} - JK\mu - JK\alpha_i = 0
+    $$
+
+    Divide by $JK$ and substitute $\mu$ with $\bar{y}_{.,.,.}$:
+
+    $$
+    \bar{y}_{i,.,.} - \bar{y}_{.,.,.} - \alpha_i = 0 \implies \hat{\alpha}_i = \bar{y}_{i,.,.} - \bar{y}_{.,.,.}
+    $$
+
+    Now, for $\beta_j$.
+
+    Following the exact same logic, we take the partial derivative of $\mathcal{L}$ with respect to a specific $\beta_j$:
+
+    $$
+    \frac{\partial \mathcal{L}}{\partial \beta_j} = -2 \sum_{i,k} \left(y_{i,j,k} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j}\right) + 2\lambda^{(\beta)} = 0
+    $$
+
+    Dividing by $-2$ and applying the constraints $\sum_i \alpha_i = 0$ and $\sum_i (\alpha\beta)_{i,j} = 0$ yields:
+
+    $$
+    \sum_{i,k} y_{i,j,k} - IK\mu - IK\beta_j - \lambda^{(\beta)} = 0
+    $$
+
+    Summing this equation over all $J$ levels of $j$ reveals that $\lambda^{(\beta)} = 0$. Removing the multiplier and dividing by $IK$ leaves us with:
+
+    $$
+    \bar{y}_{.,j,.} - \bar{y}_{.,.,.} - \beta_j = 0 \implies \hat{\beta}_j = \bar{y}_{.,j,.} - \bar{y}_{.,.,.}
+    $$
+
+    Finally, for $(\alpha\beta)_{i,j}$, take the partial derivative of $\mathcal{L}$ with respect to a specific interaction cell $(\alpha\beta)_{i,j}$. 
+
+    This parameter appears in two penalty constraints, so both multipliers ($\gamma_j$ and $\tau_i$) appear:
+
+    $$
+    \frac{\partial \mathcal{L}}{\partial (\alpha\beta)_{i,j}} = -2 \sum_{k} \left(y_{i,j,k} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j}\right) + 2\gamma_j + 2\tau_i = 0
     $$
 
     Divide by $-2$ and distribute the summation over the $K$ participants in that specific cell:
 
     $$
-    \sum_{k=1}^K y_{i,j,k} - K{\mu} - K{\alpha}_i - K{\beta}_j - K{(\alpha\beta)}_{i,j} = 0.
+    \sum_{k} y_{i,j,k} - K\mu - K\alpha_i - K\beta_j - K(\alpha\beta)_{i,j} - \gamma_j - \tau_i = 0
     $$
 
-    This simplifies to:
+    To handle the multipliers, we sum this equation first over $i$, and then over $j$.
+    First, summing over $i$:
 
     $$
-    y_{i,j,.} - K{\mu} - K{\alpha}_i - K{\beta}_j - K{(\alpha\beta)}_{i,j} = 0.
+    \sum_i \sum_{k} y_{i,j,k} - IK\mu - K\sum_i \alpha_i - IK\beta_j - K\sum_i (\alpha\beta)_{i,j} - \sum_i \gamma_j - \sum_i \tau_i = 0
+    $$
+
+    Applying the constraints $\sum_i \alpha_i = 0$ and $\sum_i (\alpha\beta)_{i,j} = 0$, we get:
+
+    $$
+    \sum_{i,k} y_{i,j,k} - IK\mu - IK\beta_j - I\gamma_j - \sum_i \tau_i = 0
+    $$
+
+    Notice that the first three terms ($\sum_{i,k} y_{i,j,k} - IK\mu - IK\beta_j$) exactly equal the equation from what we have done in $\beta_j$, which evaluated to 0. Therefore:
+
+    $$
+    - I\gamma_j - \sum_i \tau_i = 0 \implies I\gamma_j + \sum_i \tau_i = 0
+    $$
+
+    Similarly, summing the original cell equation over $j$ yields:
+
+    $$
+    \sum_j \gamma_j + J\tau_i = 0
+    $$
+
+    Let $S_\gamma = \sum_j \gamma_j$ and $S_\tau = \sum_i \tau_i$. Our two equations tell us that $\gamma_j = -S_\tau / I$ (meaning $\gamma_j$ is a constant, independent of $j$) and $\tau_i = -S_\gamma / J$ (meaning $\tau_i$ is a constant, independent of $i$). Because they are constants, they balance each other out: $\gamma_j$ + $\tau_i = 0$ for every cell.
+
+    With the multipliers zeroed out, we return to our cell equation:
+
+    $$
+    \sum_{k} y_{i,j,k} - K\mu - K\alpha_i - K\beta_j - K(\alpha\beta)_{i,j} = 0
     $$
 
     Divide by $K$ to convert the cell total to a cell mean:
 
     $$
-    \bar{y}_{i,j,.} - {\mu} - {\alpha}_i - {\beta}_j - {(\alpha\beta)}_{i,j} = 0.
+    \bar{y}_{i,j,.} - \mu - \alpha_i - \beta_j - (\alpha\beta)_{i,j} = 0
     $$
 
-    Now, substitute the previously found estimators for ${\mu}$, ${\alpha}_i$, and ${\beta}_j$:
+    Now, substitute the previously found estimators for $\mu$, $\alpha_i$, and $\beta_j$:
 
     $$
     \begin{align*}
     \widehat{(\alpha\beta)}_{i,j} &= \bar{y}_{i,j,.} - \bar{y}_{.,.,.} - (\bar{y}_{i,.,.} - \bar{y}_{.,.,.}) - (\bar{y}_{.,j,.} - \bar{y}_{.,.,.}) \\
-    &= \bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \bar{y}_{.,.,.}.
+    &= \bar{y}_{i,j,.} - \bar{y}_{i,.,.} - \bar{y}_{.,j,.} + \bar{y}_{.,.,.}
     \end{align*}
     $$
 
@@ -656,7 +929,7 @@ $$
 \end{align*}
 $$
 
-??? info "Click to see the expansion on the right-hand side"
+??? info "The expansion on the right-hand side"
 
     $$
     \begin{align*}
@@ -1097,11 +1370,19 @@ In many textbooks, however, sums of squares are calculated using a shortcut call
 
 ## Section Review
 
-We started with a simple question:
+We started with 60 observed scores and asked how they could be represented by a structured model rather than merely reproduced as a table.
 
-> Where does the variation in performance come from?
+The first move was to write an observation as
 
-To answer this, we first proposed a full two-way model:
+$$
+\text{observation}
+=
+\text{systematic structure}
++
+\text{residual}.
+$$
+
+For this experiment, the systematic structure came from the two-factor design. The full two-way model was
 
 $$
 Y_{i,j,k}
@@ -1117,7 +1398,9 @@ Y_{i,j,k}
 \varepsilon_{i,j,k}.
 $$
 
-The parameters in this model are not directly observable, so we estimated them by least squares. Using squared error as the loss function, the fitted components were
+This model says that each score is represented by an overall level, a feedback component, a difficulty component, a feedback-by-difficulty interaction component, and a leftover.
+
+Because the parameters in this model are not directly observable, we estimated them by least squares. Using squared error as the loss function, the fitted components were
 
 $$
 \begin{gather*}
@@ -1155,7 +1438,7 @@ y_{i,j,k}
 \end{gather*}
 $$
 
-Thus, each centered observation can be decomposed as
+Therefore, each centered observation can be decomposed as
 
 $$
 y_{i,j,k}
@@ -1187,11 +1470,9 @@ $$
 \hat{\boldsymbol{\varepsilon}}.
 $$
 
-In vector notation, the full model corresponds to a fitted-value space $\mathcal{S}_F$, and least squares chooses the fitted vector in this space closest to $\mathbf{y}$.
+In vector notation, the full model corresponds to a fitted-value space $\mathcal{S}_F$, and least squares chooses the fitted vector in this space closest to the observed data vector $\mathbf{y}$.
 
-Least squares makes the residual vector orthogonal to the fitted-value space. The balanced factorial structure, together with the sum-to-zero constraints, makes the fitted component vectors mutually orthogonal.
-
-Because the same squared $L^2$ geometry is used in least squares, we measured the size of each fitted component by its squared norm. Orthogonality then allowed the squared lengths to add:
+This geometric view explains why sums of squares appear naturally. Least squares measures model failure by squared $L^2$ distance, and the balanced factorial design makes the fitted component vectors orthogonal to each other. Orthogonality then allows squared lengths to add:
 
 $$
 \mathrm{SS_T}
@@ -1205,8 +1486,10 @@ $$
 \mathrm{SS_E}.
 $$
 
-So, in this balanced two-way design, the total squared deviation from the grand mean can be partitioned into feedback, difficulty, interaction, and residual sums of squares.
+In this balanced two-way design, the total squared deviation from the grand mean can be partitioned into feedback, difficulty, interaction, and residual sums of squares.
 
 What we cannot say yet is whether any one of these pieces is large enough to be statistically meaningful. For that, we need to know how these sums of squares behave under sampling.
 
 In the next section, we will introduce degrees of freedom, mean squares, and the $F$ statistic.
+
+[^fisher1926]: R. A. Fisher, “The Arrangement of Field Experiments,” *Journal of the Ministry of Agriculture* 33 (1926): 511.

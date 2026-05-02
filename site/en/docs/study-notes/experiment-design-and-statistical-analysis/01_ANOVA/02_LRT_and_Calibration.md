@@ -140,21 +140,13 @@ $$
 \hat{\varepsilon}_{i,j,k}^{(\mathcal{M}_{R, \mathrm{A\times B}})} = \hat{\varepsilon}_{i,j,k} + \widehat{(\alpha\beta)}_{i,j}.
 $$
 
-For compact notation, let
-
-$$
-\hat{\theta}_R=\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})},
-\qquad
-\hat{\theta}_F=\hat{\theta}^{(\mathcal M_F)}
-$$
-
-denote the least-squares estimates under the reduced and full models, respectively.
+Let $\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})}$ and $\hat{\theta}^{(\mathcal M_F)}$ denote the least-squares estimates under the reduced and full models, respectively.
 
 Because $\hat{\boldsymbol{\varepsilon}}\perp \widehat{\boldsymbol{\alpha\beta}}$, we have
 
 $$
 \begin{aligned}
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 &=
 \left\|
 \hat{\boldsymbol{\varepsilon}}
@@ -175,7 +167,7 @@ $$
 Meanwhile,
 
 $$
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 =
 \|\hat{\boldsymbol{\varepsilon}}\|^2
 =
@@ -187,9 +179,9 @@ Therefore,
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 -
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F).
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F).
 $$
 
 Hence, $\mathrm{SS_{A\times B}}$ can be viewed as the reduction in SSE by allowing the interaction component into the model.
@@ -308,7 +300,7 @@ $$
 
 The first constraint means that the parameter vector must belong to the parameter space allowed by model $\mathcal M$. For example, the full model allows the interaction component, while the reduced model does not.
 
-From the least-squares section, we already know how to fit the mean structure of a model by minimizing its squared error. We denote the least-squares estimate under model $\mathcal M$ by
+From the previous section, we already know how to fit the mean structure of a model by minimizing its squared error. We denote the least-squares estimate under model $\mathcal M$ by
 
 $$
 \hat{\theta}^{(\mathcal M)}.
@@ -466,11 +458,11 @@ $$
 }{
 \widehat L_{\mathcal M_F}
 }\\
-&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R,\mathrm{A\times B}})}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)}{N} \right)^{-\frac{N}{2}}}\\
+&=\frac{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R,\mathrm{A\times B}})}{N} \right)^{-\frac{N}{2}}}{(2\pi e)^{-\frac{N}{2}} \left( \frac{\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)}{N} \right)^{-\frac{N}{2}}}\\
 &= \left(\frac{
-\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}(\hat{\theta}_F;\mathcal{M}_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal{M}_F)
 }\right)^{-\frac{N}{2}}
 .
 \end{align*}
@@ -518,9 +510,9 @@ $$
 -\frac{N}{2}
 \ln\left(
 \frac{
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }
 \right).
 $$
@@ -533,9 +525,9 @@ $$
 N
 \ln\left(
 \frac{
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }
 \right).
 $$
@@ -546,14 +538,14 @@ Since the sign has been flipped by multiplying by $-2$, stronger evidence agains
 Recall that 
 
 $$
-\mathrm{SSE}(\hat{\theta}_F;\mathcal{M}_{F})=\|\hat{\boldsymbol{\varepsilon}}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal{M}_{F})=\|\hat{\boldsymbol{\varepsilon}}
 \|^2=\mathrm{SS_E},
 $$
 
 and
 
 $$
-\mathrm{SSE}(\hat{\theta}_R;\mathcal{M}_{R, \mathrm{A\times B}})=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal{M}_{R, \mathrm{A\times B}})=\|\hat{\boldsymbol{\varepsilon}}^{(\mathcal{M}_{R, \mathrm{A\times B}})}\|^2 =\mathrm{SS_E}
 +
 \mathrm{SS_{A\times B}}.
 $$
@@ -562,9 +554,9 @@ Thus,
 
 $$
 \frac{
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 }{
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F)
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F)
 }=
 1+\frac{\mathrm{SS_{A\times B}}}{\mathrm{SS_E}}
 \geq 1.
@@ -1495,9 +1487,9 @@ To make the comparison more principled, we reframed the problem as a comparison 
 $$
 \mathrm{SS_{A\times B}}
 =
-\mathrm{SSE}(\hat{\theta}_R;\mathcal M_{R,\mathrm{A\times B}})
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_{R,\mathrm{A\times B}})};\mathcal M_{R,\mathrm{A\times B}})
 -
-\mathrm{SSE}(\hat{\theta}_F;\mathcal M_F).
+\mathrm{SSE}(\hat{\theta}^{(\mathcal M_F)};\mathcal M_F).
 $$
 
 Thus, the interaction sum of squares can be interpreted as the reduction in residual squared error obtained by allowing the interaction component into the model.
